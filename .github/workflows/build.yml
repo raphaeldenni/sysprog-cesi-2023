@@ -4,7 +4,7 @@ on:
     branches:
       - main
       - dev 
-      - test
+      - preprod
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
