@@ -47,5 +47,5 @@ jobs:
         run: |
           cd TestProgram
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"SysProg-CESI-Groupe-B_SysProg-CESI" /o:"sysprog-cesi-groupe-b" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
+          dotnet build EasySave
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
