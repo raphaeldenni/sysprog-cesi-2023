@@ -1,19 +1,17 @@
 namespace EasySave.Models;
 
-public class StateModel : ITaskModel
+public class StateModel : AbstractTaskModel
 {
     // IProperties
-    public int TaskId { get; set; }
-    public string TaskName { get; set; }
     
     // Properties
-    public string TaskState { get; set; }
-    public int FilesNumber { get; set; }
-    public int FilesSize { get; set; }
-    public int LeftFilesNumber { get; set; }
-    public int LeftFilesSize { get; set; }
-    public string FileSourcePath { get; set; }
-    public string FileDestPath { get; set; }
+    private string? TaskState { get; set; }
+    private int FilesNumber { get; set; }
+    private int FilesSize { get; set; }
+    private int LeftFilesNumber { get; set; }
+    private int LeftFilesSize { get; set; }
+    private string? FileSourcePath { get; set; }
+    private string? FileDestPath { get; set; }
     
     // Constructors
     public StateModel(int taskId)
@@ -32,10 +30,6 @@ public class StateModel : ITaskModel
     }
     
     // Methods
-    public void UpdateStateFile()
-    {
-        
-    }
 
     public void UpdateState()
     {

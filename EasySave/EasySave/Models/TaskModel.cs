@@ -1,37 +1,54 @@
 namespace EasySave.Models;
 
-public class TaskModel : ITaskModel
+public class TaskModel : AbstractTaskModel
 {
-    // IProperties
-    public int TaskId { get; set; }
-    public string TaskName { get; set; }
-    
     // Properties
-    public float TaskTime { get; set; }
-    public string SourcePath { get; set; }
-    public string DestPath { get; set; }
-    public string TaskType { get; set; }
+    
+    private float TaskTime { get; set; }
+    private string? SourcePath { get; set; }
+    private string? DestPath { get; set; }
+    private string? TaskType { get; set; }
     
     // Constructors
     public TaskModel(int taskId)
     {
+        Init();
         TaskId = taskId;
     }
-
+    
     public TaskModel(string taskName)
     {
+        Init();
         TaskName = taskName;
+    }
+
+    public TaskModel(string taskName, string sourcePath, string destPath, string taskType)
+    {
+        Init();
+        TaskName = taskName;
+        SourcePath = sourcePath;
+        DestPath = destPath;
+        TaskType = taskType;
     }
 
     public TaskModel()
     {
-        
+        Init();
     }
     
     // Methods
-    public void UpdateStateFile()
+    private void Init()
     {
-        
+        if (!File.Exists(StateFileName))
+        {
+            CreateStateFile();
+        }
+    }
+    
+    public bool CheckTask()
+    {
+        PullStateFile();
+        return false;
     }
 
     public string CreateTask()
@@ -47,15 +64,5 @@ public class TaskModel : ITaskModel
     public string DeleteTask()
     {
         return String.Empty;
-    }
-
-    public bool CheckTask()
-    {
-        return false;
-    }
-
-    public string[] ListTask()
-    {
-        return new[] { String.Empty };
     }
 }
