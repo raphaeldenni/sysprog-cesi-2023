@@ -1,0 +1,15 @@
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\bin\Debug\net7.0\EasySave.exe
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\bin\Debug\net7.0\EasySave.deps.json
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\bin\Debug\net7.0\EasySave.runtimeconfig.json
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\bin\Debug\net7.0\EasySave.dll
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\bin\Debug\net7.0\EasySave.pdb
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.csproj.AssemblyReference.cache
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.AssemblyInfoInputs.cache
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.AssemblyInfo.cs
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.csproj.CoreCompileInputs.cache
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.dll
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\refint\EasySave.dll
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.pdb
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\EasySave.genruntimeconfig.cache
+C:\Users\Utilisateur\RiderProjects\SysProg-CESI\EasySave\EasySave\obj\Debug\net7.0\ref\EasySave.dll
