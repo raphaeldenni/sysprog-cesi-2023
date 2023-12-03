@@ -5,7 +5,7 @@ namespace EasySave.Models;
 public abstract class AbstractTaskModel
 {
     protected int TaskId { get; set; }
-    protected string TaskName { get; set; }
+    protected internal string TaskName { get; set; }
     protected static string StateFileName => "state.json";
     public List<AbstractTaskModel> TasksList { get; private set; }
     
