@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,33 +10,57 @@ namespace EasySave.Views;
 public class HelpView : IView
 {
     // Properties from IView
-    public string[] CommandArgs { get; set; }
-    public string[] ResultsMessage { get; set; }
-    public string ErrorMessage { get; set; }
+    public string? Message { get; set; }
 
-    // Additional property specific to HelpView
-    public string HelpMessage { get; set; }
 
     // Constructor
-    public HelpView(string[] args)
+    public HelpView()
     {
-        CommandArgs = args;
-    }
-
-    // Method HelpView
-    public void DisplayHelpMessage()
-    {
-        Console.WriteLine($"Help Message: {HelpMessage}");
     }
 
     // Implementing IView interface methods
-    public void CommandResult(string message)
+    public void DisplayMessage()
     {
-        Console.WriteLine($"Command Result: {message}");
+        Console.WriteLine(Message);
     }
 
-    public void CommandError(string message)
+    public void DisplayCreate()
     {
-        Console.WriteLine($"Command Error: {message}");
+        Message = @"easysave create <name> <source> <destination> <type>";
     }
+
+    public void DisplayDelete()
+    {
+        Message = @"easysave delete <name|number>";
+    }
+
+    public void DisplayList()
+    {
+        Message = @"easysave list";
+    }
+
+    public void DisplayModify()
+    {
+        Message = @"easysave modify  [name|source|dest|type] <string>";
+    }
+
+    public void DisplayExecute() 
+    {
+        Message = @"easysave execute <name|number>";
+    }
+
+    public void DisplayAll()
+    {
+        MethodInfo[] methods = GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (var method in methods)
+        {
+            if (method.Name.StartsWith("Display") && method.Name != "DisplayAll" && method.Name != "DisplayMessage")
+            {
+                method.Invoke(this, null);
+                DisplayMessage();
+            }
+        }
+    }
+
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EasySave.Models;
+using EasySave.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +10,8 @@ namespace EasySave.ViewModels
 {
     public class CreateViewModel
     {
-        public IView CreateView { get; set; }
-        public ITaskModel TaskModel { get; set; }
+        public CreateView CreateView { get; set; }
+        public TaskModel TaskModel { get; set; }
 
         public CreateViewModel()
         {
