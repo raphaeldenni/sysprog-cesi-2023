@@ -36,7 +36,7 @@ namespace EasySave.ViewModels
         {
 
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(true, args[0], args[1], args[2], args[3]);
+            string result = TaskModel.UpdateTask(true, args[0], args[1], args[2], args[3], null);
             CreateView.Message = result;
             CreateView.DisplayMessage();
         }

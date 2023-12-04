@@ -42,13 +42,16 @@ namespace EasySave.ViewModels
 
         public void ModifyName(string[] args)
         {
-            // Pas encore implémenter
+            TaskModel = new TaskModel();
+            string result = TaskModel.UpdateTask(false, args[0], null, null, null, args[2]);
+            ModifyView.Message = result;
+            ModifyView.DisplayMessage();
         }
 
         public void ModifySource(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], args[2], null, null);
+            string result = TaskModel.UpdateTask(false, args[0], args[2], null, null, null);
             ModifyView.Message = result;
             ModifyView.DisplayMessage();
         }
@@ -56,7 +59,7 @@ namespace EasySave.ViewModels
         public void ModifyDest(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], null, args[2], null);
+            string result = TaskModel.UpdateTask(false, args[0], null, args[2], null, null);
             ModifyView.Message = result;
             ModifyView.DisplayMessage();
         }

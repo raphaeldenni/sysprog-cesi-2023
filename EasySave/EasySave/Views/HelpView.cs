@@ -41,7 +41,7 @@ public class HelpView : IView
 
     public void DisplayModify()
     {
-        Message = @"easysave modify  [name|source|dest|type] <string>";
+        Message = @"easysave modify <name> [name|source|dest|type] <string>";
     }
 
     public void DisplayExecute() 
