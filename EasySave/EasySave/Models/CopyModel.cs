@@ -8,6 +8,8 @@ public class CopyModel
     public string SourcePath { get; set; }
     public string DestPath { get; set; }
     public BackupType Type { get; set; }
+    public int LeftFilesNumber { get; set; }
+    public long LeftFilesSize { get; set; }
     public Dictionary<string, List<string>> DirectoryStructure { get; set; }
 
     // Constructors
@@ -17,6 +19,8 @@ public class CopyModel
         DestPath = destPath;
         DirectoryStructure = new Dictionary<string, List<string>>();
         Type = type;
+        LeftFilesNumber = 0;
+        LeftFilesSize = 0;
         CheckFiles();
     }
 
@@ -47,13 +51,26 @@ public class CopyModel
 
         foreach (string file in Directory.GetFiles(currentDirectory))
         {
-            DirectoryStructure[relativePath].Add(Path.GetFileName(file));
+            if (Type == BackupType.Complete || IsFileModified(file, relativePath))
+            {
+                DirectoryStructure[relativePath].Add(Path.GetFileName(file));
+                LeftFilesNumber++;
+                LeftFilesSize += new FileInfo(file).Length;
+            }
         }
 
         foreach (string subdirectory in Directory.GetDirectories(currentDirectory))
         {
             BuildDirectoryStructure(subdirectory, rootDirectory);
         }
+    }
+
+    private bool IsFileModified(string filePath, string relativePath)
+    {
+        string fileName = Path.GetFileName(filePath);
+        string destFilePath = Path.Combine(DestPath, relativePath, fileName);
+
+        return !File.Exists(destFilePath) || File.GetLastWriteTime(filePath) > File.GetLastWriteTime(destFilePath);
     }
 
     public void CopyFiles()
@@ -73,17 +90,7 @@ public class CopyModel
                 string sourceFilePath = Path.Combine(sourceDirectory, fileName);
                 string destFilePath = Path.Combine(destDirectory, fileName);
 
-                if (Type == BackupType.Complete)
-                {
-                    File.Copy(sourceFilePath, destFilePath, true);
-                }
-                else if (Type == BackupType.Differential)
-                {
-                    if (File.GetLastWriteTime(sourceFilePath) > File.GetLastWriteTime(destFilePath))
-                    {
-                        File.Copy(sourceFilePath, destFilePath, true);
-                    }
-                }
+                File.Copy(sourceFilePath, destFilePath, true);
             }
         }
     }
