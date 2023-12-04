@@ -17,16 +17,17 @@ namespace EasySave.ViewModels
         {
             ListView = new ListView();
             TaskModel = new TaskModel();
-            DisplayTaskList(); // Display the task list upon instance creation.
+            CreateTaskList(); // Display the task list upon instance creation.
         }
 
-        public void DisplayTaskList()
+        public void CreateTaskList()
         {
             List<TaskEntity>? tasks = TaskModel.TasksList;
+            bool allNamesEmpty = tasks.All(task => string.IsNullOrWhiteSpace(task.Name));
 
-            if (tasks == null || tasks.Count == 0)
+            if (tasks == null || allNamesEmpty)
             {
-                ListView.Message = "Aucune tâche disponible ";
+                ListView.Message = "There are no existing tasks";
                 ListView.DisplayMessage();
             }
             else
@@ -46,7 +47,7 @@ namespace EasySave.ViewModels
         public void UpdateStatFile()
         {
             TaskModel.PullStateFile();
-            DisplayTaskList();
+            CreateTaskList();
         }
     }
 }
