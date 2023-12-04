@@ -11,10 +11,13 @@ public class TaskModel : TaskEntity
     // Constructors
     public TaskModel()
     {
-        PullStateFile();
+        // If the state file doesn't exist, create a default list
+        if (!File.Exists(StateFileName))
+        {
+            UpdateStateFile(null); 
+        }
         
-        // Check if the state file is empty or non-existent, if yes create a default list and update the state file
-        if (TasksList == null) UpdateStateFile(null);
+        PullStateFile();
     }
     
     // Methods
@@ -36,21 +39,40 @@ public class TaskModel : TaskEntity
     }
     
     //// Task methods
-    public string UpdateTask(string taskName, string? taskSourcePath, string? taskDestPath, string? taskType)
+    public string UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, string? taskType)
     {
-        var isNew = TasksList.FindIndex(task => task.Name == taskName) == -1;
+        // If the source path is not null, check if it exists
+        if (taskSourcePath != null || !File.Exists(taskSourcePath)) return $"Source path {taskSourcePath} not found.";
+        
         var searchValue = isNew ? null : taskName;
-            
+        
+        Id = TasksList.FindIndex(task => task.Name == searchValue);
+
+        if (Id >= 5) return "You can't create more than 5 tasks.";
+        
         Name = taskName;
         SourcePath = taskSourcePath;
         DestPath = taskDestPath;
         Type = taskType;
         
-        Id = TasksList.FindIndex(task => task.Name == searchValue);
-        
         UpdateTasksList();
         
         return $"Task {Id + 1} named {Name} has been {(isNew ? "created" : "modified")}.";
+    }
+    
+    public string DeleteTask(string taskName)
+    {
+        int taskId = TasksList.FindIndex(task => task.Name == taskName);
+
+        if (taskId == -1)
+        {
+            return $"Task named {taskName} not found.";
+        }
+
+        TasksList[taskId] = new TaskEntity { Id = taskId };
+        UpdateStateFile(TasksList);
+
+        return $"Task named {taskName} has been deleted.";
     }
     
     public void UpdateTaskState
@@ -85,19 +107,7 @@ public class TaskModel : TaskEntity
     {
         var task = TasksList[Id.Value];
         
-        // If Name is null, the task is deleted
-        if (Name != null)
-        {
-            UpdateTaskProperties(task);
-        }
-        else
-        {
-            task = null;
-        }
-        
-        task.Id = Id;
-        task.Name = Name;
-        
+        UpdateTaskProperties(task);
         UpdateStateFile(TasksList);
     }
     
@@ -106,6 +116,8 @@ public class TaskModel : TaskEntity
         // If a property is null, the property is not updated
         
         // Task properties
+        task.Id = Id;
+        task.Name = Name;
         task.SourcePath = SourcePath ?? task.SourcePath;
         task.DestPath = DestPath ?? task.DestPath;
         task.Type = Type ?? task.Type;
