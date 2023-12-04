@@ -16,7 +16,7 @@ namespace EasySave
                 }
 
                 dynamic viewModel = null;
-                string viewModelName = args[0] + "ViewModel";
+                string viewModelName = listArgs[0] + "ViewModel";
                 Type viewModelType = Type.GetType("EasySave.ViewModels." + viewModelName);
 
                 if (viewModelType == null)
