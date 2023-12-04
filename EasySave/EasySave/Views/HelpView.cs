@@ -31,7 +31,7 @@ public class HelpView : IView
 
     public void DisplayDelete()
     {
-        Message = @"easysave delete <name|number>";
+        Message = @"easysave delete <name>";
     }
 
     public void DisplayList()
@@ -41,7 +41,7 @@ public class HelpView : IView
 
     public void DisplayModify()
     {
-        Message = @"easysave modify  [name|source|dest|type] <string>";
+        Message = @"easysave modify <name> [name|source|dest|type] <string>";
     }
 
     public void DisplayExecute() 
