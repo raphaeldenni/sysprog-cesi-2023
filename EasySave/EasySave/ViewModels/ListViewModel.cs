@@ -34,7 +34,8 @@ namespace EasySave.ViewModels
                 foreach (var task in tasks)
                 {
                     string message = $"ID: {task.Id}, Name: {task.Name}, State: {task.State}, Type: {task.Type}";
-                   ListView.DisplayMessage(message);
+                    ListView.Message = message;
+                    ListView.DisplayMessage();
                 }
             }
         }
