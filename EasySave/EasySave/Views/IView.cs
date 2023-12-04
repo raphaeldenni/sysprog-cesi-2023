@@ -10,12 +10,9 @@ namespace EasySave.Views;
 {
     
         // Properties
-        string[] CommandArgs { get; set; }
-        string[] ResultsMessage { get; set; }
-        string ErrorMessage { get; set; }
+        string Message { get; set; }
 
         // Methods
-        void CommandResult(string result);
-        void CommandError(string error);
+        void DisplayMessage();
     }
 
