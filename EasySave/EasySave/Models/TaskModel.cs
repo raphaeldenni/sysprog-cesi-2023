@@ -1,3 +1,4 @@
+using EasySave.Types;
 using System.Text.Json;
 
 namespace EasySave.Models;
@@ -56,7 +57,12 @@ public class TaskModel : TaskEntity
         Id = TasksList.FindIndex(task => task.Name == searchValue);
 
         if (Id >= 5) return "You can't create more than 5 tasks.";
-        
+
+        if (!Enum.TryParse<BackupType>(taskType, true, out BackupType backupType))
+        {
+            return $"Invalid task type: {taskType}. Please provide a valid task type. (Complete / Differential)";
+        }
+
         // Update the task
         Name = taskName;
         SourcePath = taskSourcePath;
