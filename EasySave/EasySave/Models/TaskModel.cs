@@ -42,14 +42,22 @@ public class TaskModel : TaskEntity
     public string UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, string? taskType)
     {
         // If the source path is not null, check if it exists
-        if (taskSourcePath != null || !File.Exists(taskSourcePath)) return $"Source path {taskSourcePath} not found.";
-        
+        if (taskSourcePath != null && !Directory.Exists(taskSourcePath)) return $"Source path {taskSourcePath} not found.";
+
+        // Verify the correspondency between new task and name 
+        var sameName = TasksList.Any(task => task.Name == taskName);
+
+        if (isNew && sameName) return "You can't create two tasks with the same name.";
+        if (!isNew && !sameName) return "You can't modify a task that doesn't exist.";
+
+        // Retrieve task ID
         var searchValue = isNew ? null : taskName;
-        
+
         Id = TasksList.FindIndex(task => task.Name == searchValue);
 
         if (Id >= 5) return "You can't create more than 5 tasks.";
         
+        // Update the task
         Name = taskName;
         SourcePath = taskSourcePath;
         DestPath = taskDestPath;
