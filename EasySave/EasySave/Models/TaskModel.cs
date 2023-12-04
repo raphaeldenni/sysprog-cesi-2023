@@ -39,17 +39,21 @@ public class TaskModel : TaskEntity
     }
     
     //// Task methods
-    public string UpdateTask(string taskName, string? taskSourcePath, string? taskDestPath, string? taskType)
+    public string UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, string? taskType)
     {
-        var isNew = TasksList.FindIndex(task => task.Name == taskName) == -1;
+        // If the source path is not null, check if it exists
+        if (taskSourcePath != null || !File.Exists(taskSourcePath)) return $"Source path {taskSourcePath} not found.";
+        
         var searchValue = isNew ? null : taskName;
-            
+        
+        Id = TasksList.FindIndex(task => task.Name == searchValue);
+
+        if (Id >= 5) return "You can't create more than 5 tasks.";
+        
         Name = taskName;
         SourcePath = taskSourcePath;
         DestPath = taskDestPath;
         Type = taskType;
-        
-        Id = TasksList.FindIndex(task => task.Name == searchValue);
         
         UpdateTasksList();
         
