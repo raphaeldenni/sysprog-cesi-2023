@@ -9,37 +9,16 @@ namespace EasySave.Views;
 public class ListView : IView
 {
     // Properties from IView
-    public string[] CommandArgs { get; set; }
-    public string[] ResultsMessage { get; set; }
-    public string ErrorMessage { get; set; }
-
-    // Additional property specific to ListView
-    public string[] TaskList { get; set; }
+    public string? Message { get; set; }
 
     // Constructor
-    public ListView(string[] args)
+    public ListView()
     {
-        CommandArgs = args;
-    }
-
-    // Method
-    public void DisplayTaskList()
-    {
-        Console.WriteLine("Task List:");
-        foreach (var task in TaskList)
-        {
-            Console.WriteLine(task);
-        }
     }
 
     // Implementing IView interface methods
-    public void CommandResult(string success)
+    public void DisplayMessage()
     {
-        Console.WriteLine($"Command Result: {success}");
-    }
-
-    public void CommandError(string error)
-    {
-        Console.WriteLine($"Command Error: {error}");
+        Console.WriteLine(Message);
     }
 }
