@@ -67,7 +67,7 @@ namespace EasySave.ViewModels
         public void ModifyType(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], null, null, args[2]);
+            string result = TaskModel.UpdateTask(false, args[0], null, null, args[2], null);
             ModifyView.Message = result;
             ModifyView.DisplayMessage();
         }
