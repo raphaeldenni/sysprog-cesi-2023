@@ -1,6 +1,6 @@
 namespace EasySave.Models;
 
-public class TaskBase
+public class TaskEntity
 {
     // Properties
     
