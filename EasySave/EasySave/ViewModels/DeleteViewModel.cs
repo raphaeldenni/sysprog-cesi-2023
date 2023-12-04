@@ -12,13 +12,29 @@ namespace EasySave.ViewModels
     {
         public DeleteView DeleteView { get; set; }
         public TaskModel TaskModel { get; set; }
+        public HelpView HelpView { get; set; }
 
-        public DeleteViewModel()
+        public DeleteViewModel(string[] args)
         {
+            DeleteView = new DeleteView();
+            HelpView = new HelpView();
+
+            if (!(args.Length == 1))
+            {
+                HelpView.DisplayDelete();
+                HelpView.DisplayMessage();
+            }
+            else
+            {
+                DeleteTask(args);
+            }
         }
 
-        public void DeleteTask()
+        public void DeleteTask(string[] args)
         {
+            TaskModel = new TaskModel();
+            DeleteView.Message = TaskModel.DeleteTask(args[0]);
+            DeleteView.DisplayMessage();
         }
     }
 }
