@@ -17,7 +17,7 @@ namespace EasySave.ViewModels
         {
             ListView = new ListView();
             TaskModel = new TaskModel();
-            DisplayTaskList(); // Afficher la liste lors de la création de l'instance
+            DisplayTaskList(); // Display the task list upon instance creation.
         }
 
         public void DisplayTaskList()
@@ -31,6 +31,9 @@ namespace EasySave.ViewModels
             }
             else
             {
+                // Filter out tasks with null names
+                tasks = tasks.Where(task => task.Name != null).ToList();
+
                 foreach (var task in tasks)
                 {
                     string message = $"ID: {task.Id}, Name: {task.Name}, State: {task.State}, Type: {task.Type}";
@@ -39,7 +42,7 @@ namespace EasySave.ViewModels
                 }
             }
         }
-
+        //Updates the status file and refreshes the displayed task list.
         public void UpdateStatFile()
         {
             TaskModel.PullStateFile();
