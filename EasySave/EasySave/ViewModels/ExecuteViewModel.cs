@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 
 namespace EasySave.ViewModels
 {
-    public class ModifyViewModel
+    public class ExecuteViewModel
     {
-        public ModifyView ModifyView { get; set; }
-        public TaskModel TaskModel { get; set; }
+        public ExecuteView ExecuteView { get; set; }
+        //public StateM StateModel { get; set; }
+        public CopyModel CopyModel { get; set; }
+        public LogModel LogModel { get; set; }
 
-        public ModifyViewModel()
+        public ExecuteViewModel()
         {
         }
 
-        public void ModifyTask()
+        public void ExecuteTask()
         {
         }
     }

@@ -16,8 +16,6 @@ namespace EasySave.ViewModels
 
         public TaskModel TaskModel { get; set; }
 
-        public LogModel LogModel { get; set; }
-
         public CreateViewModel(string[] args)
         {
             CreateView = new CreateView();
@@ -36,8 +34,10 @@ namespace EasySave.ViewModels
 
         public void CreateTask(string[] args)
         {
+
             TaskModel = new TaskModel();
-            CreateView.Message = TaskModel.UpdateTask(true, args[0], args[1], args[2], args[3]);
+            string result = TaskModel.UpdateTask(true, args[0], args[1], args[2], args[3]);
+            CreateView.Message = result;
             CreateView.DisplayMessage();
         }
     }
