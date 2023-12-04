@@ -11,10 +11,13 @@ public class TaskModel : TaskEntity
     // Constructors
     public TaskModel()
     {
-        PullStateFile();
+        // If the state file doesn't exist, create a default list
+        if (!File.Exists(StateFileName))
+        {
+            UpdateStateFile(null); 
+        }
         
-        // Check if the state file is empty or non-existent, if yes create a default list and update the state file
-        if (TasksList == null) UpdateStateFile(null);
+        PullStateFile();
     }
     
     // Methods
