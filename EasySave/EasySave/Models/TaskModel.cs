@@ -56,6 +56,21 @@ public class TaskModel : TaskEntity
         return $"Task {Id + 1} named {Name} has been {(isNew ? "created" : "modified")}.";
     }
     
+    public string DeleteTask(string taskName)
+    {
+        int taskId = TasksList.FindIndex(task => task.Name == taskName);
+
+        if (taskId == -1)
+        {
+            return $"Task named {taskName} not found.";
+        }
+
+        TasksList[taskId] = new TaskEntity { Id = taskId };
+        UpdateStateFile(TasksList);
+
+        return $"Task named {taskName} has been deleted.";
+    }
+    
     public void UpdateTaskState
     (
         string taskName, 
@@ -88,19 +103,7 @@ public class TaskModel : TaskEntity
     {
         var task = TasksList[Id.Value];
         
-        // If Name is null, the task is deleted
-        if (Name != null)
-        {
-            UpdateTaskProperties(task);
-        }
-        else
-        {
-            task = null;
-        }
-        
-        task.Id = Id;
-        task.Name = Name;
-        
+        UpdateTaskProperties(task);
         UpdateStateFile(TasksList);
     }
     
@@ -109,6 +112,8 @@ public class TaskModel : TaskEntity
         // If a property is null, the property is not updated
         
         // Task properties
+        task.Id = Id;
+        task.Name = Name;
         task.SourcePath = SourcePath ?? task.SourcePath;
         task.DestPath = DestPath ?? task.DestPath;
         task.Type = Type ?? task.Type;
