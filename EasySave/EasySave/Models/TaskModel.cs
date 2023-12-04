@@ -1,85 +1,74 @@
+using System.Text.Json;
+
 namespace EasySave.Models;
 
-public class TaskModel : AbstractTaskModel
+public class TaskModel : TaskBase
 {
     // Properties
     
-    private float TaskTime { get; set; }
-    private string SourcePath { get; set; }
-    private string DestPath { get; set; }
-    private string TaskType { get; set; }
+    //// State file
+    private static string StateFileName => "state.json";
+    public List<TaskBase>? TasksList { get; private set; }
     
     // Constructors
-    public TaskModel(int taskId)
-    {
-        Init();
-        TaskId = taskId;
-    }
-    
-    public TaskModel(string taskName)
-    {
-        Init();
-        TaskName = taskName;
-    }
-
-    public TaskModel(string taskName, string sourcePath, string destPath, string taskType)
-    {
-        Init();
-        TaskName = taskName;
-        SourcePath = sourcePath;
-        DestPath = destPath;
-        TaskType = taskType;
-    }
-
     public TaskModel()
     {
-        Init();
+        if (!File.Exists(StateFileName)) UpdateStateFile(null);
+        
+        PullStateFile();
     }
     
     // Methods
-    private void Init()
+    private void UpdateStateFile(List<TaskBase>? tasksList)
     {
-        if (!File.Exists(StateFileName))
-        {
-            CreateStateFile();
-        }
+        // If tasksList is null, create a default list
+        TasksList = tasksList ?? Enumerable.Range(0, 5).Select(i => new TaskBase { Id = i }).ToList();
+        
+        var jsonState = JsonSerializer.Serialize(TasksList);
+        File.WriteAllText(StateFileName, jsonState);
     }
-
-    public string CreateTask()
+    
+    public void PullStateFile()
     {
-        PullStateFile();
-        
-        if (TasksList.Any(task => task.TaskName == TaskName))
-        {
-            return "Task already exist";
-        }
-        
-        var task = new TaskModel(TaskName, SourcePath, DestPath, TaskType);
-        TasksList.Add(task);
-        UpdateStateFile(TasksList);
-        
-        return "Task created";
+        var jsonState = File.ReadAllText(StateFileName);
+        TasksList = JsonSerializer.Deserialize<List<TaskBase>>(jsonState);
     }
-
-    public string ModifyTask()
+    
+    private void UpdateTask()
     {
-        PullStateFile();
-        var task = TasksList.Find(task => task.TaskName == TaskName);
+        var task = TasksList?[Id.Value];
+        task.Id = Id;
+        task.Name = Name;
+        task.Timestamp = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         task.SourcePath = SourcePath;
         task.DestPath = DestPath;
-        task.TaskType = TaskType;
-        UpdateStateFile(TasksList);
-
-        return "Task modified";
-    }
-
-    public string DeleteTask()
-    {
-        PullStateFile();
-        var task = TasksList.Find(task => task.TaskName == TaskName);
-        TasksList.Remove(task);
-        UpdateStateFile(TasksList);
+        task.Type = Type;
         
-        return "Task deleted";
+        UpdateStateFile(TasksList);
+    }
+    
+    public string CreateTask(string taskName, string taskSourcePath, string taskDestPath, string taskType)
+    {
+        Name = taskName;
+        SourcePath = taskSourcePath;
+        DestPath = taskDestPath;
+        Type = taskType;
+        
+        Id = TasksList.FindIndex(task => task.Name == null);
+        if (Id == -1) return "No more task slot available";
+        
+        UpdateTask();
+        return $"Task {Id + 1} named {Name} created";
+    }
+    
+    public string DeleteTask(string taskName)
+    {
+        Name = taskName;
+        
+        Id = TasksList.FindIndex(task => task.Name == Name);
+        if (Id == -1) return "Task not found";
+        
+        UpdateTask();
+        return $"Task {Name} deleted";
     }
 }
