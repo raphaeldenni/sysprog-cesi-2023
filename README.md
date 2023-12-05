@@ -11,6 +11,9 @@ The project consists in designing a backup software called EasySave for the publ
 ### Installation
 Go to [Releases](https://github.com/SysProg-CESI-Groupe-B/SysProg-CESI/releases) and check the last version. Just download the ".exe" and use it in your terminal. You can also clone the repo and build the executable from source.
 
+### Commands comprehension
+If you see `[something]` you need to type literally "something", and if it is `<something>` you need to replace this by something which is describe in it.
+
 ### Create command
 Create a new task
 
@@ -19,7 +22,7 @@ Usage : `easysave.exe create <taskName> <source> <destination> <type>`
 ### Modify command
 Modify an existing task
 
-Usage : `easysave.exe modify <taskName> [taskName|source|dest|type] <string>`
+Usage : `easysave.exe modify <taskName> [name|source|dest|type] <string>`
 
 ### Delete command
 Delete a task
