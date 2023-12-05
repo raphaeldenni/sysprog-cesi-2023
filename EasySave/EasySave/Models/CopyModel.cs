@@ -11,6 +11,9 @@ public class CopyModel
     public int LeftFilesNumber { get; set; }
     public long LeftFilesSize { get; set; }
     public Dictionary<string, List<string>> DirectoryStructure { get; set; }
+    // BAD CODE
+    public TaskModel TaskModel { get; set; }
+    // BAD CODE
 
     // Constructors
     public CopyModel(string sourcePath, string destPath, BackupType type)
@@ -75,6 +78,10 @@ public class CopyModel
 
     public void CopyFiles()
     {
+        // BAD CODE
+        TaskModel = new TaskModel();
+        // BAD CODE
+        
         foreach (var directoryEntry in DirectoryStructure)
         {
             string sourceDirectory = Path.Combine(SourcePath, directoryEntry.Key);
@@ -91,6 +98,23 @@ public class CopyModel
                 string destFilePath = Path.Combine(destDirectory, fileName);
 
                 File.Copy(sourceFilePath, destFilePath, true);
+                
+                LeftFilesNumber--;
+                LeftFilesSize -= new FileInfo(sourceFilePath).Length;
+                
+                // BAD CODE
+                // Update task state
+                TaskModel.UpdateTaskState(
+                    TaskModel.Name,
+                    TaskModel.State, 
+                    TaskModel.LeftFilesNumber, 
+                    TaskModel.LeftFilesSize, 
+                    LeftFilesNumber, 
+                    LeftFilesSize, 
+                    TaskModel.SourcePath, 
+                    TaskModel.DestPath
+                    );
+                // BAD CODE
             }
         }
     }
