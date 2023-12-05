@@ -13,6 +13,7 @@ namespace EasySave.ViewModels
     public class ExecuteViewModel
     {
         // Properties
+        private float initializeLeftFilesSize = 0;
 
         //// Views
         public ExecuteView ExecuteView { get; set; }
@@ -84,6 +85,7 @@ namespace EasySave.ViewModels
         public void ExecuteOneTask(string? taskName)
         {
             var task = TaskModel.TasksList?.FirstOrDefault(t => t.Name == taskName);
+            initializeLeftFilesSize = 0;
 
             if (task == null)
             {
@@ -158,8 +160,14 @@ namespace EasySave.ViewModels
                     TaskModel.DestPath
                 );
 
-                LogModel = new LogModel();
+                if (initializeLeftFilesSize == 0)
+                {
+                    initializeLeftFilesSize = value2;
+                }
 
+                int pourcentage = (int)((initializeLeftFilesSize - value2) / initializeLeftFilesSize * 100);
+
+                LogModel = new LogModel();
                 LogModel.CreateLog(
                     TaskModel.Name,
                     data[0],
@@ -167,6 +175,8 @@ namespace EasySave.ViewModels
                     value2,
                     value3
                 );
+
+                ExecuteView.DisplayLoading(pourcentage);
             }
         }
     }
