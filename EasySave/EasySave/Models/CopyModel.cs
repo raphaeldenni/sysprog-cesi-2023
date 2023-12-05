@@ -1,9 +1,12 @@
+using System.Diagnostics;
 using EasySave.Types;
 
 namespace EasySave.Models;
 
 public class CopyModel
 {
+    public event Action<string[]> FileCopied;
+
     // Properties
     public string SourcePath { get; set; }
     public string DestPath { get; set; }
@@ -89,8 +92,18 @@ public class CopyModel
             {
                 string sourceFilePath = Path.Combine(sourceDirectory, fileName);
                 string destFilePath = Path.Combine(destDirectory, fileName);
-
+                
+                var stopwatch = new Stopwatch();
                 File.Copy(sourceFilePath, destFilePath, true);
+                stopwatch.Stop();
+                
+                var copyTime = stopwatch.ElapsedMilliseconds;
+                
+                LeftFilesNumber--;
+                LeftFilesSize -= new FileInfo(sourceFilePath).Length;
+
+                string[] fileInfo = { sourceFilePath, destFilePath, new FileInfo(sourceFilePath).Length.ToString(), copyTime.ToString() };
+                FileCopied?.Invoke(fileInfo);
             }
         }
     }
