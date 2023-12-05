@@ -13,18 +13,27 @@ namespace EasySave.Models
         public string? FileSourcePath { get; set; }
         public string? FileDestPath { get; set; }
         public string LogFileName { get; set; }
+        public string LogFolderPath { get; set; }
         public int? FileSize { get; set; }
         public float? FileTransferTime { get; set; }
 
         public LogModel()
         {
             LogFileName = "log" + GetLogFileName();
+            LogFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LogFolderName);
 
             CheckLogFile();
         }
 
         public void CheckLogFile()
         {
+            if (!Directory.Exists(LogFolderPath))
+            {
+                Directory.CreateDirectory(LogFolderPath);
+            }
+
+            LogFileName = Path.Combine(LogFolderPath, LogFileName);
+
             if (!LogFileExists(LogFileName))
             {
                 CreateLogFile();
