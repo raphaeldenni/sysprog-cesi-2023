@@ -2,6 +2,7 @@
 using EasySave.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,22 +41,46 @@ namespace EasySave.ViewModels
         }
         
         // Methods
-        public void ExecuteTasks(string taskRow)
+        public void ExecuteTasks(string tasksRow)
         {
            // If taskRow begin with a char, execute one task
-           if (!string.IsNullOrEmpty(taskRow) && Char.IsLetter(taskRow[0]))
+           if (!string.IsNullOrEmpty(tasksRow) && Char.IsLetter(tasksRow[0]))
            {
-               ExecuteOneTask(taskRow);
+               ExecuteOneTask(tasksRow);
            }
            
-           // Execute task row
-           
+           // Execute multiple tasks
+           if (!string.IsNullOrEmpty(tasksRow) && tasksRow.Contains(';'))
+           {
+               var tasksIdString = tasksRow.Split(';');
+               
+               foreach (var taskIdString in tasksIdString)
+               {
+                   var taskId = int.Parse(taskIdString) - 1;
+                   var taskName = TaskModel.TasksList?.FirstOrDefault(t => t.Id == taskId)?.Name;
+                   
+                   ExecuteOneTask(taskName);
+               }
+           }
            
            // Execute task to task
-           
+           if (!string.IsNullOrEmpty(tasksRow) && tasksRow.Contains('-'))
+           {
+                var tasksIdString = tasksRow.Split('-');
+
+                var firstTaskId = int.Parse(tasksIdString[0]) - 1;
+                var secondTaskId = int.Parse(tasksIdString[1]) - 1;
+                
+                for (var taskId = firstTaskId; taskId >= secondTaskId; taskId++)
+                {
+                    var taskName = TaskModel.TasksList?.FirstOrDefault(t => t.Id == taskId)?.Name;
+                    
+                    ExecuteOneTask(taskName);
+                }
+           }
         }
         
-        public void ExecuteOneTask(string taskName)
+        public void ExecuteOneTask(string? taskName)
         {
             var task = TaskModel.TasksList?.FirstOrDefault(t => t.Name == taskName);
             
@@ -87,6 +112,9 @@ namespace EasySave.ViewModels
                     task.DestPath
                     );
                 
+                ExecuteView.Message = "Task started";
+                ExecuteView.DisplayMessage();
+                
                 // Start copy
                 CopyModel.CopyFiles();
                 
@@ -104,7 +132,7 @@ namespace EasySave.ViewModels
                     task.DestPath
                     );
                 
-                ExecuteView.Message = "Task started";
+                ExecuteView.Message = "Task finished";
                 ExecuteView.DisplayMessage();
             }
         }
