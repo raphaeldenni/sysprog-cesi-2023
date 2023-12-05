@@ -5,6 +5,8 @@ namespace EasySave.Models;
 
 public class CopyModel
 {
+    public event Action<string[]> FileCopied;
+
     // Properties
     public string SourcePath { get; set; }
     public string DestPath { get; set; }
@@ -12,10 +14,6 @@ public class CopyModel
     public int LeftFilesNumber { get; set; }
     public long LeftFilesSize { get; set; }
     public Dictionary<string, List<string>> DirectoryStructure { get; set; }
-    // BAD CODE
-    public TaskModel TaskModel { get; set; }
-    public LogModel LogModel { get; set; }
-    // BAD CODE
 
     // Constructors
     public CopyModel(string sourcePath, string destPath, BackupType type)
@@ -80,11 +78,6 @@ public class CopyModel
 
     public void CopyFiles()
     {
-        // BAD CODE
-        TaskModel = new TaskModel();
-        LogModel = new LogModel();
-        // BAD CODE
-        
         foreach (var directoryEntry in DirectoryStructure)
         {
             string sourceDirectory = Path.Combine(SourcePath, directoryEntry.Key);
@@ -108,29 +101,9 @@ public class CopyModel
                 
                 LeftFilesNumber--;
                 LeftFilesSize -= new FileInfo(sourceFilePath).Length;
-                
-                // BAD CODE
-                // Update task state
-                TaskModel.UpdateTaskState(
-                    TaskModel.Name,
-                    TaskModel.State, 
-                    TaskModel.LeftFilesNumber, 
-                    TaskModel.LeftFilesSize, 
-                    LeftFilesNumber, 
-                    LeftFilesSize, 
-                    TaskModel.SourcePath, 
-                    TaskModel.DestPath
-                    );
-                
-                // Create log
-                LogModel.CreateLog(
-                    TaskModel.Name, 
-                    sourceFilePath, 
-                    destFilePath, 
-                    (int)new FileInfo(sourceFilePath).Length, 
-                    copyTime
-                    );
-                // BAD CODE
+
+                string[] fileInfo = { sourceFilePath, destFilePath, new FileInfo(sourceFilePath).Length.ToString(), copyTime.ToString() };
+                FileCopied?.Invoke(fileInfo);
             }
         }
     }
