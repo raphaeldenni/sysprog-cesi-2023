@@ -72,7 +72,7 @@ namespace EasySave.ViewModels
                 var firstTaskId = int.Parse(tasksIdString[0]) - 1;
                 var secondTaskId = int.Parse(tasksIdString[1]) - 1;
 
-                for (var taskId = firstTaskId; taskId >= secondTaskId; taskId++)
+                for (var taskId = firstTaskId; taskId < secondTaskId; taskId++)
                 {
                     var taskName = TaskModel.TasksList?.FirstOrDefault(t => t.Id == taskId)?.Name;
 
