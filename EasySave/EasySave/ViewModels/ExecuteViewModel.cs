@@ -22,15 +22,6 @@ namespace EasySave.ViewModels
         public CopyModel CopyModel { get; set; }
         public LogModel LogModel { get; set; }
         
-        //// Others
-        public string TaskName { get; set; }
-        public string TaskState { get; set; }
-        public BackupType TaskType { get; set; }
-        public string SourcePath { get; set; }
-        public string DestPath { get; set; }
-        public int FilesCount { get; set; }
-        public long FilesSize { get; set; }
-        
         // Constructor
         public ExecuteViewModel(string[] args)
         {
@@ -62,31 +53,42 @@ namespace EasySave.ViewModels
             else
             {
                 // Get task info
-                TaskName = task.Name;
-                TaskType = Enum.Parse<BackupType>(task.Type);
-                TaskState = "Active";
-                SourcePath = task.SourcePath;
-                DestPath = task.DestPath;
+                var taskType = Enum.Parse<BackupType>(task.Type);
+                var taskState = "Active";
                 
                 // Set copy model
-                CopyModel = new CopyModel(SourcePath, DestPath, TaskType);
-                FilesCount = CopyModel.LeftFilesNumber;
-                FilesSize = CopyModel.LeftFilesSize;
+                CopyModel = new CopyModel(task.SourcePath, task.DestPath, taskType);
+                var filesCount = CopyModel.LeftFilesNumber;
+                var filesSize = CopyModel.LeftFilesSize;
                 
                 // Update task state
                 TaskModel.UpdateTaskState(
-                    TaskName, 
-                    TaskState, 
-                    FilesCount, 
-                    FilesSize, 
-                    FilesCount, 
-                    FilesSize, 
-                    SourcePath, 
-                    DestPath
+                    task.Name, 
+                    taskState, 
+                    filesCount, 
+                    filesSize, 
+                    filesCount, 
+                    filesSize, 
+                    task.SourcePath, 
+                    task.DestPath
                     );
                 
                 // Start copy
                 CopyModel.CopyFiles();
+                
+                taskState = "Finished";
+                
+                // Update task state
+                TaskModel.UpdateTaskState(
+                    task.Name, 
+                    taskState, 
+                    filesCount, 
+                    filesSize, 
+                    0, 
+                    0, 
+                    task.SourcePath, 
+                    task.DestPath
+                    );
                 
                 ExecuteView.Message = "Task started";
                 ExecuteView.DisplayMessage();
