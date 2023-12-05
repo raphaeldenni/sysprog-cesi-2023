@@ -26,12 +26,12 @@ public class HelpView : IView
 
     public void DisplayCreate()
     {
-        Message = @"easysave create <name> <source> <destination> <type>";
+        Message = @"easysave create <taskName> <source> <destination> <type>";
     }
 
     public void DisplayDelete()
     {
-        Message = @"easysave delete <name>";
+        Message = @"easysave delete <taskName>";
     }
 
     public void DisplayList()
@@ -41,12 +41,12 @@ public class HelpView : IView
 
     public void DisplayModify()
     {
-        Message = @"easysave modify <name> [name|source|dest|type] <string>";
+        Message = @"easysave modify <taskName> [name|source|dest|type] <string>";
     }
 
     public void DisplayExecute() 
     {
-        Message = @"easysave execute <name|number>";
+        Message = @"easysave execute <taskName>" + Environment.NewLine + "easysave execute <taskIdOne>-<taskIdTwo>" + Environment.NewLine + "easysave execute <taskIdOne>;<taskIdTwo>;*";
     }
 
     public void DisplayAll()
