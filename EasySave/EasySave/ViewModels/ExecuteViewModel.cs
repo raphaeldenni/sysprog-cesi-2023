@@ -35,12 +35,27 @@ namespace EasySave.ViewModels
             }
             else
             {
-                ExecuteTask(args[1]);
+                ExecuteTasks(args[0]);
             }
         }
         
         // Methods
-        public void ExecuteTask(string taskName)
+        public void ExecuteTasks(string taskRow)
+        {
+           // If taskRow begin with a char, execute one task
+           if (!string.IsNullOrEmpty(taskRow) && Char.IsLetter(taskRow[0]))
+           {
+               ExecuteOneTask(taskRow);
+           }
+           
+           // Execute task row
+           
+           
+           // Execute task to task
+           
+        }
+        
+        public void ExecuteOneTask(string taskName)
         {
             var task = TaskModel.TasksList?.FirstOrDefault(t => t.Name == taskName);
             
