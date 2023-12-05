@@ -11,6 +11,8 @@ The project consists in designing a backup software called EasySave for the publ
 ### Installation
 Go to [Releases](https://github.com/SysProg-CESI-Groupe-B/SysProg-CESI/releases) and check the last version. Just download the ".exe" and use it in your terminal. You can also clone the repo and build the executable from source.
 
+There is a [EasySave-EnvVariable.bat](https://github.com/SysProg-CESI-Groupe-B/SysProg-CESI/blob/preprod/EasySave-EnvVariable.bat) that you can you use to add the .exe to your environnement variables (only on Windows)
+
 ### Commands comprehension
 If you see `[something]` you need to type literally "something", and if it is `<something>` you need to replace this by something which is describe in it.
 
