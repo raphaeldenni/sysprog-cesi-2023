@@ -2,7 +2,7 @@
 
 The project consists in designing a backup software called EasySave for the publisher ProSoft. The project comprises several versions:
 
-- 1.0 (CLI)
+- [1.0 (CLI)](https://github.com/SysProg-CESI-Groupe-B/SysProg-CESI/releases/tag/v1.0.0)
 - 1.1 (CLI) (coming soon)
 - 2.0 (GUI) (coming soon)
 
