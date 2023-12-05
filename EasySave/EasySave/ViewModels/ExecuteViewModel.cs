@@ -55,20 +55,30 @@ namespace EasySave.ViewModels
             if (!string.IsNullOrEmpty(tasksRow) && tasksRow.Contains(';'))
             {
                 var tasksIdString = tasksRow.Split(';');
+                List<string> tasksNameList = new List<string>();
 
                 foreach (var taskIdString in tasksIdString)
                 {
                     var taskId = int.Parse(taskIdString) - 1;
                     var taskName = TaskModel.TasksList?.FirstOrDefault(t => t.Id == taskId)?.Name;
 
-                    ExecuteOneTask(taskName);
+                    if (taskName != null)
+                    {
+                        ExecuteOneTask(taskName);
+                        tasksNameList.Add(taskName);
+                    }
                 }
+
+                string tasksNamesString = string.Join(", ", tasksNameList);
+                ExecuteView.Message = "Tasks " + tasksNamesString + " finished";
+                ExecuteView.DisplayMessage();
             }
 
             // Execute task to task
             if (!string.IsNullOrEmpty(tasksRow) && tasksRow.Contains('-'))
             {
                 var tasksIdString = tasksRow.Split('-');
+                List<string> tasksNameList = new List<string>();
 
                 var firstTaskId = int.Parse(tasksIdString[0]) - 1;
                 var secondTaskId = int.Parse(tasksIdString[1]) - 1;
@@ -76,9 +86,16 @@ namespace EasySave.ViewModels
                 for (var taskId = firstTaskId; taskId < secondTaskId; taskId++)
                 {
                     var taskName = TaskModel.TasksList?.FirstOrDefault(t => t.Id == taskId)?.Name;
-
-                    ExecuteOneTask(taskName);
+                    if (taskName != null)
+                    {
+                        ExecuteOneTask(taskName);
+                        tasksNameList.Add(taskName);
+                    }
                 }
+
+                string tasksNamesString = string.Join(", ", tasksNameList);
+                ExecuteView.Message = "Tasks " + tasksNamesString + " finished";
+                ExecuteView.DisplayMessage();
             }
         }
 
@@ -162,10 +179,10 @@ namespace EasySave.ViewModels
 
                 if (initializeLeftFilesSize == 0)
                 {
-                    initializeLeftFilesSize = value2;
+                    initializeLeftFilesSize = TaskModel.LeftFilesSize ?? 0;
                 }
 
-                int pourcentage = (int)((initializeLeftFilesSize - value2) / initializeLeftFilesSize * 100);
+                int pourcentage = (int)((initializeLeftFilesSize - TaskModel.LeftFilesSize ?? 0) / initializeLeftFilesSize * 100);
 
                 LogModel = new LogModel();
                 LogModel.CreateLog(

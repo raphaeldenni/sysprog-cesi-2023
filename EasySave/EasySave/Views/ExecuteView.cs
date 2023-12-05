@@ -23,13 +23,13 @@ public class ExecuteView : IView
     }
     public void DisplayLoading(int percentage)
     {
-        // Ensure the percentage is within the valid range [0, 100]
+
         percentage = Math.Max(0, Math.Min(100, percentage));
 
-        Console.Clear(); // Clear the console
+        Console.Clear();
 
         Message = ("Loading: [");
-        int progressChars = (int)(percentage / 2.0); // Calculate the number of '=' characters to display
+        int progressChars = (int)(percentage / 2.0);
         for (int i = 0; i < progressChars; i++)
         {
             Message += ("=");
