@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using EasySave.Types;
 
 namespace EasySave.Models;
@@ -13,6 +14,7 @@ public class CopyModel
     public Dictionary<string, List<string>> DirectoryStructure { get; set; }
     // BAD CODE
     public TaskModel TaskModel { get; set; }
+    public LogModel LogModel { get; set; }
     // BAD CODE
 
     // Constructors
@@ -80,6 +82,7 @@ public class CopyModel
     {
         // BAD CODE
         TaskModel = new TaskModel();
+        LogModel = new LogModel();
         // BAD CODE
         
         foreach (var directoryEntry in DirectoryStructure)
@@ -96,8 +99,12 @@ public class CopyModel
             {
                 string sourceFilePath = Path.Combine(sourceDirectory, fileName);
                 string destFilePath = Path.Combine(destDirectory, fileName);
-
+                
+                var stopwatch = new Stopwatch();
                 File.Copy(sourceFilePath, destFilePath, true);
+                stopwatch.Stop();
+                
+                var copyTime = stopwatch.ElapsedMilliseconds;
                 
                 LeftFilesNumber--;
                 LeftFilesSize -= new FileInfo(sourceFilePath).Length;
@@ -113,6 +120,15 @@ public class CopyModel
                     LeftFilesSize, 
                     TaskModel.SourcePath, 
                     TaskModel.DestPath
+                    );
+                
+                // Create log
+                LogModel.CreateLog(
+                    TaskModel.Name, 
+                    sourceFilePath, 
+                    destFilePath, 
+                    (int)new FileInfo(sourceFilePath).Length, 
+                    copyTime
                     );
                 // BAD CODE
             }

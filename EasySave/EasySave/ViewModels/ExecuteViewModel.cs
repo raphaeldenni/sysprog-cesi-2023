@@ -20,7 +20,6 @@ namespace EasySave.ViewModels
         //// Models
         public TaskModel TaskModel { get; set; }
         public CopyModel CopyModel { get; set; }
-        public LogModel LogModel { get; set; }
         
         // Constructor
         public ExecuteViewModel(string[] args)
