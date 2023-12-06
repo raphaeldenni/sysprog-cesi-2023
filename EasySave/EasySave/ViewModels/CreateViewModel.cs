@@ -1,11 +1,7 @@
 ﻿using EasySave.Models;
 using EasySave.Types;
 using EasySave.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using static EasySave.Models.TaskModel;
 
 namespace EasySave.ViewModels

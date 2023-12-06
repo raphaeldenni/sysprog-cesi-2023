@@ -1,11 +1,6 @@
 using EasySave.Models;
 using EasySave.Types;
 using EasySave.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasySave.ViewModels
 {
@@ -42,7 +37,7 @@ namespace EasySave.ViewModels
 
                 foreach (var task in tasks)
                 {
-                    ListView.DisplayTask((int)task.Id, task.Name, (StateType)task.State, (BackupType)task.Type);
+                    ListView.DisplayTask((int)task.Id, task.Name, task.State ?? StateType.Inactive, (BackupType)task.Type);
                     ListView.DisplayMessage();
                 }
             }

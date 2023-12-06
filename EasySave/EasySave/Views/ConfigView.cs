@@ -1,9 +1,4 @@
 ﻿using EasySave.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasySave.Views;
 
@@ -48,6 +43,32 @@ public class ConfigView : IView
                 break;
             case LangType.Fr:
                 Message = "Erreur : Mauvaise extension, utiliser (Json|Xml) !";
+                break;
+        }
+    }
+
+    public void SuccessfulLang(LangType langOut)
+    {
+        switch (langOut)
+        {
+            case LangType.En:
+                Message = $"Successful: The application is now in english.";
+                break;
+            case LangType.Fr:
+                Message = $"Réussie : L'application est maintenant en français.";
+                break;
+        }
+    }
+
+    public void SuccessfulLogExtension(LogType logExtension)
+    {
+        switch (Lang)
+        {
+            case LangType.En:
+                Message = $"Successful: Log file extension is now . {logExtension}.";
+                break;
+            case LangType.Fr:
+                Message = $"Réussie : L'extension des fichiers log est maintenant .{logExtension}.";
                 break;
         }
     }

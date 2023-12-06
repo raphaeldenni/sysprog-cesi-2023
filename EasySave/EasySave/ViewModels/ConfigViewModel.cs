@@ -52,12 +52,14 @@ public class ConfigViewModel
         if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
         {
             ConfigModel.UpdateConfigFile(logExtensionOut, null);
+            ConfigView.SuccessfulLogExtension(logExtensionOut);
         }
         else 
         {
             ConfigView.ErrorLogExtension();
-            ConfigView.DisplayMessage();
         }
+
+        ConfigView.DisplayMessage();
     }
 
     public void UpdateLang(string lang)
@@ -65,11 +67,13 @@ public class ConfigViewModel
         if (Enum.TryParse<LangType>(lang, out LangType langOut))
         {
             ConfigModel.UpdateConfigFile(null, langOut);
+            ConfigView.SuccessfulLang(langOut);
         }
         else
         {
             ConfigView.ErrorLang();
-            ConfigView.DisplayMessage();
         }
+
+        ConfigView.DisplayMessage();
     }
 }
