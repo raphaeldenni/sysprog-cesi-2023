@@ -61,7 +61,8 @@ namespace EasySave.ViewModels
             } 
             else 
             {
-                CreateView.ErrorBackupType();
+                string validBackupTypes = string.Join("|", Enum.GetNames(typeof(BackupType)));
+                CreateView.ErrorBackupType(validBackupTypes);
             }
 
 

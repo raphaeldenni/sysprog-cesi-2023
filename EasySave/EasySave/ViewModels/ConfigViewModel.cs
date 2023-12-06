@@ -56,7 +56,8 @@ public class ConfigViewModel
         }
         else 
         {
-            ConfigView.ErrorLogExtension();
+            string validLogTypes = string.Join("|", Enum.GetNames(typeof(LogType)));
+            ConfigView.ErrorLogExtension(validLogTypes);
         }
 
         ConfigView.DisplayMessage();
@@ -71,7 +72,8 @@ public class ConfigViewModel
         }
         else
         {
-            ConfigView.ErrorLang();
+            string validLangTypes = string.Join("|", Enum.GetNames(typeof(LangType)));
+            ConfigView.ErrorLang(validLangTypes);
         }
 
         ConfigView.DisplayMessage();

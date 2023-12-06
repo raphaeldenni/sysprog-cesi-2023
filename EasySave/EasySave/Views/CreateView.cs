@@ -21,15 +21,15 @@ namespace EasySave.Views;
             Console.WriteLine(Message);
         }
 
-        public void ErrorBackupType()
+        public void ErrorBackupType(string validBackupTypes)
     {
         switch (Lang)
         {
             case LangType.En:
-                Message = "Error : Wrong backup type, use (Complete|Differential) !";
+                Message = $"Error: Wrong backup type, use ({validBackupTypes})!";
                 break;
             case LangType.Fr:
-                Message = "Erreur : Mauvais type de sauvegarde, utiliser (Complete|Differential) !";
+                Message = $"Erreur : Mauvais type de sauvegarde, utiliser ({validBackupTypes}) !";
                 break;
         }
     }

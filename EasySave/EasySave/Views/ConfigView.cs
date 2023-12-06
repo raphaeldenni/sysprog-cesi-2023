@@ -21,28 +21,28 @@ public class ConfigView : IView
         Console.WriteLine(Message);
     }
 
-    public void ErrorLang()
+    public void ErrorLang(string validLangTypes)
     {
         switch (Lang)
         {
             case LangType.En:
-                Message = "Error : Wrong language, use (En|Fr) !";
+                Message = $"Error : Wrong language, use ({validLangTypes}) !";
                 break;
             case LangType.Fr:
-                Message = "Erreur : Mauvaise langue, utiliser (En|Fr) !";
+                Message = $"Erreur : Mauvaise langue, utiliser ({validLangTypes}) !";
                 break;
         }
     }
 
-    public void ErrorLogExtension ()
+    public void ErrorLogExtension (string validLogTypes)
     {
         switch (Lang)
         {
             case LangType.En:
-                Message = "Error : Wrong extension, use (Json|Xml)";
+                Message = $"Error : Wrong extension, use ({validLogTypes})";
                 break;
             case LangType.Fr:
-                Message = "Erreur : Mauvaise extension, utiliser (Json|Xml) !";
+                Message = $"Erreur : Mauvaise extension, utiliser ({validLogTypes}) !";
                 break;
         }
     }
