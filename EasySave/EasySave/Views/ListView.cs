@@ -28,7 +28,7 @@ public class ListView : IView
                 Message = $"Error :  No tasks have been created !";
                 break;
             case LangType.Fr:
-                Message = $"Erreur : Aucune tâches n'a été crée !";
+                Message = $"Erreur : Aucun travail de sauvegarde n'a été créé !";
                 break;
         }
     }

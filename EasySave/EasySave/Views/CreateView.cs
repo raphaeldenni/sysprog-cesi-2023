@@ -55,7 +55,7 @@ namespace EasySave.Views;
                 Message = "Error : This task name is already taken !";
                 break;
             case LangType.Fr:
-                Message = "Erreur : Ce nom de tâche est déjà utilisé !";
+                Message = "Erreur : Ce nom de travail est déjà utilisé !";
                 break;
         }
     }
@@ -68,7 +68,7 @@ namespace EasySave.Views;
                 Message = "Error : There are already five existing tasks !";
                 break;
             case LangType.Fr:
-                Message = "Erreur : Il y a déjà cinq tâches existantes !";
+                Message = "Erreur : Il y a déjà cinq travaux de sauvegarde existants !";
                 break;
         }
     }
@@ -81,7 +81,7 @@ namespace EasySave.Views;
                 Message = $"Successful : Task {data[0]} named {data[1]} has been created.";
                 break;
             case LangType.Fr:
-                Message = $"Réussie : La tâche {data[0]} nommée {data[1]} a été créée.";
+                Message = $"Réussie : Le travail de sauvegarde {data[0]} nommé {data[1]} a été créé.";
                 break;
         }
     }

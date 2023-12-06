@@ -29,7 +29,7 @@ public class DeleteView : IView
                 Message = $"Error : The task was not found !";
                 break;
             case LangType.Fr:
-                Message = $"Erreur : La tâche n'a pas été trouvé !";
+                Message = $"Erreur : Le travail de sauvegarde n'a pas été trouvé !";
                 break;
         }
     }
@@ -42,7 +42,7 @@ public class DeleteView : IView
                 Message = $"Successful : Task named {name} has been deleted.";
                 break;
             case LangType.Fr:
-                Message = $"Réussie : La tâche nommée {name} a été supprimée.";
+                Message = $"Réussie : Le travail de sauvegarde nommé {name} a été supprimé.";
                 break;
         }
     }

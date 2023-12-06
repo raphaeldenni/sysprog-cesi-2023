@@ -54,7 +54,7 @@ public class ModifyView : IView
                 Message = $"Error : The task was not found !";
                 break;
             case LangType.Fr:
-                Message = $"Erreur : La tâche n'a pas été trouvé !";
+                Message = $"Erreur : Le travail de sauvegarde n'a pas été trouvé !";
                 break;
         }
     }
@@ -67,7 +67,7 @@ public class ModifyView : IView
                 Message = "Error : This task name is already taken !";
                 break;
             case LangType.Fr:
-                Message = "Erreur : Ce nom de tâche est déjà utilisé !";
+                Message = "Erreur : Ce nom de travail de sauvegarde est déjà utilisé !";
                 break;
         }
     }
@@ -80,7 +80,7 @@ public class ModifyView : IView
                 Message = $"Successful : Task {data[0]} named {data[1]} has been modify.";
                 break;
             case LangType.Fr:
-                Message = $"Réussie : La tâche {data[0]} nommée {data[1]} a été modifiée.";
+                Message = $"Réussie : Le travail de sauvegarde {data[0]} nommé {data[1]} a été modifié.";
                 break;
         }
     }

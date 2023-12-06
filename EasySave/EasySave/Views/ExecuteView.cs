@@ -58,7 +58,7 @@ public class ExecuteView : IView
                 Message = $"Successful : Task named {name} is {(!state ? "complete" : "started")}.";
                 break;
             case LangType.Fr:
-                Message = $"Réussie : La tâche nommée {name} est {(!state ? "terminée" : "lancée")}.";
+                Message = $"Réussie : Le travail de sauvegarde nommé {name} est {(!state ? "terminé" : "lancé")}.";
                 break;
         }
     }
@@ -71,7 +71,7 @@ public class ExecuteView : IView
                 Message = $"Error : The task was not found !";
                 break;
             case LangType.Fr:
-                Message = $"Erreur : La tâche n'a pas été trouvé !";
+                Message = $"Erreur : Le travail de sauvegarde n'a pas été trouvé !";
                 break;
         }
     }
