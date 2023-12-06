@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EasySave.Models.TaskModel;
 
 namespace EasySave.ViewModels
 {
@@ -17,10 +18,14 @@ namespace EasySave.ViewModels
 
         public TaskModel TaskModel { get; set; }
 
+        public ConfigModel ConfigModel { get; set; }
+
         public CreateViewModel(string[] args)
         {
-            CreateView = new CreateView();
-            HelpView = new HelpView();
+            ConfigModel = new ConfigModel();
+
+            CreateView = new CreateView(ConfigModel.Config.Language);
+            HelpView = new HelpView(ConfigModel.Config.Language);
 
             if (!(args.Length == 4))
             {
@@ -40,12 +45,27 @@ namespace EasySave.ViewModels
 
             if (Enum.TryParse<BackupType>(args[3], true, out BackupType backupType))
             {
-                string result = TaskModel.UpdateTask(true, args[0], args[1], args[2], backupType, null);
-                CreateView.Message = result;
+                try
+                {
+                    string[] result = TaskModel.UpdateTask(true, args[0], args[1], args[2], backupType, null);
+                    CreateView.SuccessfulCreation(result);
+                }
+                catch (SourcePathNotFoundException)
+                {
+                    CreateView.ErrorSourcePathNotFound();
+                }
+                catch (DuplicateTaskNameException)
+                {
+                    CreateView.ErrorDuplicateTaskName();
+                }
+                catch (TooMuchTasksException)
+                {
+                    CreateView.ErrorTooMuchTasks();
+                }
             } 
             else 
             {
-                CreateView.Message = "This is a wrong backup type";
+                CreateView.ErrorBackupType();
             }
 
 

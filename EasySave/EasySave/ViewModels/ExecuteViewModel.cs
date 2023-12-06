@@ -28,8 +28,10 @@ namespace EasySave.ViewModels
         // Constructor
         public ExecuteViewModel(string[] args)
         {
-            ExecuteView = new ExecuteView();
-            HelpView = new HelpView();
+            ConfigModel = new ConfigModel();
+
+            ExecuteView = new ExecuteView(ConfigModel.Config.Language);
+            HelpView = new HelpView(ConfigModel.Config.Language);
             TaskModel = new TaskModel();
 
             if (args.Length != 1)
@@ -71,7 +73,7 @@ namespace EasySave.ViewModels
                 }
 
                 string tasksNamesString = string.Join(", ", tasksNameList);
-                ExecuteView.Message = "Tasks " + tasksNamesString + " finished";
+                ExecuteView.TasksState(tasksNamesString, false);
                 ExecuteView.DisplayMessage();
             }
 
@@ -95,7 +97,7 @@ namespace EasySave.ViewModels
                 }
 
                 string tasksNamesString = string.Join(", ", tasksNameList);
-                ExecuteView.Message = "Tasks " + tasksNamesString + " finished";
+                ExecuteView.TasksState(tasksNamesString, false);
                 ExecuteView.DisplayMessage();
             }
         }
@@ -107,7 +109,7 @@ namespace EasySave.ViewModels
 
             if (task == null)
             {
-                ExecuteView.Message = "Task not found";
+                ExecuteView.ErrorTaskNameNotFound();
                 ExecuteView.DisplayMessage();
             }
             else
@@ -133,7 +135,7 @@ namespace EasySave.ViewModels
                     task.DestPath
                     );
 
-                ExecuteView.Message = "Task " + TaskModel.Name + " started";
+                ExecuteView.TasksState(task.Name, true);
                 ExecuteView.DisplayMessage();
 
                 CopyModel.FileCopied += LogFileCopied;
@@ -155,7 +157,7 @@ namespace EasySave.ViewModels
                     task.DestPath
                     );
 
-                ExecuteView.Message = "Task " + TaskModel.Name + " finished";
+                ExecuteView.TasksState(task.Name, false);
                 ExecuteView.DisplayMessage();
             }
         }
@@ -184,8 +186,6 @@ namespace EasySave.ViewModels
                 }
 
                 int pourcentage = (int)((initializeLeftFilesSize - TaskModel.LeftFilesSize ?? 0) / initializeLeftFilesSize * 100);
-
-                ConfigModel = new ConfigModel();
 
                 LogModel = new LogModel(ConfigModel.Config.LogExtension);
                 LogModel.CreateLog(

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static EasySave.Models.TaskModel;
 
 namespace EasySave.ViewModels
 {
@@ -14,11 +15,14 @@ namespace EasySave.ViewModels
         public ModifyView ModifyView { get; set; }
         public HelpView HelpView { get; set; }
         public TaskModel TaskModel { get; set; }
+        public ConfigModel ConfigModel { get; set; }
 
         public ModifyViewModel(string[] args)
         {
-            ModifyView = new ModifyView();
-            HelpView = new HelpView();
+            ConfigModel = new ConfigModel();
+
+            ModifyView = new ModifyView(ConfigModel.Config.Language);
+            HelpView = new HelpView(ConfigModel.Config.Language);
 
             if (!(args.Length == 3))
             {
@@ -44,24 +48,59 @@ namespace EasySave.ViewModels
         public void ModifyName(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], null, null, null, args[2]);
-            ModifyView.Message = result;
+
+            try
+            {
+                string[] result = TaskModel.UpdateTask(false, args[0], null, null, null, args[2]);
+                ModifyView.SuccessfulModify(result);
+            }
+            catch (TaskNameNotFoundException)
+            {
+                ModifyView.ErrorTaskNameNotFound();
+            }
+            catch (DuplicateTaskNameException)
+            {
+                ModifyView.ErrorTaskNameNotFound();
+            }
+
             ModifyView.DisplayMessage();
         }
 
         public void ModifySource(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], args[2], null, null, null);
-            ModifyView.Message = result;
+
+            try
+            {
+                string[] result = TaskModel.UpdateTask(false, args[0], args[2], null, null, null);
+                ModifyView.SuccessfulModify(result);
+            }
+            catch (TaskNameNotFoundException)
+            {
+                ModifyView.ErrorTaskNameNotFound();
+            }
+            catch (SourcePathNotFoundException)
+            {
+                ModifyView.ErrorSourcePathNotFound();
+            }
+
             ModifyView.DisplayMessage();
         }
 
         public void ModifyDest(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], null, args[2], null, null);
-            ModifyView.Message = result;
+
+            try
+            {
+                string[] result = TaskModel.UpdateTask(false, args[0], null, args[2], null, null);
+                ModifyView.SuccessfulModify(result);
+            }
+            catch (SourcePathNotFoundException)
+            {
+                ModifyView.ErrorSourcePathNotFound();
+            }
+
             ModifyView.DisplayMessage();
         }
 
@@ -71,12 +110,19 @@ namespace EasySave.ViewModels
 
             if (Enum.TryParse<BackupType>(args[2], true, out BackupType backupType))
             {
-                string result = TaskModel.UpdateTask(false, args[0], null, null, backupType, null);
-                ModifyView.Message = result;
+                try
+                {
+                    string[] result = TaskModel.UpdateTask(false, args[0], null, null, backupType, null);
+                    ModifyView.SuccessfulModify(result);
+                }
+                catch (TaskNameNotFoundException)
+                {
+                    ModifyView.ErrorTaskNameNotFound();
+                }
             }
             else
             {
-                ModifyView.Message = "This is a wrong backup type";
+                ModifyView.ErrorBackupType();
             }
 
             ModifyView.DisplayMessage();

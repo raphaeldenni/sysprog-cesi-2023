@@ -9,6 +9,25 @@ public class TaskModel : TaskEntity
     private static string StateFileName => "state.json"; // Set the state file name
     public List<TaskEntity>? TasksList { get; private set; } // A list that contains all the tasks from the state file
     
+    public class SourcePathNotFoundException : Exception{
+}
+
+    public class DuplicateTaskNameException : Exception
+    {
+    }
+
+    public class TaskNotFoundException : Exception
+    {
+    }
+
+    public class TooMuchTasksException : Exception
+    {
+    }
+
+    public class TaskNameNotFoundException : Exception
+    {
+    }
+
     // Constructors
     public TaskModel()
     {
@@ -40,23 +59,23 @@ public class TaskModel : TaskEntity
     }
     
     //// Task methods
-    public string UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, BackupType? taskType, string? newTaskName)
+    public string[] UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, BackupType? taskType, string? newTaskName)
     {
         // If the source path is not null, check if it exists
-        if (taskSourcePath != null && !Directory.Exists(taskSourcePath)) return $"Source path {taskSourcePath} not found.";
+        if (taskSourcePath != null && !Directory.Exists(taskSourcePath)) throw new SourcePathNotFoundException();
 
         // Verify the correspondency between new task and name 
         var sameName = TasksList.Any(task => task.Name == taskName);
 
-        if (isNew && sameName) return "You can't create two tasks with the same name.";
-        if (!isNew && !sameName) return "You can't modify a task that doesn't exist.";
+        if (isNew && sameName) throw new DuplicateTaskNameException();
+        if (!isNew && !sameName) throw new TaskNotFoundException();
 
         // Retrieve task ID
         var searchValue = isNew ? null : taskName;
 
         Id = TasksList.FindIndex(task => task.Name == searchValue);
 
-        if (Id >= 5) return "You can't create more than 5 tasks.";
+        if (Id >= 5) throw new TooMuchTasksException();
 
         // Update the task
         Name = newTaskName ?? taskName;
@@ -65,8 +84,8 @@ public class TaskModel : TaskEntity
         Type = taskType;
         
         UpdateTasksList();
-        
-        return $"Task {Id + 1} named {Name} has been {(isNew ? "created" : "modified")}.";
+
+        return new string[] { (Id + 1).ToString(), Name };
     }
     
     public string DeleteTask(string taskName)
@@ -75,13 +94,13 @@ public class TaskModel : TaskEntity
 
         if (taskId == -1)
         {
-            return $"Task named {taskName} not found.";
+            throw new TaskNameNotFoundException();
         }
 
         TasksList[taskId] = new TaskEntity { Id = taskId };
         UpdateStateFile(TasksList);
 
-        return $"Task named {taskName} has been deleted.";
+        return taskName;
     }
     
     public void UpdateTaskState

@@ -32,12 +32,12 @@ public class CopyModel
     {
         if (!Directory.Exists(SourcePath))
         {
-            throw new DirectoryNotFoundException("Source directory does not exist");
+            throw new DirectoryNotFoundException();
         }
 
         if (!Directory.Exists(DestPath))
         {
-            throw new DirectoryNotFoundException("Destination directory does not exist");
+            throw new DirectoryNotFoundException();
         }
 
         BuildDirectoryStructure(SourcePath, SourcePath);

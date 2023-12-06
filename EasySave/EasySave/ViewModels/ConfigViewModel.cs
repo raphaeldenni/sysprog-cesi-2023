@@ -14,12 +14,14 @@ public class ConfigViewModel
 
     public ConfigViewModel(string[] args)
     {
-        ConfigView = new ConfigView();
-        HelpView = new HelpView();
+        ConfigModel = new ConfigModel();
+
+        ConfigView = new ConfigView(ConfigModel.Config.Language);
+        HelpView = new HelpView(ConfigModel.Config.Language);
 
         if (!(args.Length == 2))
         {
-            HelpView.DisplayCreate();
+            HelpView.DisplayConfig();
             HelpView.DisplayMessage();
         }
         else
@@ -38,32 +40,35 @@ public class ConfigViewModel
             object[] parameters = { args[1] };
             method.Invoke(this, parameters);
         }
+        else
+        {
+            HelpView.DisplayConfig();
+            HelpView.DisplayMessage();
+        }
     }
 
     public void UpdateLogextension(string logExtension)
     { 
-        ConfigModel = new ConfigModel();
         if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
         {
             ConfigModel.UpdateConfigFile(logExtensionOut, null);
         }
         else 
         {
-            ConfigView.Message = "Mauvaise extension json";
+            ConfigView.ErrorLogExtension();
             ConfigView.DisplayMessage();
         }
     }
 
     public void UpdateLang(string lang)
     {
-        ConfigModel = new ConfigModel();
         if (Enum.TryParse<LangType>(lang, out LangType langOut))
         {
             ConfigModel.UpdateConfigFile(null, langOut);
         }
         else
         {
-            ConfigView.Message = "Mauvaise langue";
+            ConfigView.ErrorLang();
             ConfigView.DisplayMessage();
         }
     }
