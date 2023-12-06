@@ -40,7 +40,7 @@ public class TaskModel : TaskEntity
     }
     
     //// Task methods
-    public string UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, string? taskType, string? newTaskName)
+    public string UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, BackupType? taskType, string? newTaskName)
     {
         // If the source path is not null, check if it exists
         if (taskSourcePath != null && !Directory.Exists(taskSourcePath)) return $"Source path {taskSourcePath} not found.";
@@ -57,11 +57,6 @@ public class TaskModel : TaskEntity
         Id = TasksList.FindIndex(task => task.Name == searchValue);
 
         if (Id >= 5) return "You can't create more than 5 tasks.";
-
-        if (!Enum.TryParse<BackupType>(taskType, true, out BackupType backupType) && taskType != null)
-        {
-            return $"Invalid task type: {taskType}. Please provide a valid task type. (Complete / Differential)";
-        }
 
         // Update the task
         Name = newTaskName ?? taskName;
@@ -92,7 +87,7 @@ public class TaskModel : TaskEntity
     public void UpdateTaskState
     (
         string taskName, 
-        string taskState, 
+        StateType taskState, 
         int? taskFilesNumber, 
         float? taskFilesSize, 
         int? taskLeftFilesNumber, 

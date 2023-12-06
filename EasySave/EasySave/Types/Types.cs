@@ -15,4 +15,9 @@ namespace EasySave.Types
         En,
         Fr,
     }
+    public enum StateType
+    {
+        Active,
+        Inactive,
+    }
 }

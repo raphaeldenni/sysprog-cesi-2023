@@ -1,3 +1,5 @@
+using EasySave.Types;
+
 namespace EasySave.Models;
 
 public class TaskEntity
@@ -9,11 +11,11 @@ public class TaskEntity
     public string? Name { get; set; }
     public string? SourcePath { get; set; }
     public string? DestPath { get; set; }
-    public string? Type { get; set; }
+    public BackupType? Type { get; set; }
     public string? Timestamp { get; set; }
     
     //// State
-    public string? State { get; set; }
+    public StateType? State { get; set; }
     public int? FilesNumber { get; set; }
     public float? FilesSize { get; set; }
     public int? LeftFilesNumber { get; set; }

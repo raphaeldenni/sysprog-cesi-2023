@@ -112,11 +112,11 @@ namespace EasySave.ViewModels
             else
             {
                 // Get task info
-                var taskType = Enum.Parse<BackupType>(task.Type);
-                var taskState = "Active";
+                var taskType = task.Type;
+                StateType taskState = StateType.Active;
 
                 // Set copy model
-                CopyModel = new CopyModel(task.SourcePath, task.DestPath, taskType);
+                CopyModel = new CopyModel(task.SourcePath, task.DestPath, (BackupType)taskType);
                 var filesCount = CopyModel.LeftFilesNumber;
                 var filesSize = CopyModel.LeftFilesSize;
 
@@ -140,7 +140,7 @@ namespace EasySave.ViewModels
                 // Start copy
                 CopyModel.CopyFiles();
 
-                taskState = "Finished";
+                taskState = StateType.Inactive;
 
                 // Update task state
                 TaskModel.UpdateTaskState(
@@ -168,7 +168,7 @@ namespace EasySave.ViewModels
             {
                 TaskModel.UpdateTaskState(
                     TaskModel.Name,
-                    TaskModel.State,
+                    (StateType)TaskModel.State,
                     TaskModel.LeftFilesNumber,
                     TaskModel.LeftFilesSize,
                     CopyModel.LeftFilesNumber,

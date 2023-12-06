@@ -1,4 +1,5 @@
 ﻿using EasySave.Models;
+using EasySave.Types;
 using EasySave.Views;
 using System;
 using System.Collections.Generic;
@@ -67,8 +68,17 @@ namespace EasySave.ViewModels
         public void ModifyType(string[] args)
         {
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(false, args[0], null, null, args[2], null);
-            ModifyView.Message = result;
+
+            if (Enum.TryParse<BackupType>(args[2], true, out BackupType backupType))
+            {
+                string result = TaskModel.UpdateTask(false, args[0], null, null, backupType, null);
+                ModifyView.Message = result;
+            }
+            else
+            {
+                ModifyView.Message = "This is a wrong backup type";
+            }
+
             ModifyView.DisplayMessage();
         }
 
