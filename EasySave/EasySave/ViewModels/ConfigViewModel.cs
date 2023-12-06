@@ -47,9 +47,11 @@ public class ConfigViewModel
         {
             ConfigModel.UpdateConfigFile(logExtensionOut, null);
         }
-
-        ConfigView.Message = "Mauvaise extension json";
-        ConfigView.DisplayMessage();
+        else 
+        {
+            ConfigView.Message = "Mauvaise extension json";
+            ConfigView.DisplayMessage();
+        }
     }
 
     public void UpdateLang(string lang)
@@ -59,8 +61,10 @@ public class ConfigViewModel
         {
             ConfigModel.UpdateConfigFile(null, langOut);
         }
-
-        ConfigView.Message = "Mauvaise langue";
-        ConfigView.DisplayMessage();
+        else
+        {
+            ConfigView.Message = "Mauvaise langue";
+            ConfigView.DisplayMessage();
+        }
     }
 }

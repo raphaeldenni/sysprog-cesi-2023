@@ -23,6 +23,7 @@ namespace EasySave.ViewModels
         public LogModel LogModel { get; set; }
         public TaskModel TaskModel { get; set; }
         public CopyModel CopyModel { get; set; }
+        public ConfigModel ConfigModel { get; set; }
 
         // Constructor
         public ExecuteViewModel(string[] args)
@@ -184,7 +185,9 @@ namespace EasySave.ViewModels
 
                 int pourcentage = (int)((initializeLeftFilesSize - TaskModel.LeftFilesSize ?? 0) / initializeLeftFilesSize * 100);
 
-                LogModel = new LogModel();
+                ConfigModel = new ConfigModel();
+
+                LogModel = new LogModel(ConfigModel.Config.LogExtension);
                 LogModel.CreateLog(
                     TaskModel.Name,
                     data[0],
