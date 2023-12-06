@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasySave.Types;
+using System;
 using System.IO;
 using System.Text.Json;
 
@@ -6,8 +7,8 @@ namespace EasySave.Models
 {
     public class ConfigEntity 
     {
-        public string LogExtension { get; set; }
-        public string Language { get; set; }
+        public LogType LogExtension { get; set; }
+        public LangType Language { get; set; }
     }
 
     public class ConfigModel
@@ -29,8 +30,8 @@ namespace EasySave.Models
         {
             ConfigEntity defaultConfig = new ConfigEntity
             {
-                LogExtension = ".json",
-                Language = "en"
+                LogExtension = LogType.Json,
+                Language = LangType.En,
             };
 
             string defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
@@ -43,16 +44,16 @@ namespace EasySave.Models
             Config = JsonSerializer.Deserialize<ConfigEntity>(configJson);
         }
 
-        public void UpdateConfigFile(string? logExtension, string? lang)
+        public void UpdateConfigFile(LogType? logExtension, LangType? lang)
         {
             if (logExtension != null)
             {
-                Config.LogExtension = logExtension;
+                Config.LogExtension = (LogType)logExtension;
             }
 
             if (lang != null)
             {
-                Config.Language = lang;
+                Config.Language = (LangType)lang;
             }
 
             string updatedConfigJson = JsonSerializer.Serialize(Config);

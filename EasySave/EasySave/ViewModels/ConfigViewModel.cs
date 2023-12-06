@@ -1,12 +1,6 @@
 ﻿using EasySave.Models;
+using EasySave.Types;
 using EasySave.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 
 namespace EasySave.ViewModels;
 
@@ -49,13 +43,24 @@ public class ConfigViewModel
     public void UpdateLogextension(string logExtension)
     { 
         ConfigModel = new ConfigModel();
-        logExtension = "." + logExtension.ToLower();
-        ConfigModel.UpdateConfigFile(logExtension, null);
+        if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
+        {
+            ConfigModel.UpdateConfigFile(logExtensionOut, null);
+        }
+
+        ConfigView.Message = "Mauvaise extension json";
+        ConfigView.DisplayMessage();
     }
 
     public void UpdateLang(string lang)
     {
         ConfigModel = new ConfigModel();
-        ConfigModel.UpdateConfigFile(null, lang.ToLower());
+        if (Enum.TryParse<LangType>(lang, out LangType langOut))
+        {
+            ConfigModel.UpdateConfigFile(null, langOut);
+        }
+
+        ConfigView.Message = "Mauvaise langue";
+        ConfigView.DisplayMessage();
     }
 }
