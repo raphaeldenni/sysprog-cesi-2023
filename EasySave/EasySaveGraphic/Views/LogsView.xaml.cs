@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,11 +17,11 @@ using System.Windows.Shapes;
 namespace EasySaveGraphic.Views
 {
     /// <summary>
-    /// Logique d'interaction pour HomeView.xaml
+    /// Logique d'interaction pour LogsView.xaml
     /// </summary>
-    public partial class HomeView : Page
+    public partial class LogsView : Page
     {
-        public HomeView()
+        public LogsView()
         {
             InitializeComponent();
         }

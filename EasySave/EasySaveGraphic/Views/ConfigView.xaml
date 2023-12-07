@@ -1,0 +1,27 @@
+﻿<Page x:Class="EasySaveGraphic.Views.ConfigView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasySaveGraphic.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ConfigView">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Label Content="Config" HorizontalAlignment="Center" VerticalAlignment="Center" Height="72" Width="184" FontSize="48"/>
+        <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="LangComboBox" HorizontalAlignment="Left" Margin="545,173,0,0" VerticalAlignment="Top" Width="120" FontFamily="Calibri"/>
+        <ComboBox x:Name="LogComboBox" HorizontalAlignment="Left" Margin="148,173,0,0" VerticalAlignment="Top" Width="120" FontFamily="Calibri"/>
+
+        <Button x:Name="apply" Content="Apply" HorizontalAlignment="Left" Margin="661,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.138,0.207" Click="apply_Click"/>
+
+    </Grid>
+</Page>
