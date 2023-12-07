@@ -1,10 +1,6 @@
 using EasySave.Models;
+using EasySave.Types;
 using EasySave.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasySave.ViewModels
 {
@@ -12,10 +8,14 @@ namespace EasySave.ViewModels
     {
         public ListView ListView { get; set; }
         public TaskModel TaskModel { get; set; }
+        public ConfigModel ConfigModel { get; set; }
 
         public ListViewModel(string[] args)
         {
-            ListView = new ListView();
+            ConfigModel = new ConfigModel();
+
+            ListView = new ListView(ConfigModel.Config.Language);
+            
             TaskModel = new TaskModel();
             CreateTaskList(); // Display the task list upon instance creation.
         }
@@ -27,7 +27,7 @@ namespace EasySave.ViewModels
 
             if (tasks == null || allNamesEmpty)
             {
-                ListView.Message = "There are no existing tasks";
+                ListView.ErrorNoTask();
                 ListView.DisplayMessage();
             }
             else
@@ -37,8 +37,7 @@ namespace EasySave.ViewModels
 
                 foreach (var task in tasks)
                 {
-                    string message = $"ID: {task.Id}, Name: {task.Name}, State: {task.State}, Type: {task.Type}";
-                    ListView.Message = message;
+                    ListView.DisplayTask((int)task.Id, task.Name, task.State ?? StateType.Inactive, (BackupType)task.Type);
                     ListView.DisplayMessage();
                 }
             }
