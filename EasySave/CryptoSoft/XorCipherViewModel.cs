@@ -3,10 +3,12 @@ namespace CryptoSoft;
 public class XorCipherViewModel
 {
     // View and Model
+    private ConfigModel ConfigModel { get; }
     private XorCipherModel XorCipherModel { get; }
     private XorCipherView XorCipherView { get; }
     
     // Properties
+    private string Lang { get; }
     private string FilePath { get; }
     private string Key { get; }
     
@@ -16,14 +18,16 @@ public class XorCipherViewModel
     /// XorCipherViewModel constructor
     /// </summary>
     /// <param name="filePath"></param>
-    /// <param name="key"></param>
-    public XorCipherViewModel(string filePath, string key)
+    public XorCipherViewModel(string filePath)
     {
+        ConfigModel = new ConfigModel();
+        
+        Lang = ConfigModel.Config.Lang.ToString().ToLower();
         FilePath = filePath;
-        Key = key;
+        Key = ConfigModel.Config.Key;
         
         XorCipherModel = new XorCipherModel(FilePath, Key);
-        XorCipherView = new XorCipherView("en");
+        XorCipherView = new XorCipherView(Lang);
 
         try
         {
