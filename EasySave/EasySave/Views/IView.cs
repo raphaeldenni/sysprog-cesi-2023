@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EasySave.Types;
 
 namespace EasySave.Views;
 
@@ -11,6 +7,7 @@ namespace EasySave.Views;
     
         // Properties
         string Message { get; set; }
+        LangType Lang { get; set; }
 
         // Methods
         void DisplayMessage();
