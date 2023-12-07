@@ -44,6 +44,11 @@ List all tasks
 
 Usage : `easysave.exe list`
 
+### Configuration command
+Change configuration of the application
+
+Usage : `easysave.exe config [lang|logExtension] <string>`
+
 ### Help command
 Display help
 
