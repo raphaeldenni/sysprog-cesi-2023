@@ -1,10 +1,8 @@
 ﻿using EasySave.Models;
+using EasySave.Types;
 using EasySave.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using static EasySave.Models.TaskModel;
 
 namespace EasySave.ViewModels
 {
@@ -16,10 +14,14 @@ namespace EasySave.ViewModels
 
         public TaskModel TaskModel { get; set; }
 
+        public ConfigModel ConfigModel { get; set; }
+
         public CreateViewModel(string[] args)
         {
-            CreateView = new CreateView();
-            HelpView = new HelpView();
+            ConfigModel = new ConfigModel();
+
+            CreateView = new CreateView(ConfigModel.Config.Language);
+            HelpView = new HelpView(ConfigModel.Config.Language);
 
             if (!(args.Length == 4))
             {
@@ -36,8 +38,34 @@ namespace EasySave.ViewModels
         {
 
             TaskModel = new TaskModel();
-            string result = TaskModel.UpdateTask(true, args[0], args[1], args[2], args[3], null);
-            CreateView.Message = result;
+
+            if (Enum.TryParse<BackupType>(args[3], true, out BackupType backupType))
+            {
+                try
+                {
+                    string[] result = TaskModel.UpdateTask(true, args[0], args[1], args[2], backupType, null);
+                    CreateView.SuccessfulCreation(result);
+                }
+                catch (SourcePathNotFoundException)
+                {
+                    CreateView.ErrorSourcePathNotFound();
+                }
+                catch (DuplicateTaskNameException)
+                {
+                    CreateView.ErrorDuplicateTaskName();
+                }
+                catch (TooMuchTasksException)
+                {
+                    CreateView.ErrorTooMuchTasks();
+                }
+            } 
+            else 
+            {
+                string validBackupTypes = string.Join("|", Enum.GetNames(typeof(BackupType)));
+                CreateView.ErrorBackupType(validBackupTypes);
+            }
+
+
             CreateView.DisplayMessage();
         }
     }

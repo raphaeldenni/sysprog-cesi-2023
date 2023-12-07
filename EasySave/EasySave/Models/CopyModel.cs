@@ -32,12 +32,12 @@ public class CopyModel
     {
         if (!Directory.Exists(SourcePath))
         {
-            throw new DirectoryNotFoundException("Source directory does not exist");
+            throw new DirectoryNotFoundException();
         }
 
         if (!Directory.Exists(DestPath))
         {
-            throw new DirectoryNotFoundException("Destination directory does not exist");
+            throw new DirectoryNotFoundException();
         }
 
         BuildDirectoryStructure(SourcePath, SourcePath);
@@ -94,6 +94,7 @@ public class CopyModel
                 string destFilePath = Path.Combine(destDirectory, fileName);
                 
                 var stopwatch = new Stopwatch();
+                stopwatch.Start();
                 File.Copy(sourceFilePath, destFilePath, true);
                 stopwatch.Stop();
                 
