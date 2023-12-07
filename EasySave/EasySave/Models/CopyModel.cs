@@ -94,6 +94,7 @@ public class CopyModel
                 string destFilePath = Path.Combine(destDirectory, fileName);
                 
                 var stopwatch = new Stopwatch();
+                stopwatch.Start();
                 File.Copy(sourceFilePath, destFilePath, true);
                 stopwatch.Stop();
                 

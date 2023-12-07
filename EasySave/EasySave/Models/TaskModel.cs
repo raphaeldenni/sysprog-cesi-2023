@@ -31,8 +31,9 @@ public class TaskModel : TaskEntity
     private static string StateFileName => "state.json"; // Set the state file name
     public List<TaskEntity>? TasksList { get; private set; } // A list that contains all the tasks from the state file
     
-    public class SourcePathNotFoundException : Exception{
-}
+    public class SourcePathNotFoundException : Exception
+    {
+    }
 
     public class DuplicateTaskNameException : Exception
     {

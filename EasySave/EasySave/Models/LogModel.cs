@@ -1,5 +1,6 @@
 using EasySave.Types;
 using System.Text.Json;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace EasySave.Models
@@ -106,30 +107,69 @@ namespace EasySave.Models
 
                 if (LogFileExists(LogFileName))
                 {
-                    using (StreamWriter writer = File.AppendText(LogFileName))
+                    var logEntry = new LogData
                     {
-                        var logEntry = new LogData
-                        {
-                            Timestamp = DateTime.Now,
-                            TaskName = TaskName,
-                            FileSourcePath = FileSourcePath,
-                            FileDestPath = FileDestPath,
-                            FileSize = FileSize,
-                            FileTransferTime = FileTransferTime
-                        };
+                        Timestamp = DateTime.Now,
+                        TaskName = TaskName,
+                        FileSourcePath = FileSourcePath,
+                        FileDestPath = FileDestPath,
+                        FileSize = FileSize,
+                        FileTransferTime = FileTransferTime
+                    };
 
-                        if (LogType == LogType.Json)
+                    if (LogType == LogType.Json)
+                    {
+                        using (StreamWriter writer = File.AppendText(LogFileName))
                         {
                             string jsonData = JsonSerializer.Serialize(logEntry, new JsonSerializerOptions { WriteIndented = true });
                             writer.WriteLine(jsonData);
                         }
-                        else if (LogType == LogType.Xml)
-                        {
-                            var xmlSerializer = new XmlSerializer(typeof(LogData));
-                            xmlSerializer.Serialize(writer, logEntry);
-                        }
                     }
+                    else if (LogType == LogType.Xml)
+                    {
+                        // Load existing XML document
+                        XmlDocument xmlDoc = new XmlDocument();
+                        xmlDoc.Load(LogFileName);
 
+                        // Create a new log entry node
+                        XmlNode logEntryNode = xmlDoc.CreateElement("LogEntry");
+
+                        // Add timestamp node
+                        XmlNode timestampNode = xmlDoc.CreateElement("Timestamp");
+                        timestampNode.InnerText = logEntry.Timestamp.ToString();
+                        logEntryNode.AppendChild(timestampNode);
+
+                        // Add task name node
+                        XmlNode taskNameNode = xmlDoc.CreateElement("TaskName");
+                        taskNameNode.InnerText = logEntry.TaskName;
+                        logEntryNode.AppendChild(taskNameNode);
+
+                        // Add file source path node
+                        XmlNode fileSourcePathNode = xmlDoc.CreateElement("FileSourcePath");
+                        fileSourcePathNode.InnerText = logEntry.FileSourcePath;
+                        logEntryNode.AppendChild(fileSourcePathNode);
+
+                        // Add file dest path node
+                        XmlNode fileDestPathNode = xmlDoc.CreateElement("FileDestPath");
+                        fileDestPathNode.InnerText = logEntry.FileDestPath;
+                        logEntryNode.AppendChild(fileDestPathNode);
+
+                        // Add file size node
+                        XmlNode fileSizeNode = xmlDoc.CreateElement("FileSize");
+                        fileSizeNode.InnerText = logEntry.FileSize.ToString();
+                        logEntryNode.AppendChild(fileSizeNode);
+
+                        // Add file transfer time node
+                        XmlNode fileTransferTimeNode = xmlDoc.CreateElement("FileTransferTime");
+                        fileTransferTimeNode.InnerText = logEntry.FileTransferTime.ToString();
+                        logEntryNode.AppendChild(fileTransferTimeNode);
+
+                        // Append the new log entry node to the root
+                        xmlDoc.DocumentElement.AppendChild(logEntryNode);
+
+                        // Save the modified XML document
+                        xmlDoc.Save(LogFileName);
+                    }
                 }
                 else
                 {

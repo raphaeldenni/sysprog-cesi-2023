@@ -62,13 +62,15 @@ public class ConfigView : IView
 
     public void SuccessfulLogExtension(LogType logExtension)
     {
+        string logExtensionLowercase = logExtension.ToString().ToLower();
+
         switch (Lang)
         {
             case LangType.En:
-                Message = $"Successful: Log file extension is now . {logExtension}.";
+                Message = $"Successful: Log file extension is now .{logExtensionLowercase}";
                 break;
             case LangType.Fr:
-                Message = $"Réussie : L'extension des fichiers log est maintenant .{logExtension}.";
+                Message = $"Réussie : L'extension des fichiers log est maintenant .{logExtensionLowercase}";
                 break;
         }
     }
