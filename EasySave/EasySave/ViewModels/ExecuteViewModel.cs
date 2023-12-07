@@ -4,7 +4,7 @@ using EasySave.Types;
 
 namespace EasySave.ViewModels
 {
-    public class ExecuteViewModel
+    internal class ExecuteViewModel
     {
         // Properties
         private float initializeLeftFilesSize = 0;

@@ -3,7 +3,7 @@
 namespace EasySave.Views;
 
 
-public class ConfigView : IView
+internal class ConfigView : IView
 {
     // Properties from IView
     public string? Message { get; set; }

@@ -5,7 +5,7 @@ using static EasySave.Models.TaskModel;
 
 namespace EasySave.ViewModels
 {
-    public class DeleteViewModel
+    internal class DeleteViewModel
     {
         public DeleteView DeleteView { get; set; }
         public TaskModel TaskModel { get; set; }

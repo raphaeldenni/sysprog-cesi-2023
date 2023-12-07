@@ -3,7 +3,7 @@
 namespace EasySave.Views;
 
 
-    public class CreateView : IView
+    internal class CreateView : IView
     {
         // Properties from IView
         public string? Message { get; set; }
