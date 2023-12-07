@@ -3,7 +3,7 @@ namespace CryptoSoft;
 public class XorCipherModel
 {
     // Properties
-    private string SourcePath { get; set; }
+    private string FilePath { get; set; }
     private string FileContent { get; set; }
     private string Key { get; set; }
     
@@ -12,17 +12,12 @@ public class XorCipherModel
     /// <summary>
     /// Constructor for the XorCipherModel class.
     /// </summary>
-    /// <param name="sourcePath"></param>
+    /// <param name="filePath"></param>
     /// <param name="key"></param>
-    public XorCipherModel(string sourcePath, string key)
+    public XorCipherModel(string filePath, string key)
     {
-        if (sourcePath == null || key == null)
-        {
-            throw new ArgumentNullException();
-        }
-        
-        SourcePath = sourcePath;
-        FileContent = File.ReadAllText(sourcePath);
+        FilePath = filePath;
+        FileContent = File.ReadAllText(filePath);
         Key = key;
     }
     
@@ -45,6 +40,6 @@ public class XorCipherModel
             keyIndex = (keyIndex + 1) % Key.Length;
         }
         
-        File.WriteAllText(SourcePath, encryptedFileContent);
+        File.WriteAllText(FilePath, encryptedFileContent);
     }
 }

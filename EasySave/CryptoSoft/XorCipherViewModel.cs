@@ -7,7 +7,7 @@ public class XorCipherViewModel
     private XorCipherView XorCipherView { get; set; }
     
     // Properties
-    private string SourcePath { get; set; }
+    private string File { get; set; }
     private string Key { get; set; }
     
     // Constructor
@@ -15,26 +15,41 @@ public class XorCipherViewModel
     /// <summary>
     /// XorCipherViewModel constructor
     /// </summary>
-    /// <param name="sourcePath"></param>
+    /// <param name="file"></param>
     /// <param name="key"></param>
-    public XorCipherViewModel(string sourcePath, string key)
+    public XorCipherViewModel(string file, string key)
     {
-        XorCipherModel = new XorCipherModel(sourcePath, key);
-        XorCipherView = new XorCipherView();
-        
-        SourcePath = sourcePath;
+        XorCipherModel = new XorCipherModel(file, key);
+        XorCipherView = new XorCipherView("en");
+         
+        File = file;
         Key = key;
         
         // Check if the file(s) located at the given path exist(s) and if the key is empty or not.
-        if (Key.Length == 0 && (!File.Exists(SourcePath) || !Directory.Exists(SourcePath)))
+        if (!System.IO.File.Exists(File))
         {
-            XorCipherView.Message = $"File(s) located at {SourcePath} not found and/or key is empty";
+            XorCipherView.SetMessage("FileNotFound", File);
+            XorCipherView.DisplayMessage();
+            return;
+        }
+        
+        if (System.IO.File.ReadAllText(File).Length == 0)
+        {
+            XorCipherView.SetMessage("FileIsEmpty", File);
+            XorCipherView.DisplayMessage();
+            return;
+        }
+        
+        if (Key.Length == 0)
+        {
+            XorCipherView.SetMessage("KeyIsEmpty", File);
+            XorCipherView.DisplayMessage();
             return;
         }
         
         XorCipherModel.XorCipher();
         
-        XorCipherView.Message = $"File located at {SourcePath} has been encrypted";
+        XorCipherView.SetMessage("FileEncrypted", File);
         XorCipherView.DisplayMessage();
     }
 }
