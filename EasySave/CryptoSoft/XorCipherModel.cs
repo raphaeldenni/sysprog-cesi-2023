@@ -3,9 +3,18 @@ namespace CryptoSoft;
 public class XorCipherModel
 {
     // Properties
-    private string FilePath { get; set; }
-    private string FileContent { get; set; }
-    private string Key { get; set; }
+    private string FilePath { get; }
+    private string FileContent { get; }
+    private string Key { get; }
+    
+    // Exceptions
+    public class FileIsInvalid : Exception
+    {
+    }
+    
+    public class KeyIsInvalid : Exception
+    {
+    }
     
     // Constructor
     
@@ -27,9 +36,20 @@ public class XorCipherModel
     /// Encrypts/Decrypts the file content using the XOR cipher algorithm with the given key.
     /// </summary>
     /// <returns>String that contains the encrypted file content.</returns>
-    public void XorCipher()
+    public void EncryptFile()
     {
-        var encryptedFileContent = String.Empty;
+        // Check if the file exists and if it is empty. Also check if the key is valid.
+        if (!File.Exists(FilePath) | FileContent.Length == 0)
+        {
+            throw new FileIsInvalid();
+        }
+
+        if (Key.Length > 32 | Key.Length == 0)
+        {
+            throw new KeyIsInvalid();
+        }
+
+        var encryptedFileContent = string.Empty;
         var keyIndex = 0;
         
         // XOR each character of the file content with the corresponding character of the key.

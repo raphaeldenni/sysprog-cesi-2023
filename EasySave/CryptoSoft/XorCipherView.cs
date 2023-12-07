@@ -3,8 +3,8 @@ namespace CryptoSoft;
 public class XorCipherView
 {
     // Properties
-    public string? Message { get; set; }
-    public string Lang { get; }
+    private string? Message { get; set; }
+    private string Lang { get; }
 
     private Dictionary<string, Dictionary<string, string>> Messages { get; } 
     
@@ -24,19 +24,17 @@ public class XorCipherView
             {
                 "en", new Dictionary<string, string>()
                 {
-                    { "FileNotFound", "File(s) located at {0} not found" },
-                    { "FileIsEmpty", "File located at {0} is empty" },
-                    { "KeyIsEmpty", "Key is empty" },
-                    { "FileEncrypted", "File located at {0} has been encrypted" }
+                    { "FileIsInvalid", "Error: File located at {0} is invalid (empty or non-existent)" },
+                    { "KeyIsInvalid", "Error: Key is empty or too long" },
+                    { "FileEncrypted", "Success: File located at {0} has been encrypted" }
                 }
             },
             {
                 "fr", new Dictionary<string, string>()
                 {
-                    { "FileNotFound", "Fichier(s) situé(s) à {0} introuvable(s)" },
-                    { "FileIsEmpty", "Fichier situé à {0} est vide" },
-                    { "KeyIsEmpty", "Clé est vide" },
-                    { "FileEncrypted", "Fichier situé à {0} a été chiffré" }
+                    { "FileIsInvalid", "Erreur: Le fichier situé à {0} est invalide (vide ou inexistant)" },
+                    { "KeyIsInvalid", "Erreur: La clé est vide ou trop longue" },
+                    { "FileEncrypted", "Succès: Le fichier situé à {0} a été chiffré" }
                 }
             }
         };

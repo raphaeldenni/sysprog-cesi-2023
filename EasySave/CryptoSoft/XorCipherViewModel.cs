@@ -19,35 +19,22 @@ public class XorCipherViewModel
     /// <param name="key"></param>
     public XorCipherViewModel(string filePath, string key)
     {
-        XorCipherModel = new XorCipherModel(filePath, key);
-        XorCipherView = new XorCipherView("en");
-         
         FilePath = filePath;
         Key = key;
         
-        // Check if the file(s) located at the given path exist(s) and if the key is empty or not.
-        if (!System.IO.File.Exists(FilePath))
+        XorCipherModel = new XorCipherModel(FilePath, Key);
+        XorCipherView = new XorCipherView("en");
+
+        try
         {
-            XorCipherView.SetMessage("FileNotFound", FilePath);
-            XorCipherView.DisplayMessage();
-            return;
+            XorCipherModel.EncryptFile();
         }
-        
-        if (System.IO.File.ReadAllText(FilePath).Length == 0)
+        catch (Exception e)
         {
-            XorCipherView.SetMessage("FileIsEmpty", FilePath);
+            XorCipherView.SetMessage(e.ToString(), FilePath);
             XorCipherView.DisplayMessage();
-            return;
+            throw;
         }
-        
-        if (Key.Length == 0)
-        {
-            XorCipherView.SetMessage("KeyIsEmpty", FilePath);
-            XorCipherView.DisplayMessage();
-            return;
-        }
-        
-        XorCipherModel.XorCipher();
         
         XorCipherView.SetMessage("FileEncrypted", FilePath);
         XorCipherView.DisplayMessage();
