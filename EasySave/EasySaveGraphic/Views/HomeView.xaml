@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasySaveGraphic"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Title="MainWindow" Height="600" Width="1080">
+    <Grid HorizontalAlignment="Left" Width="200">
+        <StackPanel>
+            <Grid Height="150" Background="White" VerticalAlignment="Top">
+                <!-- Add content for the inner grid here -->
+            </Grid>
+        </StackPanel>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top">
+            <!-- Add content for the button here -->
+        </Button>
+        <Grid>
+            <Rectangle Width="30" Height="5" Margin="0 0 0 0"  Fill="Black"/>
+            <Rectangle Width="30" Height="5" Margin="0 15 0 0" Fill="Black"/>
+            <Rectangle Width="30" Height="5" Margin="0 20 0 0" Fill="Black"/>
+        </Grid>
     </Grid>
 </Window>
