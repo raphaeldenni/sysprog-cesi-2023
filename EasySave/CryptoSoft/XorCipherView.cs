@@ -9,10 +9,16 @@ public class XorCipherView
     private Dictionary<string, Dictionary<string, string>> Messages { get; } 
     
     // Constructor
+    
+    /// <summary>
+    /// XorCipherView constructor
+    /// </summary>
+    /// <param name="lang"></param>
     public XorCipherView(string lang)
     {
         Lang = lang;
         
+        // Dictionary containing all the messages in all the languages
         Messages = new Dictionary<string, Dictionary<string, string>>()
         {
             {
@@ -37,11 +43,20 @@ public class XorCipherView
     }
 
     // Methods
+    
+    /// <summary>
+    /// Display a message with the given Message property
+    /// </summary>
     public void DisplayMessage()
     {
         Console.WriteLine(Message);
     }
     
+    /// <summary>
+    /// Set the message to display according to the language and the message type
+    /// </summary>
+    /// <param name="messageType"></param>
+    /// <param name="filePath"></param>
     public void SetMessage(string messageType, string filePath)
     {
         Message = string.Format(Messages[Lang][messageType], filePath);

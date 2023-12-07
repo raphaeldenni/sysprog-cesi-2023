@@ -3,53 +3,53 @@ namespace CryptoSoft;
 public class XorCipherViewModel
 {
     // View and Model
-    private XorCipherModel XorCipherModel { get; set; }
-    private XorCipherView XorCipherView { get; set; }
+    private XorCipherModel XorCipherModel { get; }
+    private XorCipherView XorCipherView { get; }
     
     // Properties
-    private string File { get; set; }
-    private string Key { get; set; }
+    private string FilePath { get; }
+    private string Key { get; }
     
     // Constructor
     
     /// <summary>
     /// XorCipherViewModel constructor
     /// </summary>
-    /// <param name="file"></param>
+    /// <param name="filePath"></param>
     /// <param name="key"></param>
-    public XorCipherViewModel(string file, string key)
+    public XorCipherViewModel(string filePath, string key)
     {
-        XorCipherModel = new XorCipherModel(file, key);
+        XorCipherModel = new XorCipherModel(filePath, key);
         XorCipherView = new XorCipherView("en");
          
-        File = file;
+        FilePath = filePath;
         Key = key;
         
         // Check if the file(s) located at the given path exist(s) and if the key is empty or not.
-        if (!System.IO.File.Exists(File))
+        if (!System.IO.File.Exists(FilePath))
         {
-            XorCipherView.SetMessage("FileNotFound", File);
+            XorCipherView.SetMessage("FileNotFound", FilePath);
             XorCipherView.DisplayMessage();
             return;
         }
         
-        if (System.IO.File.ReadAllText(File).Length == 0)
+        if (System.IO.File.ReadAllText(FilePath).Length == 0)
         {
-            XorCipherView.SetMessage("FileIsEmpty", File);
+            XorCipherView.SetMessage("FileIsEmpty", FilePath);
             XorCipherView.DisplayMessage();
             return;
         }
         
         if (Key.Length == 0)
         {
-            XorCipherView.SetMessage("KeyIsEmpty", File);
+            XorCipherView.SetMessage("KeyIsEmpty", FilePath);
             XorCipherView.DisplayMessage();
             return;
         }
         
         XorCipherModel.XorCipher();
         
-        XorCipherView.SetMessage("FileEncrypted", File);
+        XorCipherView.SetMessage("FileEncrypted", FilePath);
         XorCipherView.DisplayMessage();
     }
 }
