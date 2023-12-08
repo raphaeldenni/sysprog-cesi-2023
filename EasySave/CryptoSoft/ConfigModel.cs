@@ -10,29 +10,12 @@ namespace CryptoSoft
 
     public class ConfigModel
     {
-        private static string ConfigFileName => "cryptoSoftConfig.json";
+        private static string ConfigFileName => "config.json";
         public ConfigEntity? Config { get; private set; }
 
         public ConfigModel()
         {
-            if (!File.Exists(ConfigFileName))
-            {
-                CreateConfigFile();
-            }
-
             PullConfigFile();
-        }
-
-        private void CreateConfigFile()
-        {
-            var defaultConfig = new ConfigEntity
-            {
-                Lang = LangType.En,
-                Key = "0123456789ABCDEF"
-            };
-
-            var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
-            File.WriteAllText(ConfigFileName, defaultConfigJson);
         }
 
         private void PullConfigFile()
