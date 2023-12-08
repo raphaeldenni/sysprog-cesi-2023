@@ -35,9 +35,11 @@ public class XorCipherViewModel
         }
         catch (Exception e)
         {
-            XorCipherView.SetMessage(e.ToString(), FilePath);
+            var exceptionName = e.GetType().Name.Split("+").Last();
+            
+            XorCipherView.SetMessage(exceptionName, FilePath);
             XorCipherView.DisplayMessage();
-            throw;
+            return;
         }
         
         XorCipherView.SetMessage("FileEncrypted", FilePath);

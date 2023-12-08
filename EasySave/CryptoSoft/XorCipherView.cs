@@ -24,17 +24,17 @@ public class XorCipherView
             {
                 "en", new Dictionary<string, string>()
                 {
-                    { "FileIsInvalid", "Error: File located at {0} is invalid (empty or non-existent)" },
+                    { "FileIsInvalid", "Error: File located at '{0}' is invalid (empty or non-existent)" },
                     { "KeyIsInvalid", "Error: Key is empty or too long" },
-                    { "FileEncrypted", "Success: File located at {0} has been encrypted" }
+                    { "FileEncrypted", "Success: File located at '{0}' has been encrypted" }
                 }
             },
             {
                 "fr", new Dictionary<string, string>()
                 {
-                    { "FileIsInvalid", "Erreur: Le fichier situé à {0} est invalide (vide ou inexistant)" },
+                    { "FileIsInvalid", "Erreur: Le fichier situé à '{0}' est invalide (vide ou inexistant)" },
                     { "KeyIsInvalid", "Erreur: La clé est vide ou trop longue" },
-                    { "FileEncrypted", "Succès: Le fichier situé à {0} a été chiffré" }
+                    { "FileEncrypted", "Succès: Le fichier situé à '{0}' a été chiffré" }
                 }
             }
         };
