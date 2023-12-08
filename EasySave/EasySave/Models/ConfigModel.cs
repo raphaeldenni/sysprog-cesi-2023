@@ -7,12 +7,14 @@ namespace EasySave.Models
     {
         public LogType LogExtension { get; set; }
         public LangType Language { get; set; }
+        
+        public string? Key { get; set; }
     }
 
     public class ConfigModel
     {
-        private static readonly string ConfigFileName = "config.json";
-        public ConfigEntity Config { get; private set; }
+        private static string ConfigFileName => "config.json";
+        public ConfigEntity? Config { get; private set; }
 
         public ConfigModel()
         {
@@ -26,19 +28,20 @@ namespace EasySave.Models
 
         private void CreateConfigFile()
         {
-            ConfigEntity defaultConfig = new ConfigEntity
+            var defaultConfig = new ConfigEntity
             {
                 LogExtension = LogType.Json,
                 Language = LangType.En,
+                Key = "0123456789ABCDEF"
             };
 
-            string defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
+            var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
             File.WriteAllText(ConfigFileName, defaultConfigJson);
         }
 
         private void PullConfigFile()
         {
-            string configJson = File.ReadAllText(ConfigFileName);
+            var configJson = File.ReadAllText(ConfigFileName);
             Config = JsonSerializer.Deserialize<ConfigEntity>(configJson);
         }
 
@@ -46,15 +49,15 @@ namespace EasySave.Models
         {
             if (logExtension != null)
             {
-                Config.LogExtension = (LogType)logExtension;
+                Config!.LogExtension = (LogType)logExtension;
             }
 
             if (lang != null)
             {
-                Config.Language = (LangType)lang;
+                Config!.Language = (LangType)lang;
             }
 
-            string updatedConfigJson = JsonSerializer.Serialize(Config);
+            var updatedConfigJson = JsonSerializer.Serialize(Config);
             File.WriteAllText(ConfigFileName, updatedConfigJson);
         }
     }

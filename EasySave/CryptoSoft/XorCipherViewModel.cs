@@ -1,3 +1,5 @@
+using EasySave.Models;
+    
 namespace CryptoSoft;
 
 public class XorCipherViewModel
@@ -22,7 +24,7 @@ public class XorCipherViewModel
     {
         ConfigModel = new ConfigModel();
         
-        Lang = ConfigModel.Config!.Lang.ToString().ToLower();
+        Lang = ConfigModel.Config!.Language.ToString().ToLower();
         FilePath = args.Count != 0 ? args[0] : string.Empty;
         Key = ConfigModel.Config.Key!;
         
