@@ -50,8 +50,8 @@ public class XorCipherModel
             throw new FileIsInvalid();
         }
         
-        // Check if the key is empty or too long.
-        if (Key == null || Key.Length > 64)
+        // Check if the key is empty or too short.
+        if (Key == null || Key.Length < 8)
         {
             throw new KeyIsInvalid();
         }
