@@ -18,12 +18,12 @@ public class XorCipherViewModel
     /// XorCipherViewModel constructor
     /// </summary>
     /// <param name="args"></param>
-    public XorCipherViewModel(string[] args)
+    public XorCipherViewModel(IReadOnlyList<string> args)
     {
         ConfigModel = new ConfigModel();
         
         Lang = ConfigModel.Config!.Lang.ToString().ToLower();
-        FilePath = args.Length != 0 ? args[0] : string.Empty;
+        FilePath = args.Count != 0 ? args[0] : string.Empty;
         Key = ConfigModel.Config.Key!;
         
         XorCipherModel = new XorCipherModel(FilePath, Key);
