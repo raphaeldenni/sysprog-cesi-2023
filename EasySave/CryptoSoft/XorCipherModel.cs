@@ -3,9 +3,9 @@ namespace CryptoSoft;
 public class XorCipherModel
 {
     // Properties
-    private string FilePath { get; }
-    private string FileContent { get; }
-    private string Key { get; }
+    private string? FilePath { get; }
+    private string? FileContent { get; set; }
+    private string? Key { get; }
     
     // Exceptions
     public class FileIsInvalid : Exception
@@ -26,7 +26,10 @@ public class XorCipherModel
     public XorCipherModel(string filePath, string key)
     {
         FilePath = filePath;
-        FileContent = File.ReadAllText(filePath);
+        FileContent = !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath) 
+            ? File.ReadAllText(FilePath) 
+            : string.Empty;
+        
         Key = key;
     }
     
@@ -39,12 +42,12 @@ public class XorCipherModel
     public void EncryptFile()
     {
         // Check if the file exists and if it is empty. Also check if the key is valid.
-        if (!File.Exists(FilePath) | FileContent.Length == 0)
+        if (string.IsNullOrEmpty(FilePath) || !File.Exists(FilePath) || string.IsNullOrEmpty(FileContent))
         {
             throw new FileIsInvalid();
         }
 
-        if (Key.Length > 32 | Key.Length == 0)
+        if (string.IsNullOrEmpty(Key) || Key.Length > 32)
         {
             throw new KeyIsInvalid();
         }

@@ -5,13 +5,13 @@ namespace CryptoSoft
     public class ConfigEntity 
     {
         public LangType Lang { get; set; }
-        public string Key { get; set; }
+        public string? Key { get; set; }
     }
 
     public class ConfigModel
     {
         private static string ConfigFileName => "cryptoSoftConfig.json";
-        public ConfigEntity Config { get; private set; }
+        public ConfigEntity? Config { get; private set; }
 
         public ConfigModel()
         {

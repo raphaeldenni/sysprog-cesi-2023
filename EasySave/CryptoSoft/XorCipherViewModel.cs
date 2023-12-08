@@ -8,9 +8,9 @@ public class XorCipherViewModel
     private XorCipherView XorCipherView { get; }
     
     // Properties
-    private string Lang { get; }
-    private string FilePath { get; }
-    private string Key { get; }
+    private string? Lang { get; }
+    private string? FilePath { get; }
+    private string? Key { get; }
     
     // Constructor
     
@@ -22,9 +22,9 @@ public class XorCipherViewModel
     {
         ConfigModel = new ConfigModel();
         
-        Lang = ConfigModel.Config.Lang.ToString().ToLower();
+        Lang = ConfigModel.Config!.Lang.ToString().ToLower();
         FilePath = filePath;
-        Key = ConfigModel.Config.Key;
+        Key = ConfigModel.Config.Key!;
         
         XorCipherModel = new XorCipherModel(FilePath, Key);
         XorCipherView = new XorCipherView(Lang);
