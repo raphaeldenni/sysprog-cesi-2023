@@ -13,17 +13,17 @@ public class XorCipherViewModel
     private string? Key { get; }
     
     // Constructor
-    
+
     /// <summary>
     /// XorCipherViewModel constructor
     /// </summary>
-    /// <param name="filePath"></param>
-    public XorCipherViewModel(string filePath)
+    /// <param name="args"></param>
+    public XorCipherViewModel(string[] args)
     {
         ConfigModel = new ConfigModel();
         
         Lang = ConfigModel.Config!.Lang.ToString().ToLower();
-        FilePath = filePath;
+        FilePath = args.Length != 0 ? args[0] : string.Empty;
         Key = ConfigModel.Config.Key!;
         
         XorCipherModel = new XorCipherModel(FilePath, Key);
