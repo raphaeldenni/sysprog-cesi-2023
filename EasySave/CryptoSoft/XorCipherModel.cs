@@ -1,11 +1,13 @@
+using System.Text;
+
 namespace CryptoSoft;
 
 public class XorCipherModel
 {
     // Properties
     private string? FilePath { get; }
-    private string? FileContent { get; set; }
-    private string? Key { get; }
+    private byte[]? FileContent { get; }
+    private byte[]? Key { get; }
     
     // Exceptions
     public class FileIsInvalid : Exception
@@ -26,11 +28,13 @@ public class XorCipherModel
     public XorCipherModel(string filePath, string key)
     {
         FilePath = filePath;
-        FileContent = !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath) 
-            ? File.ReadAllText(FilePath) 
-            : string.Empty;
         
-        Key = key;
+        // File content and key are stored as byte arrays to be able to use the XOR operator on any type of file.
+        FileContent = !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath) 
+            ? File.ReadAllBytes(FilePath) 
+            : null as byte[];
+
+        Key = Encoding.UTF8.GetBytes(key);
     }
     
     // Methods
@@ -38,31 +42,31 @@ public class XorCipherModel
     /// <summary>
     /// Encrypts/Decrypts the file content using the XOR cipher algorithm with the given key.
     /// </summary>
-    /// <returns>String that contains the encrypted file content.</returns>
     public void EncryptFile()
     {
-        // Check if the file exists and if it is empty. Also check if the key is valid.
-        if (string.IsNullOrEmpty(FilePath) || !File.Exists(FilePath) || string.IsNullOrEmpty(FileContent))
+        // Check if the file exists and if it is empty.
+        if (string.IsNullOrEmpty(FilePath) || !File.Exists(FilePath) || FileContent == null)
         {
             throw new FileIsInvalid();
         }
-
-        if (string.IsNullOrEmpty(Key) || Key.Length > 32)
+        
+        // Check if the key is empty or too long.
+        if (Key == null || Key.Length > 64)
         {
             throw new KeyIsInvalid();
         }
-
-        var encryptedFileContent = string.Empty;
+        
+        var encryptedFileContent = new byte[FileContent.Length];
         var keyIndex = 0;
         
-        // XOR each character of the file content with the corresponding character of the key.
+        // XOR each byte of the file content with the corresponding byte character of the key.
         // If the key is shorter than the file content, the key will be repeated. A modulo operation is used to achieve this.
-        foreach (var character in FileContent)
+        for (var i = 0; i < FileContent.Length; i++)
         {
-            encryptedFileContent += (char) (character ^ Key[keyIndex]);
+            encryptedFileContent[i] = (byte) (FileContent[i] ^ Key[keyIndex]);
             keyIndex = (keyIndex + 1) % Key.Length;
         }
         
-        File.WriteAllText(FilePath, encryptedFileContent);
+        File.WriteAllBytes(FilePath, encryptedFileContent);
     }
 }
