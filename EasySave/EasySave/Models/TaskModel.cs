@@ -8,6 +8,8 @@ public class TaskEntity
     // Properties
 
     //// Task
+    public bool? IsChecked { get; set; }
+    public int? Loading { get; set; }
     public int? Id { get; set; }
     public string? Name { get; set; }
     public string? SourcePath { get; set; }

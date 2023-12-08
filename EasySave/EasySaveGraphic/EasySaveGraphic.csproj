@@ -10,11 +10,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EasySave\EasySave.csproj" />
-    <Folder Include="ViewModels\" />
+	<Folder Include="CustomControl\" />  
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
   </ItemGroup>
-
 </Project>

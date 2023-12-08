@@ -8,20 +8,13 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ConfigView">
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
-
     <Grid>
-        <Label Content="Config" HorizontalAlignment="Center" VerticalAlignment="Center" Height="72" Width="184" FontSize="48"/>
-        <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="LangComboBox" HorizontalAlignment="Left" Margin="545,173,0,0" VerticalAlignment="Top" Width="120" FontFamily="Calibri"/>
-        <ComboBox x:Name="LogComboBox" HorizontalAlignment="Left" Margin="148,173,0,0" VerticalAlignment="Top" Width="120" FontFamily="Calibri"/>
-
-        <Button x:Name="apply" Content="Apply" HorizontalAlignment="Left" Margin="661,374,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.138,0.207" Click="apply_Click"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="LangComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="1" Height="24"/>
+        <ComboBox x:Name="LogComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="0" Height="24"/>
+        <Button x:Name="apply" Content="Apply" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" Grid.Column="1" Height="32" Width="69"/>
     </Grid>
 </Page>
