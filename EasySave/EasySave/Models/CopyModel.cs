@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using EasySave.Types;
 
 namespace EasySave.Models;
@@ -18,8 +19,9 @@ public class CopyModel
     public long LeftFilesSize { get; private set; }
     // END OF CHANGE
     
-    //// Directory structure
+    //// Others
     private Dictionary<string, List<string>> DirectoryStructure { get; }
+    private Process CryptoSoftProcess { get; }
 
     // Constructors
     public CopyModel(string sourcePath, string destPath, BackupType type)
@@ -31,8 +33,12 @@ public class CopyModel
         LeftFilesNumber = 0;
         LeftFilesSize = 0;
         
-        // Directory structure
         DirectoryStructure = new Dictionary<string, List<string>>();
+        
+        CryptoSoftProcess = new Process();
+        CryptoSoftProcess.StartInfo.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
+            ? ".\\CryptoSoft.exe" 
+            : "./CryptoSoft";
         
         CheckFiles();
     }
@@ -106,6 +112,11 @@ public class CopyModel
                 stopwatch.Stop();
                 
                 var copyTime = stopwatch.ElapsedMilliseconds;
+                
+                // Encrypt the file
+                CryptoSoftProcess.StartInfo.Arguments = $"\"{destFilePath}\"";
+                CryptoSoftProcess.Start();
+                CryptoSoftProcess.WaitForExit();
                 
                 LeftFilesNumber--;
                 LeftFilesSize -= new FileInfo(sourceFilePath).Length;
