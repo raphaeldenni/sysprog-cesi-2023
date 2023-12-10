@@ -30,9 +30,12 @@ public class TaskEntity
 public class TaskModel : TaskEntity
 {
     // Properties
-    private static string StateFileName => "state.json"; // Set the state file name
-    public List<TaskEntity>? TasksList { get; private set; } // A list that contains all the tasks from the state file
+    private const string StateFileName = "state.json"; 
     
+    // A list that contains all the tasks from the state file
+    public List<TaskEntity>? TasksList { get; private set; }
+    
+    // Exceptions
     public class SourcePathNotFoundException : Exception
     {
     }
@@ -54,6 +57,10 @@ public class TaskModel : TaskEntity
     }
 
     // Constructors
+    
+    /// <summary>
+    /// TaskModel constructor
+    /// </summary>
     public TaskModel()
     {
         // If the state file doesn't exist, create a default list
@@ -67,7 +74,10 @@ public class TaskModel : TaskEntity
     
     // Methods
     
-    //// State file methods
+    /// <summary>
+    /// This method updates the state file with the given list
+    /// </summary>
+    /// <param name="tasksList"></param>
     private void UpdateStateFile(List<TaskEntity>? tasksList)
     {
         // If tasksList is null, create a default list
@@ -77,13 +87,29 @@ public class TaskModel : TaskEntity
         File.WriteAllText(StateFileName, jsonTasksList);
     }
     
+    /// <summary>
+    /// Pulls the state file and stores it in the TasksList property
+    /// </summary>
     public void PullStateFile()
     {
         var jsonTasksList = File.ReadAllText(StateFileName);
         TasksList = JsonSerializer.Deserialize<List<TaskEntity>>(jsonTasksList);
     }
     
-    //// Task methods
+    /// <summary>
+    /// Method that updates the task with the given parameters
+    /// </summary>
+    /// <param name="isNew"></param>
+    /// <param name="taskName"></param>
+    /// <param name="taskSourcePath"></param>
+    /// <param name="taskDestPath"></param>
+    /// <param name="taskType"></param>
+    /// <param name="newTaskName"></param>
+    /// <returns></returns>
+    /// <exception cref="SourcePathNotFoundException"></exception>
+    /// <exception cref="DuplicateTaskNameException"></exception>
+    /// <exception cref="TaskNotFoundException"></exception>
+    /// <exception cref="TooMuchTasksException"></exception>
     public string[] UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, BackupType? taskType, string? newTaskName)
     {
         // If the source path is not null, check if it exists
@@ -92,8 +118,13 @@ public class TaskModel : TaskEntity
         // Verify the correspondency between new task and name 
         var sameName = TasksList.Any(task => task.Name == taskName);
 
-        if (isNew && sameName) throw new DuplicateTaskNameException();
-        if (!isNew && !sameName) throw new TaskNotFoundException();
+        switch (isNew)
+        {
+            case true when sameName:
+                throw new DuplicateTaskNameException();
+            case false when !sameName:
+                throw new TaskNotFoundException();
+        }
 
         // Retrieve task ID
         var searchValue = isNew ? null : taskName;
@@ -111,9 +142,17 @@ public class TaskModel : TaskEntity
         
         UpdateTasksList();
 
-        return new string[] { (Id + 1).ToString(), Name };
+        var newTask = new string[] { (Id + 1).ToString(), Name };
+
+        return newTask;
     }
     
+    /// <summary>
+    /// Deletes the task with the given name
+    /// </summary>
+    /// <param name="taskName"></param>
+    /// <returns></returns>
+    /// <exception cref="TaskNameNotFoundException"></exception>
     public string DeleteTask(string taskName)
     {
         int taskId = TasksList.FindIndex(task => task.Name == taskName);
@@ -129,6 +168,17 @@ public class TaskModel : TaskEntity
         return taskName;
     }
     
+    /// <summary>
+    /// Updates the task state with the given parameters
+    /// </summary>
+    /// <param name="taskName"></param>
+    /// <param name="taskState"></param>
+    /// <param name="taskFilesNumber"></param>
+    /// <param name="taskFilesSize"></param>
+    /// <param name="taskLeftFilesNumber"></param>
+    /// <param name="taskLeftFilesSize"></param>
+    /// <param name="taskFileSourcePath"></param>
+    /// <param name="taskFileDestPath"></param>
     public void UpdateTaskState
     (
         string taskName, 
@@ -156,7 +206,9 @@ public class TaskModel : TaskEntity
         UpdateTasksList();
     }
     
-    //// Tasks list methods
+    /// <summary>
+    /// Updates the task with the given parameters
+    /// </summary>
     private void UpdateTasksList()
     {
         var task = TasksList[Id.Value];
@@ -165,6 +217,10 @@ public class TaskModel : TaskEntity
         UpdateStateFile(TasksList);
     }
     
+    /// <summary>
+    /// Copies the properties of the given task to the current task
+    /// </summary>
+    /// <param name="task"></param>
     private void UpdateTaskProperties(TaskEntity task)
     {
         // If a property is null, the property is not updated
