@@ -6,7 +6,6 @@ public class XorCipherModel
 {
     // Properties
     private string? FilePath { get; }
-    private byte[]? FileContent { get; }
     private byte[]? Key { get; }
     
     // Exceptions
@@ -28,12 +27,6 @@ public class XorCipherModel
     public XorCipherModel(string filePath, string key)
     {
         FilePath = filePath;
-        
-        // File content and key are stored as byte arrays to be able to use the XOR operator on any type of file.
-        FileContent = !string.IsNullOrEmpty(FilePath) && File.Exists(FilePath) 
-            ? File.ReadAllBytes(FilePath) 
-            : null as byte[];
-
         Key = Encoding.UTF8.GetBytes(key);
     }
     
@@ -44,8 +37,8 @@ public class XorCipherModel
     /// </summary>
     public void EncryptFile()
     {
-        // Check if the file exists and if it is empty.
-        if (string.IsNullOrEmpty(FilePath) || !File.Exists(FilePath) || FileContent == null)
+        // Check if the file exists.
+        if (string.IsNullOrEmpty(FilePath) || !File.Exists(FilePath))
         {
             throw new FileIsInvalid();
         }
@@ -56,17 +49,20 @@ public class XorCipherModel
             throw new KeyIsInvalid();
         }
         
-        var encryptedFileContent = new byte[FileContent.Length];
+        using var fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
         var keyIndex = 0;
         
         // XOR each byte of the file content with the corresponding byte character of the key.
         // If the key is shorter than the file content, the key will be repeated. A modulo operation is used to achieve this.
-        for (var i = 0; i < FileContent.Length; i++)
+        for (var i = 0; i < fileStream.Length; i++)
         {
-            encryptedFileContent[i] = (byte) (FileContent[i] ^ Key[keyIndex]);
+            var fileByte = fileStream.ReadByte();
+            var encryptedByte = (byte)(fileByte ^ Key[keyIndex]);
+            
+            fileStream.Position = i;
+            fileStream.WriteByte(encryptedByte);
+            
             keyIndex = (keyIndex + 1) % Key.Length;
         }
-        
-        File.WriteAllBytes(FilePath, encryptedFileContent);
     }
 }
