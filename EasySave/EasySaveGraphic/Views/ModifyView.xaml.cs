@@ -93,12 +93,12 @@ namespace EasySaveGraphic.Views
         {
             try 
             {
-                if (!IsModification)
+                if (IsModification)
                 {
-                    ModifyViewModel.UpdateTask(NameTextBox.Text, IsModification, null, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                    ModifyViewModel.UpdateTask(CurrentTaskName, !IsModification, NameTextBox.Text, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
                 } else
                 {
-                    ModifyViewModel.UpdateTask(CurrentTaskName, IsModification, NameTextBox.Text, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                    ModifyViewModel.UpdateTask(NameTextBox.Text, !IsModification, null, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
                 }
                 Button_GoBack_Click(sender, e);
 

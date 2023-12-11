@@ -109,8 +109,8 @@ namespace EasySaveGraphic.Views
             // Vérifier si le NavigationService existe (il pourrait être null dans certains cas)
             if (navigationService != null)
             {
-                // Naviguer vers la page ModifyView.xaml
-                navigationService.Navigate(new Uri("Views/ModifyView.xaml", UriKind.Relative));
+                ModifyView modifyView = new ModifyView(null);
+                navigationService.Navigate(modifyView);
             }
         }
 
