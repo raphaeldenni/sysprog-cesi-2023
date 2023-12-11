@@ -1,6 +1,6 @@
 using System.Xml.Serialization;
 using System.Text.Json;
-
+using System.Xml;
 using EasySave.Types;
 
 namespace EasySave.Models;
@@ -83,8 +83,15 @@ public class LogModel
                 break;
             
             case LogType.Xml:
+                var xmlSettings = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true
+                };
+
+                var xmlDoc = XmlWriter.Create(streamLogFile, xmlSettings);
+
                 var xmlSerializer = new XmlSerializer(typeof(LogData));
-                xmlSerializer.Serialize(streamLogFile, newLogEntry);
+                xmlSerializer.Serialize(xmlDoc, newLogEntry);
                     
                 break;
             
