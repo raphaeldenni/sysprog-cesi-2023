@@ -55,5 +55,10 @@ namespace EasySaveGraphic.Views
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void LangComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

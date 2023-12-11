@@ -125,5 +125,12 @@ namespace EasySaveGraphic.Views
             Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
             taskListView.Items.Refresh(); // Rafraîchit la vue pour refléter les modifications
         }
+
+        private void ClosePopupButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Code pour fermer la popup
+            PopupBox.IsPopupOpen = false;
+        }
+
     }
 }

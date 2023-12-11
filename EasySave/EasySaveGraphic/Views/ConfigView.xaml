@@ -13,8 +13,36 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ComboBox x:Name="LangComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="1" Height="24"/>
-        <ComboBox x:Name="LogComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="0" Height="24"/>
+        <ComboBox x:Name="LangComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="1" Height="24" SelectionChanged="LangComboBox_SelectionChanged" BorderBrush="#FF673AB7" Background="{x:Null}">
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Foreground" Value="#FF673AB7" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </ComboBox.ItemContainerStyle>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Foreground="#FF673AB7" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <ComboBox x:Name="LogComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="0" Height="24" BorderBrush="#FF673AB7" Background="{x:Null}">
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="Foreground" Value="#FF673AB7" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </ComboBox.ItemContainerStyle>
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Foreground="#FF673AB7" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
         <Button x:Name="apply" Content="Apply" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" Grid.Column="1" Height="32" Width="69"/>
     </Grid>
 </Page>
