@@ -35,7 +35,14 @@ public class LogModel
     /// <param name="fileSize"></param>
     /// <param name="fileTransferTime"></param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public void CreateLog(LogType logType, string taskName, string fileSourcePath, string fileDestPath, int fileSize, float fileTransferTime)
+    public void CreateLog(
+        LogType logType, 
+        string taskName, 
+        string fileSourcePath, 
+        string fileDestPath, 
+        int fileSize, 
+        float fileTransferTime
+        )
     {
         // Set log file properties
         LogType = logType;
@@ -67,7 +74,10 @@ public class LogModel
         switch (LogType) 
         {
             case LogType.Json:
-                var jsonData = JsonSerializer.Serialize(newLogEntry, new JsonSerializerOptions { WriteIndented = true });
+                var jsonData = JsonSerializer.Serialize(
+                    newLogEntry, 
+                    new JsonSerializerOptions { WriteIndented = true }
+                    );
                 streamLogFile.WriteLine(jsonData);
                     
                 break;
