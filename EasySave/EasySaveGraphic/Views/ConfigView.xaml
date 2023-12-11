@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:EasySaveGraphic.Views"
       xmlns:lang="clr-namespace:EasySaveGraphic.Lang"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ConfigView">
@@ -14,8 +15,8 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ComboBox x:Name="LangComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="1" Height="24"/>
-        <ComboBox x:Name="LogComboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" FontFamily="Calibri" Grid.Column="0" Height="24"/>
-        <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" Grid.Column="1" Height="32" Width="69"/>
+        <ComboBox x:Name="LangComboBox" materialDesign:HintAssist.Hint="{x:Static lang:Resources.Language}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Calibri" Grid.Column="1"/>
+        <ComboBox x:Name="LogComboBox" materialDesign:HintAssist.Hint="{x:Static lang:Resources.LogExtension}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Calibri" Grid.Column="0"/>
+        <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" Grid.Column="1" Height="32" MinWidth="69"/>
     </Grid>
 </Page>

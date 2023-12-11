@@ -51,4 +51,16 @@
     <data name="Cancel" xml:space="preserve">
         <value>Annuler</value>
     </data>
+    <data name="Search" xml:space="preserve">
+        <value>Rechercher</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="LogExtension" xml:space="preserve">
+        <value>Extension de log</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+        <value>Langue</value>
+    </data>
 </root>
