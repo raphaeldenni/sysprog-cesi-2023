@@ -4,10 +4,10 @@ namespace CryptoSoft;
 
 public class ConfigEntity 
 {
-    public LogType LogExtension { get; set; }
     public LangType Language { get; set; }
-        
+    public LogType LogExtension { get; set; }
     public string? Key { get; set; }
+    public string[]? ExtensionsToEncrypt { get; set; }
 }
 
 public class ConfigModel

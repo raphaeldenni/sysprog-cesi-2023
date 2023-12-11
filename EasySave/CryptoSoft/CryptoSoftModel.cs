@@ -8,6 +8,7 @@ public class CryptoSoftModel
     private string SourcePath { get; }
     private string DestPath { get; }
     private byte[] Key { get; }
+    private string[] ExtensionsToEncrypt { get; }
     
     // Exceptions
     public class FileIsInvalid : Exception
@@ -26,11 +27,13 @@ public class CryptoSoftModel
     /// <param name="sourcePath"></param>
     /// <param name="destPath"></param>
     /// <param name="key"></param>
-    public CryptoSoftModel(string sourcePath, string destPath, string key)
+    /// <param name="extensionsToEncrypt"></param>
+    public CryptoSoftModel(string sourcePath, string destPath, string key, string[] extensionsToEncrypt)
     {
         SourcePath = sourcePath;
         DestPath = destPath;
         Key = Encoding.UTF8.GetBytes(key);
+        ExtensionsToEncrypt = extensionsToEncrypt;
     }
     
     // Methods
@@ -40,7 +43,7 @@ public class CryptoSoftModel
     /// </summary>
     /// <exception cref="FileIsInvalid"></exception>
     /// <exception cref="KeyIsInvalid"></exception>
-    public void SaveFile()
+    public void CreateEncryptedFile()
     {
         // Check if the file exists.
         if (string.IsNullOrEmpty(SourcePath) || !File.Exists(SourcePath))
@@ -50,7 +53,13 @@ public class CryptoSoftModel
         
         File.Copy(SourcePath, DestPath, true);
         
-        EncryptFile();
+        // Check if the file extension is in the list of extensions to encrypt. If not, the file is not encrypted.
+        var fileExtension = Path.GetExtension(SourcePath);
+        
+        if (ExtensionsToEncrypt.Contains(fileExtension))
+        {
+            EncryptFile();
+        }
     }
     
     /// <summary>

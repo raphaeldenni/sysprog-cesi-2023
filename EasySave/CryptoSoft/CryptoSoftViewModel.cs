@@ -10,6 +10,7 @@ public class CryptoSoftViewModel
     // Properties
     private string? Lang { get; }
     private string? Key { get; }
+    private string[]? ExtensionsToEncrypt { get; }
     private string? SourcePath { get; }
     private string? DestPath { get; }
     
@@ -37,6 +38,7 @@ public class CryptoSoftViewModel
         // Set the properties according to the config file.
         Lang = ConfigModel.Config.Language.ToString().ToLower();
         Key = ConfigModel.Config.Key;
+        ExtensionsToEncrypt = ConfigModel.Config.ExtensionsToEncrypt ?? new []{""};
         
         // Set the properties according to the arguments, if any.
         if (args.Count is > 0 and < 2)
@@ -49,12 +51,12 @@ public class CryptoSoftViewModel
             SourcePath = DestPath = string.Empty;
         }
         
-        CryptoSoftModel = new CryptoSoftModel(SourcePath, DestPath, Key);
+        CryptoSoftModel = new CryptoSoftModel(SourcePath, DestPath, Key, ExtensionsToEncrypt);
         CryptoSoftView = new CryptoSoftView(Lang);
 
         try
         {
-            CryptoSoftModel.SaveFile();
+            CryptoSoftModel.CreateEncryptedFile();
         }
         catch (Exception e)
         {
