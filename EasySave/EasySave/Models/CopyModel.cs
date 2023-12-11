@@ -134,16 +134,14 @@ public class CopyModel
                 
                 stopwatch.Start();
                 
-                File.Copy(sourceFilePath, destFilePath, true);
+                // Copy the file with CryptoSoft to encrypt it
+                CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {destFilePath}";
+                CryptoSoftProcess.Start();
+                CryptoSoftProcess.WaitForExit();
                 
                 stopwatch.Stop();
                 
                 var copyTime = stopwatch.ElapsedMilliseconds;
-                
-                // Encrypt the file
-                CryptoSoftProcess.StartInfo.Arguments = $"\"{destFilePath}\"";
-                CryptoSoftProcess.Start();
-                CryptoSoftProcess.WaitForExit();
                 
                 // Update the left files number and size
                 LeftFilesNumber--;

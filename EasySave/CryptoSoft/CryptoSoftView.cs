@@ -1,6 +1,6 @@
 namespace CryptoSoft;
 
-public class XorCipherView
+public class CryptoSoftView
 {
     // Properties
     private string? Message { get; set; }
@@ -11,10 +11,10 @@ public class XorCipherView
     // Constructor
     
     /// <summary>
-    /// XorCipherView constructor
+    /// CryptoSoftView constructor
     /// </summary>
     /// <param name="lang"></param>
-    public XorCipherView(string lang)
+    public CryptoSoftView(string lang)
     {
         Lang = lang;
         
@@ -24,6 +24,7 @@ public class XorCipherView
             {
                 "en", new Dictionary<string, string>()
                 {
+                    {"ConfigFileIsInvalid", "Error: Config file is invalid (empty or non-existent)"},
                     { "FileIsInvalid", "Error: File located at '{0}' is invalid (empty or non-existent)" },
                     { "KeyIsInvalid", "Error: Key is empty or too long" },
                     { "FileEncrypted", "Success: File located at '{0}' has been encrypted" }
@@ -32,6 +33,7 @@ public class XorCipherView
             {
                 "fr", new Dictionary<string, string>()
                 {
+                    {"ConfigFileIsInvalid", "Erreur: Le fichier de configuration est invalide (vide ou inexistant)"},
                     { "FileIsInvalid", "Erreur: Le fichier situé à '{0}' est invalide (vide ou inexistant)" },
                     { "KeyIsInvalid", "Erreur: La clé est vide ou trop longue" },
                     { "FileEncrypted", "Succès: Le fichier situé à '{0}' a été chiffré" }
@@ -55,7 +57,7 @@ public class XorCipherView
     /// </summary>
     /// <param name="messageType"></param>
     /// <param name="filePath"></param>
-    public void SetMessage(string messageType, string filePath)
+    public void SetMessage(string messageType, string filePath = "")
     {
         Message = string.Format(Messages[Lang][messageType], filePath);
     }

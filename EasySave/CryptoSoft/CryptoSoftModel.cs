@@ -2,11 +2,12 @@ using System.Text;
 
 namespace CryptoSoft;
 
-public class XorCipherModel
+public class CryptoSoftModel
 {
     // Properties
-    private string? FilePath { get; }
-    private byte[]? Key { get; }
+    private string SourcePath { get; }
+    private string DestPath { get; }
+    private byte[] Key { get; }
     
     // Exceptions
     public class FileIsInvalid : Exception
@@ -18,38 +19,52 @@ public class XorCipherModel
     }
     
     // Constructor
-    
+
     /// <summary>
-    /// Constructor for the XorCipherModel class.
+    /// Constructor for the CryptoSoftModel class.
     /// </summary>
-    /// <param name="filePath"></param>
+    /// <param name="sourcePath"></param>
+    /// <param name="destPath"></param>
     /// <param name="key"></param>
-    public XorCipherModel(string filePath, string key)
+    public CryptoSoftModel(string sourcePath, string destPath, string key)
     {
-        FilePath = filePath;
+        SourcePath = sourcePath;
+        DestPath = destPath;
         Key = Encoding.UTF8.GetBytes(key);
     }
     
     // Methods
     
     /// <summary>
-    /// Encrypts/Decrypts the file content using the XOR cipher algorithm with the given key.
+    /// Save the file located at SourcePath to DestPath, then encrypt it.
     /// </summary>
-    public void EncryptFile()
+    /// <exception cref="FileIsInvalid"></exception>
+    /// <exception cref="KeyIsInvalid"></exception>
+    public void SaveFile()
     {
         // Check if the file exists.
-        if (string.IsNullOrEmpty(FilePath) || !File.Exists(FilePath))
+        if (string.IsNullOrEmpty(SourcePath) || !File.Exists(SourcePath))
         {
             throw new FileIsInvalid();
         }
         
+        File.Copy(SourcePath, DestPath, true);
+        
+        EncryptFile();
+    }
+    
+    /// <summary>
+    /// Encrypts/Decrypts the file content using the XOR cipher algorithm with the given key.
+    /// </summary>
+    private void EncryptFile()
+    {
         // Check if the key is empty or too short.
         if (Key == null || Key.Length < 8)
         {
             throw new KeyIsInvalid();
         }
         
-        using var fileStream = new FileStream(FilePath, FileMode.Open, FileAccess.ReadWrite);
+        using var fileStream = new FileStream(DestPath, FileMode.Open, FileAccess.ReadWrite);
         var keyIndex = 0;
         
         // XOR each byte of the file content with the corresponding byte character of the key.
