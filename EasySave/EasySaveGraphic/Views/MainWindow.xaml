@@ -3,25 +3,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EasySaveGraphic.CustomControl"
+        xmlns:local="clr-namespace:EasySaveGraphic.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="MainWindow" SnapsToDevicePixels="True" Height="600" Width="1080">
+        Title="MainWindow" SnapsToDevicePixels="True" Height="600" Width="1080" MinHeight="600" MinWidth="1080">
     
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="75"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        
-        <Path Stretch="Uniform" Margin="0,10,0,0" VerticalAlignment="Top" Fill="#2a84f1" Height="25" Width="25" Data=""/>
-        
-        <ListBox Grid.Column="0" SelectionMode="Single" SelectionChanged="sidebar_SelectionChanged" x:Name="sidebar" Margin="0,50,0,50" BorderThickness="0" Cursor="">
-
-            <local:NavButton NavLink="/Views/HomeView.xaml" Margin="3" Padding="6" Icon="M28.781,104.122H99.219a2.111,2.111,0,0,0,2.111-2.111V52.188a2.11,2.11,0,0,0-.851-1.694L65.26,24.3a2.109,2.109,0,0,0-2.519,0l-35.219,26.2a2.11,2.11,0,0,0-.851,1.694v49.822A2.111,2.111,0,0,0,28.781,104.122ZM72.195,99.9H55.8V75.344H72.195Zm-41.3-46.651L64,28.62,97.108,53.249V99.9H76.417V73.233a2.111,2.111,0,0,0-2.111-2.111H53.69a2.111,2.111,0,0,0-2.111,2.111V99.9H30.892Z"/>
-            <local:NavButton NavLink="/Views/LogsView.xaml" Margin="3" Padding="6" Icon="M28.781,104.122H99.219a2.111,2.111,0,0,0,2.111-2.111V52.188a2.11,2.11,0,0,0-.851-1.694L65.26,24.3a2.109,2.109,0,0,0-2.519,0l-35.219,26.2a2.11,2.11,0,0,0-.851,1.694v49.822A2.111,2.111,0,0,0,28.781,104.122ZM72.195,99.9H55.8V75.344H72.195Zm-41.3-46.651L64,28.62,97.108,53.249V99.9H76.417V73.233a2.111,2.111,0,0,0-2.111-2.111H53.69a2.111,2.111,0,0,0-2.111,2.111V99.9H30.892Z" />
-            <local:NavButton NavLink="/Views/ConfigView.xaml" Margin="3" Padding="6" Icon="M122.23,12.35v10.54c0,1.29-1.21,2.35-2.69,2.35H77.85c-2.84,5.92-8.89,10.01-15.9,10.01 c-7,0-13.05-4.09-15.89-10.01H2.69C1.22,25.24,0,24.18,0,22.89V12.35C0,11.06,1.21,10,2.69,10h43.37c2.84-5.92,8.89-10,15.89-10 c7,0,13.05,4.09,15.89,10h41.69C121.02,10,122.23,11.06,122.23,12.35L122.23,12.35L122.23,12.35z M49.57,112.88 c-2.84,5.92-8.89,10-15.9,10c-7,0-13.05-4.08-15.89-10l-15.09,0c-1.48,0-2.69-1.06-2.69-2.35V99.99c0-1.29,1.21-2.35,2.69-2.35 l15.09,0c2.84-5.92,8.89-10.01,15.89-10.01c7,0,13.05,4.09,15.89,10.01h69.97c1.48,0,2.69,1.06,2.69,2.35v10.54 c0,1.29-1.22,2.35-2.69,2.35L49.57,112.88L49.57,112.88z M104.12,69.73c-2.84,5.92-8.89,10.01-15.89,10.01 c-7,0-13.05-4.09-15.9-10.01H2.69C1.22,69.73,0,68.67,0,67.38V56.85c0-1.29,1.21-2.35,2.69-2.35h69.64c2.84-5.92,8.89-10,15.89-10 c7,0,13.05,4.09,15.89,10h15.42c1.48,0,2.69,1.06,2.69,2.35v10.53c0,1.29-1.21,2.35-2.69,2.35H104.12L104.12,69.73z" />
-            
-        </ListBox>
+        <Grid.Resources>
+            <Style TargetType="materialDesign:PackIcon">
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="Height" Value="30"></Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid Grid.Column="0">
+            <ListView Margin="0 15">
+                <ListViewItem HorizontalAlignment="Center" Margin="0 10">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" Click="btnHome_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="Home" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+                <ListViewItem HorizontalAlignment="Center" Margin="0">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" Click="btnLog_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="FileDocument" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+                <ListViewItem HorizontalAlignment="Center" Margin="0 10">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" Click="btnConfig_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="Cog" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+                <ListViewItem HorizontalAlignment="Center" Margin="0 60 0 0">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" x:Name="btnExit" Click="btnExit_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="ExitToApp" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+            </ListView>
+        </Grid>
 
         <Frame Grid.Column="1" x:Name="navframe" NavigationUIVisibility="Hidden" Background="#e9ecef"/>
     </Grid>

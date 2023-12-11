@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasySave\EasySave.csproj" />
-	<Folder Include="CustomControl\" />  
+    <ProjectReference Include="..\EasySave\EasySave.csproj" />  
   </ItemGroup>
 
   <ItemGroup>

@@ -107,6 +107,7 @@ public class TaskModel : TaskEntity
         SourcePath = taskSourcePath;
         DestPath = taskDestPath;
         Type = taskType;
+        State = StateType.Inactive;
         
         UpdateTasksList();
 

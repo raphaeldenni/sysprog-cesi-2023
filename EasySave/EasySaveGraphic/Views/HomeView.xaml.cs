@@ -31,14 +31,18 @@ namespace EasySaveGraphic.Views
 
         public HomeView()
         {
-            InitializeComponent();
             StartClock();
 
             HomeViewModel = new HomeViewModel();
-            Tasks = HomeViewModel.GetAllTasks();
+            Tasks = HomeViewModel.GetAllTasks(null);
             Lang = HomeViewModel.ConfigModel.Config.Language;
+            HomeViewModel.NotifyTaskUpdated += (updatedTask, taskIndex) =>
+            {
+                UpdateTasksListWhenStart(updatedTask, taskIndex);
+            };
 
             DataContext = this;
+            InitializeComponent();
         }
 
         private void StartClock() 
@@ -68,7 +72,7 @@ namespace EasySaveGraphic.Views
             if (result)
             {
                 MessageBox.Show("Tasks deleted");
-                UpdateTasksList();
+                UpdateTasksList(null);
             } else
             {
                 MessageBox.Show("Neuille");
@@ -78,7 +82,7 @@ namespace EasySaveGraphic.Views
 
         private void Button_Start_Click(object sender, RoutedEventArgs e)
         {
-
+            HomeViewModel.StartSelectedTasks(GetCheckedTasks());
         }
 
         private void Button_Modify_Click(object sender, RoutedEventArgs e)
@@ -105,10 +109,21 @@ namespace EasySaveGraphic.Views
             }
         }
 
-        private void UpdateTasksList()
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Tasks = HomeViewModel.GetAllTasks();
+            UpdateTasksList(SearchTextBox.Text);
+        }
+
+        private void UpdateTasksList(string? search)
+        {
+            Tasks = HomeViewModel.GetAllTasks(search);
             taskListView.ItemsSource = Tasks;
+        }
+
+        private void UpdateTasksListWhenStart(TaskEntity task, int taskIndex)
+        {
+            Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
+            taskListView.Items.Refresh(); // Rafraîchit la vue pour refléter les modifications
         }
     }
 }

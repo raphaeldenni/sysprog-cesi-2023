@@ -6,16 +6,20 @@
       xmlns:local="clr-namespace:EasySaveGraphic.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ModifyView">
+      Title="ModifyView" Cursor="">
 
     <Grid>
-        <Button Content="Apply" HorizontalAlignment="Left" Margin="639,380,0,0" VerticalAlignment="Top" Click="Button_Apply_Click"/>
-        <TextBox Name="NameTextBox" HorizontalAlignment="Left" Margin="110,183,0,0" TextWrapping="Wrap" Text="Name" VerticalAlignment="Top" Width="120"/>
-        <ComboBox Name="TypeComboBox" HorizontalAlignment="Left" Margin="144,281,0,0" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="SourceTextBox" HorizontalAlignment="Left" Margin="400,120,0,0" TextWrapping="Wrap" Text="Source" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="DestTextBox" HorizontalAlignment="Left" Margin="377,183,0,0" TextWrapping="Wrap" Text="Dest" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Go Back" HorizontalAlignment="Left" Margin="144,412,0,0" VerticalAlignment="Top" Click="Button_GoBack_Click" Cursor="Hand"/>
-        <Button Content="..." HorizontalAlignment="Left" Margin="437,380,0,0" VerticalAlignment="Top" Click="Button_Source_Click"/>
-        <Button Content="..." HorizontalAlignment="Left" Margin="517,328,0,0" VerticalAlignment="Top" Click="Button_Dest_Click"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Apply" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,25,25" Click="Button_Apply_Click" Grid.Column="1" Height="32" Width="69" Grid.Row="1"/>
+        <TextBox Name="NameTextBox" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Text="Name" Width="120" Height="25" Grid.RowSpan="2"/>
+        <ComboBox Name="TypeComboBox" HorizontalAlignment="Left" Margin="144,93,0,0" VerticalAlignment="Top" Width="120" Height="25" Grid.Row="1"/>
+        <TextBox Name="SourceTextBox" HorizontalAlignment="Left" Margin="97,120,0,0" TextWrapping="Wrap" Text="Source" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="25"/>
+        <TextBox Name="DestTextBox" HorizontalAlignment="Left" Margin="74,183,0,0" TextWrapping="Wrap" Text="Dest" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="25" Grid.RowSpan="2"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="25,0,0,25" VerticalAlignment="Bottom" Click="Button_GoBack_Click" Cursor="Hand" Height="32" Width="84" Grid.Row="1"/>
+        <Button Content="..." HorizontalAlignment="Left" Margin="240,132,0,0" VerticalAlignment="Top" Click="Button_Source_Click" Grid.Column="1" Height="32" Width="42"/>
+        <Button Content="..." HorizontalAlignment="Left" Margin="214,186,0,0" VerticalAlignment="Top" Click="Button_Dest_Click" Grid.Column="1" Height="32" Width="42"/>
     </Grid>
 </Page>

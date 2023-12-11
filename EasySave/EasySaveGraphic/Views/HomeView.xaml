@@ -18,7 +18,7 @@
         <Label Name="DigitalClockHour" HorizontalAlignment="Right" Margin="0,-25,25,0" VerticalAlignment="Center" FontSize="48" FontWeight="Bold"/>
         <Label Name="DigitalClockDay" HorizontalAlignment="Right" Margin="0,50,25,0" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
         <ProgressBar Grid.Row="0" VerticalAlignment="Bottom"/>
-        <TextBox VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Width="175" Margin="25,0,0,0"/>
+        <TextBox Name="SearchTextBox" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Width="175" Margin="25,0,0,0" TextChanged="SearchTextBox_TextChanged"/>
         <Button Content="..." VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Height="25" Margin="225,0,0,0" FontSize="8"/>
         <Button Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" Width="80" Margin="0,0,25,0" Click="Button_Delete_Click"/>
         <Button Content="Modify" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" Width="80" Margin="0,0,125,0" Click="Button_Modify_Click"/>
@@ -34,15 +34,33 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                    <GridViewColumn Header="State" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="1" CornerRadius="5" Padding="5">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Red" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding State}" Value="Active">
+                                                    <Setter Property="Background" Value="Green" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Foreground="White" Text="{Binding State}" />
+                                </Border>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Task" DisplayMemberBinding="{Binding Name}" Width="100"/>
                     <GridViewColumn Header="Source" DisplayMemberBinding="{Binding SourcePath}" Width="200"/>
                     <GridViewColumn Header="Destination" DisplayMemberBinding="{Binding DestPath}" Width="200"/>
                     <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" Width="150"/>
-                    <GridViewColumn Header="Loading" Width="120"/>
-                    <GridViewColumn Header="Select" Width="50">
+                    <GridViewColumn Width="50">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ProgressBar x:Name="DeterminateCircularProgress" IsIndeterminate="True" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" />
+                                <ProgressBar x:Name="DeterminateCircularProgress" IsIndeterminate="False" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="{Binding Loading}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
