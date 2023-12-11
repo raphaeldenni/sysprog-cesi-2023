@@ -120,6 +120,10 @@ public class CopyModel
         {
             var sourceDirectory = Path.Combine(SourcePath, directory.Key);
             var destDirectory = Path.Combine(DestPath, directory.Key);
+            
+            var tempDestDirectory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
+                ? ".\\temp\\"
+                : "./temp/";
 
             if (!Directory.Exists(destDirectory))
                 Directory.CreateDirectory(destDirectory);
@@ -129,19 +133,27 @@ public class CopyModel
                 var sourceFilePath = Path.Combine(sourceDirectory, file);
                 var destFilePath = Path.Combine(destDirectory, file);
                 
+                var tempDestFilePath = Path.Combine(tempDestDirectory, file);
+                
+                CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath}";
+                
                 // Use a stop watch to get the time it takes to copy a file
                 var stopwatch = new Stopwatch();
                 
                 stopwatch.Start();
                 
-                // Copy the file with CryptoSoft to encrypt it
-                CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {destFilePath}";
+                // Encrypt the file if it's in the list of extensions to encrypt
                 CryptoSoftProcess.Start();
                 CryptoSoftProcess.WaitForExit();
+                
+                // Move the encrypted (or not) file to the destination path
+                File.Move(tempDestFilePath, destFilePath, true);
                 
                 stopwatch.Stop();
                 
                 var copyTime = stopwatch.ElapsedMilliseconds;
+                
+                Directory.Delete(tempDestDirectory, true);
                 
                 // Update the left files number and size
                 LeftFilesNumber--;
