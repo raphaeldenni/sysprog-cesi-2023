@@ -1,4 +1,5 @@
-﻿using EasySave.Types;
+﻿using EasySave.Models;
+using EasySave.Types;
 using EasySaveGraphic.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -23,12 +24,33 @@ namespace EasySaveGraphic.Views
     public partial class ModifyView : Page
     {
         ModifyViewModel ModifyViewModel { get; set; }
-        public ModifyView()
+        public string CurrentTaskName { get; set; }
+        bool IsModification { get; set; }
+
+        public ModifyView(TaskEntity? task)
         {
             InitializeComponent();
 
             ModifyViewModel = new ModifyViewModel();
             BindComboBox();
+
+            if (task != null)
+            {
+                CurrentTaskName = task.Name;
+                IsModification = true;
+                BindModification(task);
+            } else
+            {
+                IsModification = false;
+            }
+        }
+
+        public void BindModification(TaskEntity task)
+        {
+            NameTextBox.Text = task.Name;
+            SourceTextBox.Text = task.SourcePath;
+            DestTextBox.Text = task.DestPath;
+            TypeComboBox.SelectedItem = task.Type;
         }
 
         public void BindComboBox()
@@ -71,8 +93,15 @@ namespace EasySaveGraphic.Views
         {
             try 
             {
-                ModifyViewModel.UpdateTask(NameTextBox.Text, true, null, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                if (!IsModification)
+                {
+                    ModifyViewModel.UpdateTask(NameTextBox.Text, IsModification, null, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                } else
+                {
+                    ModifyViewModel.UpdateTask(CurrentTaskName, IsModification, NameTextBox.Text, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                }
                 Button_GoBack_Click(sender, e);
+
             } catch (Exception ex)
             {
                 Exception test = ex;
