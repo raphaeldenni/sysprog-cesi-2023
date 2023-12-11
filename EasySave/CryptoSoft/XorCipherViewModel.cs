@@ -1,5 +1,3 @@
-using EasySave.Models;
-    
 namespace CryptoSoft;
 
 public class XorCipherViewModel
