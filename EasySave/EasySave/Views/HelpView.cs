@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace EasySave.Views
 {
-    public class HelpView : IView
+    internal class HelpView : IView
     {
         // Propriétés de l'interface IView
         public string? Message { get; set; }

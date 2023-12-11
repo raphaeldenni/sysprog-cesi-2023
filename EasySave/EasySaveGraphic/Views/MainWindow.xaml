@@ -1,0 +1,61 @@
+﻿<Window x:Class="EasySaveGraphic.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasySaveGraphic.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" SnapsToDevicePixels="True" Height="600" Width="1080" MinHeight="600" MinWidth="1080">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="75"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="materialDesign:PackIcon">
+                <Setter Property="Width" Value="30"></Setter>
+                <Setter Property="Height" Value="30"></Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid Grid.Column="0">
+            <ListView Margin="0 15">
+                <ListViewItem HorizontalAlignment="Center" Margin="0 10">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" Click="btnHome_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="Home" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+                <ListViewItem HorizontalAlignment="Center" Margin="0">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" Click="btnLog_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="FileDocument" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+                <ListViewItem HorizontalAlignment="Center" Margin="0 10">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" Click="btnConfig_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="Cog" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+                <ListViewItem HorizontalAlignment="Center" Margin="0 60 0 0">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Left"
+                             BorderBrush="{x:Null}" Background="{x:Null}" Foreground="Black" x:Name="btnExit" Click="btnExit_Click">
+                        <StackPanel Margin="-5">
+                            <materialDesign:PackIcon Kind="ExitToApp" />
+                        </StackPanel>
+                    </Button>
+                </ListViewItem>
+            </ListView>
+        </Grid>
+
+        <Frame Grid.Column="1" x:Name="navframe" NavigationUIVisibility="Hidden" Background="#e9ecef"/>
+    </Grid>
+</Window>

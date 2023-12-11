@@ -4,7 +4,7 @@ using EasySave.Views;
 
 namespace EasySave.ViewModels;
 
-public class ConfigViewModel
+internal class ConfigViewModel
 {
     public ConfigView ConfigView { get; set; }
 

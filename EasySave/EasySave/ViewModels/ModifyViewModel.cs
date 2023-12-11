@@ -6,7 +6,7 @@ using static EasySave.Models.TaskModel;
 
 namespace EasySave.ViewModels
 {
-    public class ModifyViewModel
+    internal class ModifyViewModel
     {
         public ModifyView ModifyView { get; set; }
         public HelpView HelpView { get; set; }

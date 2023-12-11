@@ -2,7 +2,7 @@
 
 namespace EasySave.Views;
 
- public  interface IView
+internal interface IView
 {
     
         // Properties

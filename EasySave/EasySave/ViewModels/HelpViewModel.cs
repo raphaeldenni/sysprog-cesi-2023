@@ -3,7 +3,7 @@ using EasySave.Views;
 
 namespace EasySave.ViewModels
 {
-    public class HelpViewModel
+    internal class HelpViewModel
     {
         public HelpView HelpView { get; set; }
         public ConfigModel ConfigModel { get; set; }
