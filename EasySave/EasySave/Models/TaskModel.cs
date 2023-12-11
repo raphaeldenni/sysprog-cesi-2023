@@ -115,13 +115,14 @@ public class TaskModel : TaskEntity
         // If the source path is not null, check if it exists
         if (taskSourcePath != null && !Directory.Exists(taskSourcePath)) throw new SourcePathNotFoundException();
 
-        // Verify the correspondency between new task and name 
-        var sameName = TasksList.Any(task => task.Name == taskName);
+        // Verify the correspondence between new task and name 
+        var sameName = TasksList!.Any(task => task.Name == taskName);
 
         switch (isNew)
         {
             case true when sameName:
                 throw new DuplicateTaskNameException();
+            
             case false when !sameName:
                 throw new TaskNotFoundException();
         }
@@ -129,7 +130,7 @@ public class TaskModel : TaskEntity
         // Retrieve task ID
         var searchValue = isNew ? null : taskName;
 
-        Id = TasksList.FindIndex(task => task.Name == searchValue);
+        Id = TasksList!.FindIndex(task => task.Name == searchValue);
 
         if (Id >= 5) throw new TooMuchTasksException();
 
@@ -142,7 +143,7 @@ public class TaskModel : TaskEntity
         
         UpdateTasksList();
 
-        var newTask = new string[] { (Id + 1).ToString(), Name };
+        var newTask = new[] { (Id + 1).ToString()!, Name };
 
         return newTask;
     }
@@ -155,7 +156,7 @@ public class TaskModel : TaskEntity
     /// <exception cref="TaskNameNotFoundException"></exception>
     public string DeleteTask(string taskName)
     {
-        int taskId = TasksList.FindIndex(task => task.Name == taskName);
+        var taskId = TasksList!.FindIndex(task => task.Name == taskName);
 
         if (taskId == -1)
         {
@@ -200,7 +201,7 @@ public class TaskModel : TaskEntity
         FileSourcePath = taskFileSourcePath;
         FileDestPath = taskFileDestPath;
         
-        Id = TasksList.FindIndex(task => task.Name == Name);
+        Id = TasksList!.FindIndex(task => task.Name == Name);
         if (Id == -1) return;
         
         UpdateTasksList();
@@ -211,7 +212,7 @@ public class TaskModel : TaskEntity
     /// </summary>
     private void UpdateTasksList()
     {
-        var task = TasksList[Id.Value];
+        var task = TasksList![Id!.Value];
         
         UpdateTaskProperties(task);
         UpdateStateFile(TasksList);
