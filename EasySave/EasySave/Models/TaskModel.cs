@@ -48,10 +48,6 @@ public class TaskModel : TaskEntity
     {
     }
 
-    public class TooMuchTasksException : Exception
-    {
-    }
-
     public class TaskNameNotFoundException : Exception
     {
     }
@@ -81,7 +77,7 @@ public class TaskModel : TaskEntity
     private void UpdateStateFile(List<TaskEntity>? tasksList)
     {
         // If tasksList is null, create a default list
-        TasksList = tasksList ?? Enumerable.Range(0, 5).Select(i => new TaskEntity { Id = i }).ToList();
+        TasksList = tasksList ?? new List<TaskEntity>();
         
         var jsonTasksList = JsonSerializer.Serialize(TasksList);
         File.WriteAllText(StateFileName, jsonTasksList);
@@ -97,6 +93,43 @@ public class TaskModel : TaskEntity
     }
     
     /// <summary>
+    /// Updates the task with the given parameters
+    /// </summary>
+    private void UpdateTasksList()
+    {
+        var task = TasksList![Id!.Value];
+        
+        UpdateTaskProperties(task);
+        UpdateStateFile(TasksList);
+    }
+    
+    /// <summary>
+    /// Copies the properties of the given task to the current task
+    /// </summary>
+    /// <param name="task"></param>
+    private void UpdateTaskProperties(TaskEntity task)
+    {
+        // If a property is null, the property is not updated
+        
+        // Task properties
+        task.Id = Id;
+        task.Name = Name;
+        task.SourcePath = SourcePath ?? task.SourcePath;
+        task.DestPath = DestPath ?? task.DestPath;
+        task.Type = Type ?? task.Type;
+        task.Timestamp ??= DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+        
+        // State properties
+        task.State = State ?? task.State;
+        task.FilesNumber = FilesNumber ?? task.FilesNumber;
+        task.FilesSize = FilesSize ?? task.FilesSize;
+        task.LeftFilesNumber = LeftFilesNumber ?? task.LeftFilesNumber;
+        task.LeftFilesSize = LeftFilesSize ?? task.LeftFilesSize;
+        task.FileSourcePath = FileSourcePath ?? task.FileSourcePath;
+        task.FileDestPath = FileDestPath ?? task.FileDestPath;
+    }
+    
+    /// <summary>
     /// Method that updates the task with the given parameters
     /// </summary>
     /// <param name="isNew"></param>
@@ -109,8 +142,14 @@ public class TaskModel : TaskEntity
     /// <exception cref="SourcePathNotFoundException"></exception>
     /// <exception cref="DuplicateTaskNameException"></exception>
     /// <exception cref="TaskNotFoundException"></exception>
-    /// <exception cref="TooMuchTasksException"></exception>
-    public string[] UpdateTask(bool isNew, string taskName, string? taskSourcePath, string? taskDestPath, BackupType? taskType, string? newTaskName)
+    public string[] UpdateTask(
+        bool isNew, 
+        string taskName, 
+        string? taskSourcePath, 
+        string? taskDestPath, 
+        BackupType? taskType, 
+        string? newTaskName
+        )
     {
         // If the source path is not null, check if it exists
         if (taskSourcePath != null && !Directory.Exists(taskSourcePath)) throw new SourcePathNotFoundException();
@@ -122,20 +161,28 @@ public class TaskModel : TaskEntity
         {
             case true when sameName:
                 throw new DuplicateTaskNameException();
+
+            case true:
+            {
+                Id = TasksList!.Count;
+                Name = taskName;
+                
+                break;
+            }
             
             case false when !sameName:
                 throw new TaskNotFoundException();
+
+            case false:
+            {
+                Id = TasksList!.FindIndex(task => task.Name == taskName);
+                Name = newTaskName ?? taskName;
+                
+                break;
+            }
         }
 
-        // Retrieve task ID
-        var searchValue = isNew ? null : taskName;
-
-        Id = TasksList!.FindIndex(task => task.Name == searchValue);
-
-        if (Id >= 5) throw new TooMuchTasksException();
-
         // Update the task
-        Name = newTaskName ?? taskName;
         SourcePath = taskSourcePath;
         DestPath = taskDestPath;
         Type = taskType;
@@ -143,9 +190,9 @@ public class TaskModel : TaskEntity
         
         UpdateTasksList();
 
-        var newTask = new[] { (Id + 1).ToString()!, Name };
+        var newTask = new[] { Id.ToString(), Name };
 
-        return newTask;
+        return newTask!;
     }
     
     /// <summary>
@@ -159,9 +206,7 @@ public class TaskModel : TaskEntity
         var taskId = TasksList!.FindIndex(task => task.Name == taskName);
 
         if (taskId == -1)
-        {
             throw new TaskNameNotFoundException();
-        }
 
         TasksList[taskId] = new TaskEntity { Id = taskId };
         UpdateStateFile(TasksList);
@@ -205,42 +250,5 @@ public class TaskModel : TaskEntity
         if (Id == -1) return;
         
         UpdateTasksList();
-    }
-    
-    /// <summary>
-    /// Updates the task with the given parameters
-    /// </summary>
-    private void UpdateTasksList()
-    {
-        var task = TasksList![Id!.Value];
-        
-        UpdateTaskProperties(task);
-        UpdateStateFile(TasksList);
-    }
-    
-    /// <summary>
-    /// Copies the properties of the given task to the current task
-    /// </summary>
-    /// <param name="task"></param>
-    private void UpdateTaskProperties(TaskEntity task)
-    {
-        // If a property is null, the property is not updated
-        
-        // Task properties
-        task.Id = Id;
-        task.Name = Name;
-        task.SourcePath = SourcePath ?? task.SourcePath;
-        task.DestPath = DestPath ?? task.DestPath;
-        task.Type = Type ?? task.Type;
-        task.Timestamp ??= DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-        
-        // State properties
-        task.State = State ?? task.State;
-        task.FilesNumber = FilesNumber ?? task.FilesNumber;
-        task.FilesSize = FilesSize ?? task.FilesSize;
-        task.LeftFilesNumber = LeftFilesNumber ?? task.LeftFilesNumber;
-        task.LeftFilesSize = LeftFilesSize ?? task.LeftFilesSize;
-        task.FileSourcePath = FileSourcePath ?? task.FileSourcePath;
-        task.FileDestPath = FileDestPath ?? task.FileDestPath;
     }
 }
