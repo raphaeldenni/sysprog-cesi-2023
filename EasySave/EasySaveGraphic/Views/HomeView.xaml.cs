@@ -1,6 +1,7 @@
 ﻿using EasySave.Models;
 using EasySave.Types;
 using EasySaveGraphic.ViewModels;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,6 +30,8 @@ namespace EasySaveGraphic.Views
         public List<TaskEntity> Tasks { get; set; }
         public LangType Lang { get; set; }
 
+
+
         public HomeView()
         {
             StartClock();
@@ -45,7 +48,7 @@ namespace EasySaveGraphic.Views
             InitializeComponent();
         }
 
-        private void StartClock() 
+        private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -73,11 +76,12 @@ namespace EasySaveGraphic.Views
             {
                 MessageBox.Show("Tasks deleted");
                 UpdateTasksList(null);
-            } else
+            }
+            else
             {
                 MessageBox.Show("Neuille");
             }
-            
+
         }
 
         private void Button_Start_Click(object sender, RoutedEventArgs e)
@@ -125,12 +129,26 @@ namespace EasySaveGraphic.Views
             Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
             taskListView.Items.Refresh(); // Rafraîchit la vue pour refléter les modifications
         }
-
-        private void ClosePopupButton_Click(object sender, RoutedEventArgs e)
+        private void Button_Section_Click(object sender, RoutedEventArgs e)
         {
-            // Code pour fermer la popup
-            PopupBox.IsPopupOpen = false;
+            // Ouvrez la Popup lorsque le bouton est cliqué
+            myPopup.IsPopupOpen = true;
         }
+
+        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+        {
+            // Fermez la popup lorsque le bouton est cliqué
+            myPopup.IsPopupOpen = false;
+
+            //  accéder au texte saisi dans le champ de texte si nécessaire
+            string enteredText = popupTextBox.Text;
+        }
+        private void PopupTextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            // Empêcher la propagation de l'événement pour éviter la fermeture automatique de la PopupBox
+            e.Handled = true;
+        }
+
 
     }
 }
