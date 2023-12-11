@@ -24,6 +24,13 @@ public class CopyModel
     private Process CryptoSoftProcess { get; }
 
     // Constructors
+    
+    /// <summary>
+    /// CopyModel constructor
+    /// </summary>
+    /// <param name="sourcePath"></param>
+    /// <param name="destPath"></param>
+    /// <param name="type"></param>
     public CopyModel(string sourcePath, string destPath, BackupType type)
     {
         // Task properties
@@ -35,6 +42,8 @@ public class CopyModel
         
         DirectoryStructure = new Dictionary<string, List<string>>();
         
+        // CryptoSoft process is used to encrypt the files.
+        // Here we set the path to the executable depending on the OS.
         CryptoSoftProcess = new Process();
         CryptoSoftProcess.StartInfo.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
             ? ".\\CryptoSoft.exe" 
@@ -44,6 +53,11 @@ public class CopyModel
     }
 
     // Methods
+    
+    /// <summary>
+    /// Check if the source and destination paths exist
+    /// </summary>
+    /// <exception cref="DirectoryNotFoundException"></exception>
     private void CheckFiles()
     {
         if (!Directory.Exists(SourcePath) || !Directory.Exists(DestPath))
@@ -52,6 +66,12 @@ public class CopyModel
         BuildDirectoryStructure(SourcePath, SourcePath);
     }
     
+    /// <summary>
+    /// Check if the file has been modified since the last backup
+    /// </summary>
+    /// <param name="filePath"></param>
+    /// <param name="relativePath"></param>
+    /// <returns></returns>
     private bool IsFileModified(string filePath, string relativePath)
     {
         var fileName = Path.GetFileName(filePath);
@@ -59,18 +79,22 @@ public class CopyModel
 
         return !File.Exists(destFilePath) || File.GetLastWriteTime(filePath) > File.GetLastWriteTime(destFilePath);
     }
-
+    
+    /// <summary>
+    /// Build the directory structure of the source path
+    /// </summary>
+    /// <param name="currentDirectory"></param>
+    /// <param name="rootDirectory"></param>
     private void BuildDirectoryStructure(string currentDirectory, string rootDirectory)
     {
         var relativePath = currentDirectory.Substring(rootDirectory.Length).TrimStart('\\');
-        var currentDirectoryComplete = Directory.GetFiles(currentDirectory);
         
         // If the current directories structure doesn't exist in DirectoryStructure, create it
         if (!DirectoryStructure.ContainsKey(relativePath))
             DirectoryStructure[relativePath] = new List<string>();
         
         // In differential save, keep in memory the last used file
-        foreach (var file in currentDirectoryComplete)
+        foreach (var file in Directory.GetFiles(currentDirectory))
         {
             if (Type != BackupType.Complete && !IsFileModified(file, relativePath)) continue;
 
@@ -81,12 +105,15 @@ public class CopyModel
             LeftFilesSize += new FileInfo(file).Length;
         }
 
-        foreach (var subdirectory in currentDirectoryComplete)
+        foreach (var subdirectory in Directory.GetDirectories(currentDirectory))
         {
             BuildDirectoryStructure(subdirectory, rootDirectory);
         }
     }
-
+    
+    /// <summary>
+    /// Copy the files from the source path to the destination path and encrypt them
+    /// </summary>
     public void CopyFiles()
     {
         foreach (var directory in DirectoryStructure)
@@ -118,6 +145,7 @@ public class CopyModel
                 CryptoSoftProcess.Start();
                 CryptoSoftProcess.WaitForExit();
                 
+                // Update the left files number and size
                 LeftFilesNumber--;
                 LeftFilesSize -= new FileInfo(sourceFilePath).Length;
                 
