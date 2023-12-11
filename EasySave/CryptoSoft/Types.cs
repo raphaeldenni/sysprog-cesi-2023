@@ -1,13 +1,12 @@
-namespace CryptoSoft
+namespace CryptoSoft;
+
+public enum LogType
 {
-    public enum LogType
-    {
-        Xml,
-        Json,
-    }
-    public enum LangType
-    {
-        En,
-        Fr,
-    }
+    Xml,
+    Json,
+}
+public enum LangType
+{
+    En,
+    Fr,
 }

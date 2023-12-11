@@ -1,63 +1,62 @@
 ﻿using System.Text.Json;
 
-namespace CryptoSoft
+namespace CryptoSoft;
+
+public class ConfigEntity 
 {
-    public class ConfigEntity 
-    {
-        public LogType LogExtension { get; set; }
-        public LangType Language { get; set; }
+    public LogType LogExtension { get; set; }
+    public LangType Language { get; set; }
         
-        public string? Key { get; set; }
+    public string? Key { get; set; }
+}
+
+public class ConfigModel
+{
+    private static string ConfigFileName => "config.json";
+    public ConfigEntity? Config { get; private set; }
+
+    public ConfigModel()
+    {
+        if (!File.Exists(ConfigFileName))
+        {
+            CreateConfigFile();
+        }
+
+        PullConfigFile();
     }
 
-    public class ConfigModel
+    private void CreateConfigFile()
     {
-        private static string ConfigFileName => "config.json";
-        public ConfigEntity? Config { get; private set; }
-
-        public ConfigModel()
+        var defaultConfig = new ConfigEntity
         {
-            if (!File.Exists(ConfigFileName))
-            {
-                CreateConfigFile();
-            }
+            LogExtension = LogType.Json,
+            Language = LangType.En,
+            Key = "0123456789ABCDEF"
+        };
 
-            PullConfigFile();
+        var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
+        File.WriteAllText(ConfigFileName, defaultConfigJson);
+    }
+
+    private void PullConfigFile()
+    {
+        var configJson = File.ReadAllText(ConfigFileName);
+        Config = JsonSerializer.Deserialize<ConfigEntity>(configJson);
+    }
+
+    public void UpdateConfigFile(LogType? logExtension, LangType? lang)
+    {
+        if (logExtension != null)
+        {
+            Config!.LogExtension = (LogType)logExtension;
         }
 
-        private void CreateConfigFile()
+        if (lang != null)
         {
-            var defaultConfig = new ConfigEntity
-            {
-                LogExtension = LogType.Json,
-                Language = LangType.En,
-                Key = "0123456789ABCDEF"
-            };
-
-            var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
-            File.WriteAllText(ConfigFileName, defaultConfigJson);
+            Config!.Language = (LangType)lang;
         }
 
-        private void PullConfigFile()
-        {
-            var configJson = File.ReadAllText(ConfigFileName);
-            Config = JsonSerializer.Deserialize<ConfigEntity>(configJson);
-        }
-
-        public void UpdateConfigFile(LogType? logExtension, LangType? lang)
-        {
-            if (logExtension != null)
-            {
-                Config!.LogExtension = (LogType)logExtension;
-            }
-
-            if (lang != null)
-            {
-                Config!.Language = (LangType)lang;
-            }
-
-            var updatedConfigJson = JsonSerializer.Serialize(Config);
-            File.WriteAllText(ConfigFileName, updatedConfigJson);
-        }
+        var updatedConfigJson = JsonSerializer.Serialize(Config);
+        File.WriteAllText(ConfigFileName, updatedConfigJson);
     }
 }
