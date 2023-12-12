@@ -38,8 +38,8 @@ public class ConfigModel
         {
             LogExtension = LogType.Json,
             Language = LangType.En,
-            Key = "0123456789ABCDEF",
-            ExtensionsToEncrypt = new[] { ".txt", ".docx", ".doc", ".pdf", ".xlsx", ".xls" }
+            Key = "",
+            ExtensionsToEncrypt = new[] { "" }
         };
 
         var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
