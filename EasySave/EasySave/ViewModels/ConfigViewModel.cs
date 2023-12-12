@@ -78,4 +78,19 @@ internal class ConfigViewModel
 
         ConfigView.DisplayMessage();
     }
+
+    public void UpdateKey(string key)
+    {
+        ConfigModel.UpdateConfigFile(null, null, key, null);
+        ConfigView.SuccessfulKey();
+        ConfigView.DisplayMessage();
+    }
+
+    public void UpdateExtensionsToEncrypt(string extensionsToEncrypt)
+    {
+        string[] extensions = extensionsToEncrypt.Split(',');
+        ConfigModel.UpdateConfigFile(null, null, null, extensions);
+        ConfigView.SuccessfulExtensionsToEncrypt();
+        ConfigView.DisplayMessage();
+    }
 }
