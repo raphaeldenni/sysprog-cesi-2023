@@ -63,4 +63,10 @@
     <data name="Language" xml:space="preserve">
         <value>Langue</value>
     </data>
+    <data name="Key" xml:space="preserve">
+        <value>Clef</value>
+    </data>
+    <data name="Extensions" xml:space="preserve">
+        <value>Extensions de fichiers à chiffrer</value>
+    </data>
 </root>

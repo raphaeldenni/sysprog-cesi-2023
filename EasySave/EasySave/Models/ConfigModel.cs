@@ -71,7 +71,7 @@ public class ConfigModel
     /// </summary>
     /// <param name="logExtension"></param>
     /// <param name="lang"></param>
-    public void UpdateConfigFile(LogType? logExtension, LangType? lang)
+    public void UpdateConfigFile(LogType? logExtension, LangType? lang, string? key, string[]? extensions)
     {
         if (logExtension != null)
         {
@@ -81,6 +81,16 @@ public class ConfigModel
         if (lang != null)
         {
             Config!.Language = (LangType)lang;
+        }
+
+        if (key != null)
+        {
+            Config!.Key = key;
+        }
+
+        if (extensions != null)
+        {
+            Config!.ExtensionsToEncrypt = extensions;
         }
 
         var updatedConfigJson = JsonSerializer.Serialize(Config);
