@@ -21,32 +21,28 @@
         <Label Name="DigitalClockDay" HorizontalAlignment="Right" Margin="0,50,25,0" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
         <ProgressBar Grid.Row="0" VerticalAlignment="Bottom"/>
         <TextBox Name="SearchTextBox" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Width="175" Margin="25,0,0,0" TextChanged="SearchTextBox_TextChanged"/>
-        <!-- pop up material design de nom myPopup -->
-        <materialDesign:PopupBox x:Name="myPopup" IsPopupOpen="False" Margin="244,27,0,29" Grid.Row="1">
-            <materialDesign:PopupBox.InputBindings>
-                <MouseBinding Gesture="LeftClick" Command="{Binding OpenPopupCommand}" />
-            </materialDesign:PopupBox.InputBindings>
-            <Border Background="White" BorderThickness="1">
+
+        <materialDesign:DialogHost x:Name="myDialogHost" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
+            <Button Content="Section" VerticalAlignment="Center" HorizontalAlignment="Left" Height="25" Margin="225,0,0,0" FontSize="8" Click="Button_Section_Click"/>
+
+            <materialDesign:DialogHost.DialogContent>
                 <StackPanel Margin="10">
-                    <!-- Première ligne avec le titre "ID" et un TextBox -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="ID " VerticalAlignment="Center"/>
-                        <TextBox x:Name="idTextBox" Width="100" Height="30" Margin="0,0,10,0"/>
+                    <TextBlock Text="ID" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16" Margin="0,0,0,10" />
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBox x:Name="textBox1" Width="100" Height="30" Margin="0,0,5,10" Text="{Binding Path=textBox1Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="à" VerticalAlignment="Center" FontSize="16" Margin="0,0,0,10" />
+                        <TextBox x:Name="textBox2" Width="100" Height="30" Margin="5,0,0,10" Text="{Binding Path=textBox2Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
-                    <!-- Deuxième ligne avec la lettre "à" au milieu -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                        <TextBlock Text="à" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="OK" Width="75" Height="30" Command="{Binding YourOkCommand}" CommandParameter="{Binding ElementName=myDialogHost}" Margin="0,0,5,0" />
+                        <Button Content="Fermer" Width="75" Height="30" Command="{Binding CloseDialogCommand}" Margin="5,0,0,0" />
+
                     </StackPanel>
-                    <!-- Troisième ligne avec un autre TextBox -->
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text=" " VerticalAlignment="Center"/>
-                        <TextBox x:Name="popupTextBox" Width="100" Height="30" Margin="0,0,0,10"/>
-                    </StackPanel>
-                    <!-- Bouton pour fermer la popup -->
-                    <Button Content="Fermer" Width="75" Height="30" HorizontalAlignment="Right" Command="{Binding ClosePopupCommand}" />
                 </StackPanel>
-            </Border>
-        </materialDesign:PopupBox>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
 
 
 

@@ -26,6 +26,10 @@ namespace EasySaveGraphic.Views
     public partial class HomeView : Page
     {
 
+        private string textBox1Value;
+        private string textBox2Value;
+
+
         internal HomeViewModel HomeViewModel { get; set; }
         public List<TaskEntity> Tasks { get; set; }
         public LangType Lang { get; set; }
@@ -129,26 +133,72 @@ namespace EasySaveGraphic.Views
             Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
             taskListView.Items.Refresh(); // Rafraîchit la vue pour refléter les modifications
         }
+
         private void Button_Section_Click(object sender, RoutedEventArgs e)
         {
-            // Ouvrez la Popup lorsque le bouton est cliqué
-            myPopup.IsPopupOpen = true;
-        }
+            // Réinitialiser les TextBox avec les valeurs précédentes s'il y en a
+            textBox1.Text = textBox1Value;
+            textBox2.Text = textBox2Value;
 
-        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+            myDialogHost.IsOpen = true;
+        }
+        public class RelayCommand : ICommand
         {
-            // Fermez la popup lorsque le bouton est cliqué
-            myPopup.IsPopupOpen = false;
+            private readonly Action<object> _execute;
+            private readonly Predicate<object> _canExecute;
 
-            //  accéder au texte saisi dans le champ de texte si nécessaire
-            string enteredText = popupTextBox.Text;
+            public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+            {
+                _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+                _canExecute = canExecute;
+            }
+
+            public event EventHandler CanExecuteChanged
+            {
+                add { CommandManager.RequerySuggested += value; }
+                remove { CommandManager.RequerySuggested -= value; }
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return _canExecute == null || _canExecute(parameter);
+            }
+
+            public void Execute(object parameter)
+            {
+                _execute(parameter);
+            }
+
         }
-        private void PopupTextBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+
+        public ICommand YourOkCommand
         {
-            // Empêcher la propagation de l'événement pour éviter la fermeture automatique de la PopupBox
-            e.Handled = true;
+            get
+            {
+                return new RelayCommand((parameter) =>
+                {
+                    // Sauvegarder les valeurs des TextBox
+                    textBox1Value = textBox1.Text;
+                    textBox2Value = textBox2.Text;
+
+                    // Fermer le DialogHost
+                    var dialogHost = (DialogHost)parameter;
+                    DialogHost.CloseDialogCommand.Execute(null, dialogHost);
+                });
+            }
         }
 
-
+        public ICommand CloseDialogCommand
+        {
+            get
+            {
+                return new RelayCommand((parameter) =>
+                {
+                    // Fermer le DialogHost
+                    var dialogHost = (DialogHost)parameter;
+                    DialogHost.CloseDialogCommand.Execute(null, dialogHost);
+                });
+            }
+        }
     }
 }
