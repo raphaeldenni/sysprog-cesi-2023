@@ -14,6 +14,8 @@ public class ConfigEntity
 public class ConfigModel
 {
     private const string ConfigFileName = "config.json";
+    private string ConfigFilePath;
+    private string EasySaveFolderPath;
     public ConfigEntity? Config { get; private set; }
         
     /// <summary>
@@ -21,19 +23,28 @@ public class ConfigModel
     /// </summary>
     public ConfigModel()
     {
-        if (!File.Exists(ConfigFileName))
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        EasySaveFolderPath = Path.Combine(appDataPath, "EasySave");
+        ConfigFilePath = Path.Combine(EasySaveFolderPath, ConfigFileName);
+
+        if (!File.Exists(ConfigFilePath))
         {
             CreateConfigFile();
         }
 
         PullConfigFile();
     }
-        
+
     /// <summary>
     /// Creates the config file with default values
     /// </summary>
     private void CreateConfigFile()
     {
+        if (!Directory.Exists(EasySaveFolderPath))
+        {
+            Directory.CreateDirectory(EasySaveFolderPath);
+        }
+
         var defaultConfig = new ConfigEntity
         {
             LogExtension = LogType.Json,
@@ -43,15 +54,15 @@ public class ConfigModel
         };
 
         var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
-        File.WriteAllText(ConfigFileName, defaultConfigJson);
+        File.WriteAllText(ConfigFilePath, defaultConfigJson);
     }
-        
+
     /// <summary>
     /// Pulls the config file and stores it in the Config property
     /// </summary>
     private void PullConfigFile()
     {
-        var configJson = File.ReadAllText(ConfigFileName);
+        var configJson = File.ReadAllText(ConfigFilePath);
         Config = JsonSerializer.Deserialize<ConfigEntity>(configJson);
     }
         
@@ -73,6 +84,6 @@ public class ConfigModel
         }
 
         var updatedConfigJson = JsonSerializer.Serialize(Config);
-        File.WriteAllText(ConfigFileName, updatedConfigJson);
+        File.WriteAllText(ConfigFilePath, updatedConfigJson);
     }
 }

@@ -46,12 +46,14 @@ public class LogModel
     {
         // Set log file properties
         LogType = logType;
-        LogFileName = "log" 
-                      + string.Format(LogFileNameFormat, taskName, DateTime.Now) 
+        LogFileName = string.Format(LogFileNameFormat, "log", DateTime.Now) 
                       + "." 
                       + LogType.ToString().ToLower();
-            
-        LogFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LogFolderName);
+
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        string easySaveFolderPath = Path.Combine(appDataPath, "EasySave");
+
+        LogFolderPath = Path.Combine(easySaveFolderPath, LogFolderName);
         LogFile = Path.Combine(LogFolderPath, LogFileName);
         
         if (!Directory.Exists(LogFolderPath))
