@@ -56,13 +56,13 @@ public class CopyModel
         
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            CryptoSoftProcess.StartInfo.FileName = ".\\CryptoSoft.exe";
-            TempDestDirectory = ".\\temp\\";
+            CryptoSoftProcess.StartInfo.FileName = @".\CryptoSoft.exe";
+            TempDestDirectory = @".\temp\";
         }
         else
         {
             CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
-            TempDestDirectory = "./temp/";
+            TempDestDirectory = @"./temp/";
         }
         
         DirectoryStructure = new Dictionary<string, List<string>>();
@@ -147,10 +147,6 @@ public class CopyModel
                 var sourceFilePath = Path.Combine(sourceDirectory, file);
                 var destFilePath = Path.Combine(destDirectory, file);
                 
-                var tempDestFilePath = Path.Combine(TempDestDirectory, file);
-                
-                CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath} {Key}";
-                
                 // Use a stop watch to get the time it takes to copy a file
                 var stopwatch = new Stopwatch();
                 
@@ -159,10 +155,17 @@ public class CopyModel
                 // If the file extension is in the list of extensions to encrypt, encrypt it
                 if (ExtensionsToEncrypt.Contains(Path.GetExtension(file)))
                 {
+                    Directory.CreateDirectory(TempDestDirectory);
+
+                    var tempDestFilePath = Path.Combine(TempDestDirectory, file);
+
+                    CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath} {Key}";
+
                     CryptoSoftProcess.Start();
                     CryptoSoftProcess.WaitForExit();
                     
                     File.Move(tempDestFilePath, destFilePath, true);
+                    Directory.Delete(TempDestDirectory, true);
                 }
                 else
                 {
@@ -172,9 +175,7 @@ public class CopyModel
                 stopwatch.Stop();
                 
                 var copyTime = stopwatch.ElapsedMilliseconds;
-                
-                Directory.Delete(TempDestDirectory, true);
-                
+                                
                 // Update the left files number and size
                 LeftFilesNumber--;
                 LeftFilesSize -= new FileInfo(sourceFilePath).Length;
