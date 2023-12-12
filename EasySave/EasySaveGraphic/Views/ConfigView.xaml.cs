@@ -48,7 +48,6 @@ namespace EasySaveGraphic.Views
             try
             {
                 ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text));
-                MessageBox.Show("Config updated");
             }
             catch (Exception ex)
             {

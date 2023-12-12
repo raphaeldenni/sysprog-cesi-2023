@@ -89,11 +89,16 @@ namespace EasySaveGraphic.Views
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
 
-            // Vérifier si le NavigationService existe (il pourrait être null dans certains cas)
+            if (GetCheckedTasks().Count != 1)
+            {
+                MessageBox.Show("You can only modify one task at a time");
+                return;
+            }
+
             if (navigationService != null)
             {
-                // Naviguer vers la page ModifyView.xaml
-                navigationService.Navigate(new Uri("Views/ModifyView.xaml", UriKind.Relative));
+                ModifyView modifyView = new ModifyView(GetCheckedTasks().FirstOrDefault());
+                navigationService.Navigate(modifyView);
             }
         }
 
@@ -101,11 +106,10 @@ namespace EasySaveGraphic.Views
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
 
-            // Vérifier si le NavigationService existe (il pourrait être null dans certains cas)
             if (navigationService != null)
             {
-                // Naviguer vers la page ModifyView.xaml
-                navigationService.Navigate(new Uri("Views/ModifyView.xaml", UriKind.Relative));
+                ModifyView modifyView = new ModifyView(null);
+                navigationService.Navigate(modifyView);
             }
         }
 
@@ -123,7 +127,7 @@ namespace EasySaveGraphic.Views
         private void UpdateTasksListWhenStart(TaskEntity task, int taskIndex)
         {
             Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
-            taskListView.Items.Refresh(); // Rafraîchit la vue pour refléter les modifications
+            taskListView.Items.Refresh();
         }
     }
 }
