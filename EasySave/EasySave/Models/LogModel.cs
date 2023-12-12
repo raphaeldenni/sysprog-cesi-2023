@@ -1,6 +1,7 @@
-using System.Xml.Serialization;
 using System.Text.Json;
 using System.Xml;
+using System.Xml.Serialization;
+
 using EasySave.Types;
 
 namespace EasySave.Models;
@@ -20,11 +21,6 @@ public class LogModel
     private const string LogFileNameFormat = "{0}-{1:dd-MM-yyyy}";
     private const string LogFolderName = "Logs";
     
-    private LogType LogType { get; set; }
-    private string? LogFileName { get; set; }
-    private string? LogFolderPath { get; set; }
-    private string? LogFile { get; set;  }
-        
     /// <summary>
     /// Create a log entry in a log file depending on the log type (json or xml)
     /// </summary>
@@ -44,20 +40,19 @@ public class LogModel
         float fileTransferTime
         )
     {
-        // Set log file properties
-        LogType = logType;
-        LogFileName = string.Format(LogFileNameFormat, "log", DateTime.Now) 
-                      + "." 
-                      + LogType.ToString().ToLower();
-
-        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        string easySaveFolderPath = Path.Combine(appDataPath, "EasySave");
-
-        LogFolderPath = Path.Combine(easySaveFolderPath, LogFolderName);
-        LogFile = Path.Combine(LogFolderPath, LogFileName);
+        // Set EasySave data path
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var easySaveFolderPath = Path.Combine(appDataPath, "EasySave");
         
-        if (!Directory.Exists(LogFolderPath))
-            Directory.CreateDirectory(LogFolderPath);
+        // Set log file properties
+        var logFileExtension = "." + logType.ToString().ToLower();
+        var logFileName = string.Format(LogFileNameFormat, "log", DateTime.Now) + logFileExtension;
+            
+        var logDirectoryPath = Path.Combine(easySaveFolderPath, LogFolderName);
+        var logFilePath = Path.Combine(logDirectoryPath, logFileName);
+        
+        if (!Directory.Exists(logDirectoryPath))
+            Directory.CreateDirectory(logDirectoryPath);
         
         // Create log entry
         var newLogEntry = new LogData
@@ -71,9 +66,9 @@ public class LogModel
         };
             
         // Write log entry to log file
-        using var streamLogFile = new StreamWriter(LogFile, append: true);
+        using var streamLogFile = new StreamWriter(logFilePath, append: true);
             
-        switch (LogType) 
+        switch (logType) 
         {
             case LogType.Json:
                 var jsonData = JsonSerializer.Serialize(
