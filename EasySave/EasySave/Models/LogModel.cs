@@ -71,26 +71,45 @@ public class LogModel
         switch (logType) 
         {
             case LogType.Json:
+            {
+                var jsonSettings = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+                
                 var jsonData = JsonSerializer.Serialize(
                     newLogEntry, 
-                    new JsonSerializerOptions { WriteIndented = true }
-                    );
+                    jsonSettings
+                );
+                
                 streamLogFile.WriteLine(jsonData);
+                
+                streamLogFile.Flush();
+                streamLogFile.Close();
                     
                 break;
-            
+            }
+
             case LogType.Xml:
+            {
                 var xmlSettings = new XmlWriterSettings
                 {
-                    OmitXmlDeclaration = true
+                    Indent = true,
+                    NewLineOnAttributes = true,
+                    ConformanceLevel = ConformanceLevel.Fragment,
+                    CloseOutput = true
                 };
 
                 var xmlDoc = XmlWriter.Create(streamLogFile, xmlSettings);
 
                 var xmlSerializer = new XmlSerializer(typeof(LogData));
                 xmlSerializer.Serialize(xmlDoc, newLogEntry);
+                
+                xmlDoc.Flush();
+                xmlDoc.Close();
                     
-                break;
+                break;   
+            }
             
             default:
                 throw new ArgumentOutOfRangeException();
