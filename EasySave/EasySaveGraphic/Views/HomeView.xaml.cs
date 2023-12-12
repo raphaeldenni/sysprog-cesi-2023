@@ -106,7 +106,6 @@ namespace EasySaveGraphic.Views
         {
             NavigationService navigationService = NavigationService.GetNavigationService(this);
 
-            // Vérifier si le NavigationService existe (il pourrait être null dans certains cas)
             if (navigationService != null)
             {
                 ModifyView modifyView = new ModifyView(null);
@@ -127,10 +126,8 @@ namespace EasySaveGraphic.Views
 
         private void UpdateTasksListWhenStart(TaskEntity task, int taskIndex)
         {
-            IsHitTestVisible = false;
-            Mouse.OverrideCursor = Cursors.Wait;
             Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
-            taskListView.Items.Refresh(); // Rafraîchit la vue pour refléter les modifications
+            taskListView.Items.Refresh();
         }
     }
 }
