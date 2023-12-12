@@ -31,11 +31,15 @@ namespace EasySaveGraphic.Views
             ConfigViewModel = new ConfigViewModel();
 
             this.DataContext = ConfigViewModel.ConfigModel.Config;
-            BindComboBox();
+            BindBox();
         }
 
-        public void BindComboBox ()
+        public void BindBox ()
         {
+            ExtensionsTextBox.Text = ConfigViewModel.ConfigModel.Config.ExtensionsToEncrypt != null ? string.Join(",", ConfigViewModel.ConfigModel.Config.ExtensionsToEncrypt) : "";
+
+            KeyTextBox.Text = ConfigViewModel.ConfigModel.Config.Key;
+
             LangComboBox.SelectedItem = ConfigViewModel.ConfigModel.Config.Language.ToString();
             LangComboBox.ItemsSource = ConfigViewModel.LangTypeComboItem;
 
@@ -47,7 +51,8 @@ namespace EasySaveGraphic.Views
         {
             try
             {
-                ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text));
+                string[] extensions = ExtensionsTextBox.Text.Split(',');
+                ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text), KeyTextBox.Text, extensions);
             }
             catch (Exception ex)
             {

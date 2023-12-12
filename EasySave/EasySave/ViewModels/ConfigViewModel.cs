@@ -51,7 +51,7 @@ internal class ConfigViewModel
     { 
         if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
         {
-            ConfigModel.UpdateConfigFile(logExtensionOut, null);
+            ConfigModel.UpdateConfigFile(logExtensionOut, null, null, null);
             ConfigView.SuccessfulLogExtension(logExtensionOut);
         }
         else 
@@ -67,7 +67,7 @@ internal class ConfigViewModel
     {
         if (Enum.TryParse<LangType>(lang, out LangType langOut))
         {
-            ConfigModel.UpdateConfigFile(null, langOut);
+            ConfigModel.UpdateConfigFile(null, langOut, null, null);
             ConfigView.SuccessfulLang(langOut);
         }
         else

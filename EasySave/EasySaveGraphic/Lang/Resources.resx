@@ -63,4 +63,10 @@
     <data name="LogExtension" xml:space="preserve">
         <value>Log extension</value>
     </data>
+    <data name="Key" xml:space="preserve">
+        <value>Key</value>
+    </data>
+    <data name="Extensions" xml:space="preserve">
+        <value>Files extensions to encrypt</value>
+    </data>
 </root>
