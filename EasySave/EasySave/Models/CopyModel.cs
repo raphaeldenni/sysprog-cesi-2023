@@ -19,9 +19,14 @@ public class CopyModel
     public long LeftFilesSize { get; private set; }
     // END OF CHANGE
     
+    //// CryptoSoft properties
+    private Process CryptoSoftProcess { get; }
+    private string Key { get; }
+    private string[] ExtensionsToEncrypt { get; }
+    private string TempDestDirectory { get; }
+    
     //// Others
     private Dictionary<string, List<string>> DirectoryStructure { get; }
-    private Process CryptoSoftProcess { get; }
 
     // Constructors
     
@@ -31,7 +36,8 @@ public class CopyModel
     /// <param name="sourcePath"></param>
     /// <param name="destPath"></param>
     /// <param name="type"></param>
-    public CopyModel(string sourcePath, string destPath, BackupType type)
+    /// <param name="extensionsToEncrypt"></param>
+    public CopyModel(string sourcePath, string destPath, BackupType type, string key, string[] extensionsToEncrypt)
     {
         // Task properties
         SourcePath = sourcePath;
@@ -40,14 +46,26 @@ public class CopyModel
         LeftFilesNumber = 0;
         LeftFilesSize = 0;
         
-        DirectoryStructure = new Dictionary<string, List<string>>();
+        // CryptoSoft properties
+        Key = key;
+        ExtensionsToEncrypt = extensionsToEncrypt;
         
         // CryptoSoft process is used to encrypt the files.
         // Here we set the path to the executable depending on the OS.
         CryptoSoftProcess = new Process();
-        CryptoSoftProcess.StartInfo.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
-            ? ".\\CryptoSoft.exe" 
-            : "./CryptoSoft";
+        
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            CryptoSoftProcess.StartInfo.FileName = ".\\CryptoSoft.exe";
+            TempDestDirectory = ".\\temp\\";
+        }
+        else
+        {
+            CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
+            TempDestDirectory = "./temp/";
+        }
+        
+        DirectoryStructure = new Dictionary<string, List<string>>();
         
         CheckFiles();
     }
@@ -121,10 +139,6 @@ public class CopyModel
             var sourceDirectory = Path.Combine(SourcePath, directory.Key);
             var destDirectory = Path.Combine(DestPath, directory.Key);
             
-            var tempDestDirectory = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
-                ? ".\\temp\\"
-                : "./temp/";
-
             if (!Directory.Exists(destDirectory))
                 Directory.CreateDirectory(destDirectory);
 
@@ -133,27 +147,33 @@ public class CopyModel
                 var sourceFilePath = Path.Combine(sourceDirectory, file);
                 var destFilePath = Path.Combine(destDirectory, file);
                 
-                var tempDestFilePath = Path.Combine(tempDestDirectory, file);
+                var tempDestFilePath = Path.Combine(TempDestDirectory, file);
                 
-                CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath}";
+                CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath} {Key}";
                 
                 // Use a stop watch to get the time it takes to copy a file
                 var stopwatch = new Stopwatch();
                 
                 stopwatch.Start();
                 
-                // Encrypt the file if it's in the list of extensions to encrypt
-                CryptoSoftProcess.Start();
-                CryptoSoftProcess.WaitForExit();
-                
-                // Move the encrypted (or not) file to the destination path
-                File.Move(tempDestFilePath, destFilePath, true);
+                // If the file extension is in the list of extensions to encrypt, encrypt it
+                if (ExtensionsToEncrypt.Contains(Path.GetExtension(file)))
+                {
+                    CryptoSoftProcess.Start();
+                    CryptoSoftProcess.WaitForExit();
+                    
+                    File.Move(tempDestFilePath, destFilePath, true);
+                }
+                else
+                {
+                    File.Copy(sourceFilePath, destFilePath, true);
+                }
                 
                 stopwatch.Stop();
                 
                 var copyTime = stopwatch.ElapsedMilliseconds;
                 
-                Directory.Delete(tempDestDirectory, true);
+                Directory.Delete(TempDestDirectory, true);
                 
                 // Update the left files number and size
                 LeftFilesNumber--;

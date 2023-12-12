@@ -3,16 +3,13 @@ namespace CryptoSoft;
 public class CryptoSoftViewModel
 {
     // View and Model
-    private ConfigModel ConfigModel { get; }
     private CryptoSoftModel? CryptoSoftModel { get; }
     private CryptoSoftView CryptoSoftView { get; }
     
     // Properties
-    private string? Lang { get; }
-    private string? Key { get; }
-    private string[]? ExtensionsToEncrypt { get; }
     private string? SourcePath { get; }
     private string? DestPath { get; }
+    private string? Key { get; }
     
     // Constructor
 
@@ -22,37 +19,20 @@ public class CryptoSoftViewModel
     /// <param name="args"></param>
     public CryptoSoftViewModel(IReadOnlyList<string> args)
     {
-        ConfigModel = new ConfigModel();
-        
-        // Check if the config file is valid.   
-        if (ConfigModel.Config?.Key == null)
-        {
-            CryptoSoftView = new CryptoSoftView("en");
-            
-            CryptoSoftView.SetMessage("ConfigFileIsInvalid");
-            CryptoSoftView.DisplayMessage();
-            
-            return;
-        }
-        
-        // Set the properties according to the config file.
-        Lang = ConfigModel.Config.Language.ToString().ToLower();
-        Key = ConfigModel.Config.Key;
-        ExtensionsToEncrypt = ConfigModel.Config.ExtensionsToEncrypt ?? new []{""};
-        
         // Set the properties according to the arguments, if any.
-        if (args.Count is > 0 and < 2)
+        if (args.Count >= 3 )
         {
             SourcePath = args[0];
             DestPath = args[1];
+            Key = args[2];
         }
         else
         {
-            SourcePath = DestPath = string.Empty;
+            SourcePath = DestPath = Key = string.Empty;
         }
         
-        CryptoSoftModel = new CryptoSoftModel(SourcePath, DestPath, Key, ExtensionsToEncrypt);
-        CryptoSoftView = new CryptoSoftView(Lang);
+        CryptoSoftModel = new CryptoSoftModel(SourcePath, DestPath, Key);
+        CryptoSoftView = new CryptoSoftView();
 
         try
         {

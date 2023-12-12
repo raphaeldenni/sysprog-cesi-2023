@@ -13,7 +13,7 @@ public class ConfigEntity
 
 public class ConfigModel
 {
-    private static string ConfigFileName => "config.json";
+    private const string ConfigFileName = "config.json";
     public ConfigEntity? Config { get; private set; }
         
     /// <summary>
