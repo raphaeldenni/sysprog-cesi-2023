@@ -188,8 +188,9 @@ namespace EasySave.ViewModels
 
                 int pourcentage = (int)((initializeLeftFilesSize - TaskModel.LeftFilesSize ?? 0) / initializeLeftFilesSize * 100);
 
-                LogModel = new LogModel(ConfigModel.Config.LogExtension);
+                LogModel = new LogModel();
                 LogModel.CreateLog(
+                    ConfigModel.Config.LogExtension,
                     TaskModel.Name,
                     data[0],
                     data[1],

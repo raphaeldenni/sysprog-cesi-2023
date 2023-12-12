@@ -43,7 +43,16 @@ namespace EasySave.ViewModels
             {
                 try
                 {
-                    string[] result = TaskModel.UpdateTask(true, args[0], args[1], args[2], backupType, null);
+                    string[] result = TaskModel.UpdateTask(
+                        true, 
+                        args[0], 
+                        args[1], 
+                        args[2],
+                        backupType, 
+                        null
+                        
+                        );
+                    
                     CreateView.SuccessfulCreation(result);
                 }
                 catch (SourcePathNotFoundException)
@@ -53,10 +62,6 @@ namespace EasySave.ViewModels
                 catch (DuplicateTaskNameException)
                 {
                     CreateView.ErrorDuplicateTaskName();
-                }
-                catch (TooMuchTasksException)
-                {
-                    CreateView.ErrorTooMuchTasks();
                 }
             } 
             else 

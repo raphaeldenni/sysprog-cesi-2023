@@ -160,8 +160,9 @@ namespace EasySaveGraphic.ViewModels
 
                 NotifyTasksListUpdated(CurrentTask);
 
-                LogModel = new LogModel(ConfigModel.Config.LogExtension);
+                LogModel = new LogModel();
                 LogModel.CreateLog(
+                    ConfigModel.Config.LogExtension,
                     TaskModel.Name,
                     data[0],
                     data[1],
