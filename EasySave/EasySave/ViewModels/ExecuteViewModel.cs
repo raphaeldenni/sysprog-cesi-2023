@@ -113,7 +113,14 @@ namespace EasySave.ViewModels
                 StateType taskState = StateType.Active;
 
                 // Set copy model
-                CopyModel = new CopyModel(task.SourcePath, task.DestPath, (BackupType)taskType);
+                CopyModel = new CopyModel(
+                    task.SourcePath, 
+                    task.DestPath, 
+                    (BackupType)taskType, 
+                    ConfigModel.Config.Key,
+                    ConfigModel.Config.ExtensionsToEncrypt
+                    );
+                
                 var filesCount = CopyModel.LeftFilesNumber;
                 var filesSize = CopyModel.LeftFilesSize;
 
