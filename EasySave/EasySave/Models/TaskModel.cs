@@ -30,8 +30,10 @@ public class TaskEntity
 public class TaskModel : TaskEntity
 {
     // Properties
-    private const string StateFileName = "state.json"; 
-    
+    private const string StateFileName = "state.json";
+    private string StateFilePath;
+    private string EasySaveFolderPath;
+
     // A list that contains all the tasks from the state file
     public List<TaskEntity>? TasksList { get; private set; }
     
@@ -60,7 +62,11 @@ public class TaskModel : TaskEntity
     public TaskModel()
     {
         // If the state file doesn't exist, create a default list
-        if (!File.Exists(StateFileName))
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        EasySaveFolderPath = Path.Combine(appDataPath, "EasySave");
+        StateFilePath = Path.Combine(EasySaveFolderPath, StateFileName);
+
+        if (!File.Exists(StateFilePath))
         {
             UpdateStateFile(null); 
         }
@@ -80,7 +86,7 @@ public class TaskModel : TaskEntity
         TasksList = tasksList ?? new List<TaskEntity>();
         
         var jsonTasksList = JsonSerializer.Serialize(TasksList);
-        File.WriteAllText(StateFileName, jsonTasksList);
+        File.WriteAllText(StateFilePath, jsonTasksList);
     }
     
     /// <summary>
@@ -88,7 +94,7 @@ public class TaskModel : TaskEntity
     /// </summary>
     public void PullStateFile()
     {
-        var jsonTasksList = File.ReadAllText(StateFileName);
+        var jsonTasksList = File.ReadAllText(StateFilePath);
         TasksList = JsonSerializer.Deserialize<List<TaskEntity>>(jsonTasksList);
     }
     
