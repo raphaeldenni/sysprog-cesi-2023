@@ -57,12 +57,12 @@ public class CopyModel
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             CryptoSoftProcess.StartInfo.FileName = @".\CryptoSoft.exe";
-            TempDestDirectory = @".\temp\";
+            TempDestDirectory = @".\temp\"; 
         }
         else
         {
             CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
-            TempDestDirectory = @"./temp/";
+            TempDestDirectory = "./temp/";
         }
         
         DirectoryStructure = new Dictionary<string, List<string>>();
@@ -159,7 +159,7 @@ public class CopyModel
 
                     var tempDestFilePath = Path.Combine(TempDestDirectory, file);
 
-                    CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath} {Key}";
+                    CryptoSoftProcess.StartInfo.Arguments = $"\"{sourceFilePath}\" \"{tempDestFilePath}\" \"{Key}\"";
 
                     CryptoSoftProcess.Start();
                     CryptoSoftProcess.WaitForExit();
