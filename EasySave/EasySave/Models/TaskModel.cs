@@ -30,9 +30,9 @@ public class TaskEntity
 public class TaskModel : TaskEntity
 {
     // Properties
+    private const string EasySaveFolderName = "EasySave";
     private const string StateFileName = "state.json";
-    private string StateFilePath;
-    private string EasySaveFolderPath;
+    private string StateFilePath { get; set;  }
 
     // A list that contains all the tasks from the state file
     public List<TaskEntity>? TasksList { get; private set; }
@@ -62,9 +62,10 @@ public class TaskModel : TaskEntity
     public TaskModel()
     {
         // If the state file doesn't exist, create a default list
-        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        EasySaveFolderPath = Path.Combine(appDataPath, "EasySave");
-        StateFilePath = Path.Combine(EasySaveFolderPath, StateFileName);
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var easySaveFolderPath = Path.Combine(appDataPath, EasySaveFolderName);
+        
+        StateFilePath = Path.Combine(easySaveFolderPath, StateFileName);
 
         if (!File.Exists(StateFilePath))
         {
@@ -142,9 +143,7 @@ public class TaskModel : TaskEntity
         
         UpdateTasksList();
 
-        var newTask = new[] { (Id + 1).ToString()!, Name };
-
-        return newTask;
+        return new[] { Id.ToString()!, Name };
     }
     
     /// <summary>
@@ -240,9 +239,9 @@ public class TaskModel : TaskEntity
     /// </summary>
     private int FindNextAvailableId()
     {
-        int nextId = 0;
+        var nextId = 0;
 
-        // Trouver le plus grand ID existant
+        // Find the biggest ID available
         if (TasksList != null && TasksList.Count > 0)
         {
             nextId = TasksList.Max(task => task.Id.GetValueOrDefault()) + 1;
