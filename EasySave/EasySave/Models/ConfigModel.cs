@@ -13,9 +13,10 @@ public class ConfigEntity
 
 public class ConfigModel
 {
+    private const string EasySaveFolderName = "EasySave";
     private const string ConfigFileName = "config.json";
-    private string ConfigFilePath;
-    private string EasySaveFolderPath;
+    private string ConfigFilePath { get; set; }
+    private string EasySaveFolderPath { get; set;}
     public ConfigEntity? Config { get; private set; }
         
     /// <summary>
@@ -23,8 +24,8 @@ public class ConfigModel
     /// </summary>
     public ConfigModel()
     {
-        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        EasySaveFolderPath = Path.Combine(appDataPath, "EasySave");
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        EasySaveFolderPath = Path.Combine(appDataPath, EasySaveFolderName);
         ConfigFilePath = Path.Combine(EasySaveFolderPath, ConfigFileName);
 
         if (!File.Exists(ConfigFilePath))
@@ -65,12 +66,14 @@ public class ConfigModel
         var configJson = File.ReadAllText(ConfigFilePath);
         Config = JsonSerializer.Deserialize<ConfigEntity>(configJson);
     }
-        
+
     /// <summary>
     /// Updates the config file with the given parameters
     /// </summary>
     /// <param name="logExtension"></param>
     /// <param name="lang"></param>
+    /// <param name="key"></param>
+    /// <param name="extensions"></param>
     public void UpdateConfigFile(LogType? logExtension, LangType? lang, string? key, string[]? extensions)
     {
         if (logExtension != null)
