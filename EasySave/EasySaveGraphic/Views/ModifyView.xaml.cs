@@ -102,10 +102,9 @@ namespace EasySaveGraphic.Views
                     ModifyViewModel.UpdateTask(NameTextBox.Text, !IsModification, null, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
                 }
                 Button_GoBack_Click(sender, e);
-
             } catch (Exception ex)
             {
-                Exception test = ex;
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

@@ -132,6 +132,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Files extensions to encrypt.
         /// </summary>
         public static string Extensions {
@@ -164,6 +173,60 @@ namespace EasySaveGraphic.Lang {
         public static string LogExtension {
             get {
                 return ResourceManager.GetString("LogExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La tâche n&apos;a pas été supprimé..
+        /// </summary>
+        public static string Message_ErrorDelete {
+            get {
+                return ResourceManager.GetString("Message_ErrorDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error has occurred:.
+        /// </summary>
+        public static string Message_ErrorGeneral {
+            get {
+                return ResourceManager.GetString("Message_ErrorGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job has not been deleted..
+        /// </summary>
+        public static string Message_ErrorLog {
+            get {
+                return ResourceManager.GetString("Message_ErrorLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can only modify one job..
+        /// </summary>
+        public static string Message_ErrorOnlyOneTasks {
+            get {
+                return ResourceManager.GetString("Message_ErrorOnlyOneTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select a job..
+        /// </summary>
+        public static string Message_ErrorSelectATask {
+            get {
+                return ResourceManager.GetString("Message_ErrorSelectATask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été supprimé..
+        /// </summary>
+        public static string Message_SuccessDelete {
+            get {
+                return ResourceManager.GetString("Message_SuccessDelete", resourceCulture);
             }
         }
         
@@ -236,6 +299,15 @@ namespace EasySaveGraphic.Lang {
         public static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

@@ -87,4 +87,28 @@
     <data name="Close" xml:space="preserve">
         <value>Fermer</value>
     </data>
+    <data name="Message_ErrorLog" xml:space="preserve">
+        <value>Le dossier 'logs' n'existe pas.</value>
+    </data>
+    <data name="Message_ErrorGeneral" xml:space="preserve">
+        <value>Une erreur s'est produite :</value>
+    </data>
+    <data name="Error" xml:space="preserve">
+        <value>Erreur</value>
+    </data>
+    <data name="Message_SuccessDelete" xml:space="preserve">
+        <value>Le job a été supprimé.</value>
+    </data>
+    <data name="Message_ErrorDelete" xml:space="preserve">
+        <value>La tâche n'a pas été supprimé.</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Succès</value>
+    </data>
+    <data name="Message_ErrorOnlyOneTasks" xml:space="preserve">
+        <value>Vous pouvez modifier seulement un travail.</value>
+    </data>
+    <data name="Message_ErrorSelectATask" xml:space="preserve">
+        <value>Vous devez sélectionner un travail.</value>
+    </data>
 </root>

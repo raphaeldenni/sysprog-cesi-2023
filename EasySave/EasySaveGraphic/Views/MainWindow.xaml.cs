@@ -88,12 +88,12 @@ namespace EasySaveGraphic
                 }
                 else
                 {
-                    MessageBox.Show("Le dossier 'logs' n'existe pas.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(Lang.Resources.Message_ErrorLog, Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Une erreur s'est produite : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show( $"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

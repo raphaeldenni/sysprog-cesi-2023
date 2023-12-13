@@ -71,46 +71,73 @@ namespace EasySaveGraphic.Views
             bool result = HomeViewModel.DeleteSelectedTasks(GetCheckedTasks());
             if (result)
             {
-                MessageBox.Show("Tasks deleted");
                 UpdateTasksList(null);
+                MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorDelete, EasySaveGraphic.Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show("Neuille");
+                MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorDelete,EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK ,MessageBoxImage.Error);
             }
 
         }
 
         private void Button_Start_Click(object sender, RoutedEventArgs e)
         {
-            HomeViewModel.StartSelectedTasks(GetCheckedTasks());
+            try
+            {
+                HomeViewModel.StartSelectedTasks(GetCheckedTasks());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_Modify_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-
-            if (GetCheckedTasks().Count != 1)
+            try
             {
-                MessageBox.Show("You can only modify one task at a time");
-                return;
+                NavigationService navigationService = NavigationService.GetNavigationService(this);
+
+                if (GetCheckedTasks().Count != 1)
+                {
+                    MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorOnlyOneTasks, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                if (GetCheckedTasks().FirstOrDefault() == null)
+                {
+                    MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorSelectATask, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                if (navigationService != null)
+                {
+                    ModifyView modifyView = new ModifyView(GetCheckedTasks().FirstOrDefault());
+                    navigationService.Navigate(modifyView);
+                }
             }
-
-            if (navigationService != null)
+            catch (Exception ex)
             {
-                ModifyView modifyView = new ModifyView(GetCheckedTasks().FirstOrDefault());
-                navigationService.Navigate(modifyView);
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void Button_Create_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-
-            if (navigationService != null)
+            try
             {
-                ModifyView modifyView = new ModifyView(null);
-                navigationService.Navigate(modifyView);
+                NavigationService navigationService = NavigationService.GetNavigationService(this);
+
+                if (navigationService != null)
+                {
+                    ModifyView modifyView = new ModifyView(null);
+                    navigationService.Navigate(modifyView);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
