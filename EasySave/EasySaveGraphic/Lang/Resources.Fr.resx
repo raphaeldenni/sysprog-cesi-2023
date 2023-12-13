@@ -78,4 +78,13 @@
     <data name="Edit" xml:space="preserve">
         <value>Modification</value>
     </data>
+    <data name="To" xml:space="preserve">
+        <value>à</value>
+    </data>
+    <data name="SelectionID" xml:space="preserve">
+        <value>Sélection ID</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+        <value>Fermer</value>
+    </data>
 </root>
