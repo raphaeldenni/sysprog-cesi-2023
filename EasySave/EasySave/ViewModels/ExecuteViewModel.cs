@@ -4,7 +4,7 @@ using EasySave.Types;
 
 namespace EasySave.ViewModels
 {
-    public class ExecuteViewModel
+    internal class ExecuteViewModel
     {
         // Properties
         private float initializeLeftFilesSize = 0;
@@ -113,7 +113,14 @@ namespace EasySave.ViewModels
                 StateType taskState = StateType.Active;
 
                 // Set copy model
-                CopyModel = new CopyModel(task.SourcePath, task.DestPath, (BackupType)taskType);
+                CopyModel = new CopyModel(
+                    task.SourcePath, 
+                    task.DestPath, 
+                    (BackupType)taskType, 
+                    ConfigModel.Config.Key,
+                    ConfigModel.Config.ExtensionsToEncrypt
+                    );
+                
                 var filesCount = CopyModel.LeftFilesNumber;
                 var filesSize = CopyModel.LeftFilesSize;
 
@@ -181,8 +188,9 @@ namespace EasySave.ViewModels
 
                 int pourcentage = (int)((initializeLeftFilesSize - TaskModel.LeftFilesSize ?? 0) / initializeLeftFilesSize * 100);
 
-                LogModel = new LogModel(ConfigModel.Config.LogExtension);
+                LogModel = new LogModel();
                 LogModel.CreateLog(
+                    ConfigModel.Config.LogExtension,
                     TaskModel.Name,
                     data[0],
                     data[1],
