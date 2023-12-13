@@ -96,6 +96,8 @@ public class LogModel
                 var xmlSettings = new XmlWriterSettings
                 {
                     Indent = true,
+                    IndentChars = "\t",
+                    NewLineChars = "\n",
                     NewLineOnAttributes = true,
                     CloseOutput = true
                 };
