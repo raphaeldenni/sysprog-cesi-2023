@@ -38,6 +38,7 @@ namespace EasySaveGraphic.Views
             {
                 CurrentTaskName = task.Name;
                 IsModification = true;
+                Title.Content = Lang.Resources.Edit;
                 BindModification(task);
             } else
             {

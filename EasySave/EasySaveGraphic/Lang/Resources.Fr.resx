@@ -34,7 +34,7 @@
         <value>Lancer</value>
     </data>
     <data name="State" xml:space="preserve">
-        <value>Etat</value>
+        <value>État</value>
     </data>
     <data name="Task" xml:space="preserve">
         <value>Travail</value>
@@ -68,5 +68,14 @@
     </data>
     <data name="Extensions" xml:space="preserve">
         <value>Extensions de fichiers à chiffrer</value>
+    </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Paramètres</value>
+    </data>
+    <data name="Creation" xml:space="preserve">
+        <value>Création</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Modification</value>
     </data>
 </root>
