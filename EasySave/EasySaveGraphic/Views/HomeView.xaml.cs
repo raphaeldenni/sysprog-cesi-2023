@@ -1,6 +1,7 @@
 ﻿using EasySave.Models;
 using EasySave.Types;
 using EasySaveGraphic.ViewModels;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,7 +25,6 @@ namespace EasySaveGraphic.Views
 {
     public partial class HomeView : Page
     {
-
         internal HomeViewModel HomeViewModel { get; set; }
         public List<TaskEntity> Tasks { get; set; }
         public LangType Lang { get; set; }
@@ -45,7 +45,7 @@ namespace EasySaveGraphic.Views
             InitializeComponent();
         }
 
-        private void StartClock() 
+        private void StartClock()
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -73,11 +73,12 @@ namespace EasySaveGraphic.Views
             {
                 MessageBox.Show("Tasks deleted");
                 UpdateTasksList(null);
-            } else
+            }
+            else
             {
                 MessageBox.Show("Neuille");
             }
-            
+
         }
 
         private void Button_Start_Click(object sender, RoutedEventArgs e)
@@ -128,6 +129,49 @@ namespace EasySaveGraphic.Views
         {
             Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
             taskListView.Items.Refresh();
+        }
+
+        private void Button_Close_DialogHostSelection_Click(object sender, RoutedEventArgs e)
+        {
+            DialogHost.CloseDialogCommand.Execute(null, null);
+        }
+
+        private void Button_Ok_DialogHostSelection_Click(object sender, RoutedEventArgs e)
+        {
+            var id1Bool = int.TryParse(TextBoxID1.Text, out int id1);
+            var id2Bool = int.TryParse(TextBoxID2.Text, out int id2);
+
+            if(!id1Bool || !id2Bool)
+            {
+                foreach (var task in Tasks)
+                {
+                    task.IsChecked = false;
+                }
+
+                taskListView.ItemsSource = null;
+                taskListView.ItemsSource = Tasks;
+            }
+
+            if (id1 >= 1 && id2 <= Tasks.Count())
+            {
+                for (int currentId = id1; currentId <= id2; currentId++)
+                {
+                    Tasks[currentId - 1].IsChecked = true;
+                }
+
+                taskListView.ItemsSource = null;
+                taskListView.ItemsSource = Tasks;
+            }
+
+            DialogHost.CloseDialogCommand.Execute(null, null);
+        }
+
+        private void Button_Section_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxID1.Text = null;
+            TextBoxID2.Text = null;
+
+            SelectionDialogHost.IsOpen = true;
         }
     }
 }
