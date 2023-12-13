@@ -69,4 +69,7 @@
     <data name="Extensions" xml:space="preserve">
         <value>Extensions de fichiers à chiffrer</value>
     </data>
+    <data name="Settings" xml:space="preserve">
+        <value>Parametres</value>
+    </data>
 </root>
