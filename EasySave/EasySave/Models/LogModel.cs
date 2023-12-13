@@ -99,7 +99,9 @@ public class LogModel
                     IndentChars = "\t",
                     NewLineChars = "\n",
                     NewLineOnAttributes = true,
-                    CloseOutput = true
+                    CloseOutput = true,
+                    // If the file is empty, add the xml declaration
+                    OmitXmlDeclaration = streamLogFile.BaseStream.Length == 0 
                 };
 
                 var xmlDoc = XmlWriter.Create(streamLogFile, xmlSettings);
