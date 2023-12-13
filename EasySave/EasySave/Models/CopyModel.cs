@@ -65,6 +65,8 @@ public class CopyModel
             TempDestDirectory = "./temp/";
         }
         
+        CryptoSoftProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        
         DirectoryStructure = new Dictionary<string, List<string>>();
         
         CheckFiles();
