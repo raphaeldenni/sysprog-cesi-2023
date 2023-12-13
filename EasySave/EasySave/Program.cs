@@ -6,7 +6,7 @@ namespace EasySave
     {
         private static void Main(string[] args)
         {
-            try 
+            try
             {
                 var argsList = new List<string>(args);
                 
