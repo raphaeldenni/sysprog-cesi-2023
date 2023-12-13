@@ -12,49 +12,60 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="329*"/>
+            <ColumnDefinition Width="142"/>
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="135"/>
+            <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <Button Content="{x:Static lang:Resources.Apply}" HorizontalAlignment="Right" 
-                VerticalAlignment="Bottom" Margin="0,0,25,25" Click="Button_Apply_Click"
-                Grid.Column="1" Height="32" MinWidth="69" Grid.Row="1"/>
-        
+
+        <Label x:Name="Title" Content="{x:Static lang:Resources.Creation}" HorizontalAlignment="Left" Margin="25,0,0,0" 
+               VerticalAlignment="Center" FontSize="48" FontWeight="Bold" Height="71"/>
+
+        <ProgressBar Grid.Row="0" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Height="4"/>
+
         <TextBox Name="NameTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 materialDesign:TextFieldAssist.HasClearButton="True" Grid.Column="0"
-                 HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
-                 materialDesign:HintAssist.Hint="{x:Static lang:Resources.Name}" Grid.RowSpan="2"/>
-        
+                 materialDesign:TextFieldAssist.HasClearButton="True" Grid.Row="1" 
+                 Grid.ColumnSpan="2" VerticalAlignment="Center" 
+                 TextWrapping="Wrap" Margin="100,0,100,0" FontSize="16"
+                 materialDesign:HintAssist.Hint="{x:Static lang:Resources.Name}" Height="43"/>
+
         <ComboBox Name="TypeComboBox" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                  materialDesign:HintAssist.Hint="{x:Static lang:Resources.Type}" HorizontalAlignment="Left"
-                  Margin="144,93,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        
+                  materialDesign:HintAssist.Hint="{x:Static lang:Resources.Type}" Grid.Row="2" Grid.ColumnSpan="2" Margin="100,0,100,0" FontSize="16" Height="43"/>
+
         <TextBox Name="SourceTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  materialDesign:HintAssist.Hint="{x:Static lang:Resources.Source}"
-                 materialDesign:TextFieldAssist.HasClearButton="True" HorizontalAlignment="Left"
-                 Margin="97,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Grid.Column="1"/>
+                 materialDesign:TextFieldAssist.HasClearButton="True"
+                 Margin="100,0,100,0" FontSize="16" TextWrapping="Wrap" Grid.Row="3" VerticalAlignment="Center"
+                 Grid.ColumnSpan="2" Height="43"/>
 
-        <Button Content="..." HorizontalAlignment="Left" Margin="240,132,0,0" VerticalAlignment="Top" 
-                Click="Button_Source_Click" Grid.Column="1" Height="32" Width="42"/>
+        <Button Content="..." HorizontalAlignment="Left" VerticalAlignment="Center" 
+                Click="Button_Source_Click" Grid.Column="1" Height="32" Width="42" Grid.Row="3"/>
 
         <TextBox Name="DestTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                  materialDesign:HintAssist.Hint="{x:Static lang:Resources.Destination}" 
-                 materialDesign:TextFieldAssist.HasClearButton="True" HorizontalAlignment="Left"
-                 Margin="74,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"
-                 Grid.RowSpan="2"/>
-        
-        <Button Content="..." HorizontalAlignment="Left" Margin="214,186,0,0" VerticalAlignment="Top"
-                Click="Button_Dest_Click" Grid.Column="1" Height="32" Width="42"/>
+                 materialDesign:TextFieldAssist.HasClearButton="True"
+                 Margin="100,0,100,0" VerticalAlignment="Center" TextWrapping="Wrap" Grid.Row="4"
+                 Grid.ColumnSpan="2" FontSize="16" Height="43"/>
 
-        <Button Content="{x:Static lang:Resources.Cancel}" HorizontalAlignment="Left" Margin="25,0,0,25"
-                VerticalAlignment="Bottom" Click="Button_GoBack_Click" Cursor="Hand" Height="32" Width="84"
-                Grid.Row="1"/>
-        
+        <Button Content="..." HorizontalAlignment="Left" VerticalAlignment="Center"
+                Click="Button_Dest_Click" Grid.Column="1" Grid.Row="4" Height="32" Width="42"/>
+
+
+        <Button x:Name="cancel" Content="{x:Static lang:Resources.Cancel}" Margin="15" 
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="Button_GoBack_Click" 
+                Grid.Row="5" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
+
+        <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" 
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Apply_Click" 
+                Grid.Row="5" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
+
+
     </Grid>
 </Page>
