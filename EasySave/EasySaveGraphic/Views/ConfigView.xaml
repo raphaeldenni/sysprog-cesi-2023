@@ -11,14 +11,43 @@
       Title="ConfigView">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <ComboBox x:Name="LangComboBox" materialDesign:HintAssist.Hint="{x:Static lang:Resources.Language}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Calibri" Grid.Column="1"/>
-        <ComboBox x:Name="LogComboBox" materialDesign:HintAssist.Hint="{x:Static lang:Resources.LogExtension}" Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Calibri" Margin="0,136,0,0"/>
-        <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" Grid.Column="1" Height="32" MinWidth="69"/>
-        <TextBox x:Name="KeyTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="{x:Static lang:Resources.Key}" HorizontalAlignment="Left" Margin="273,278,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="ExtensionsTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="{x:Static lang:Resources.Extensions}" HorizontalAlignment="Left" Margin="51,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="135"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label Content="{x:Static lang:Resources.Settings}" HorizontalAlignment="Left" Margin="25,0,0,0" 
+               VerticalAlignment="Center" FontSize="48" FontWeight="Bold"/>
+
+        <ProgressBar Grid.Row="0" VerticalAlignment="Bottom"/>
+
+
+        <ComboBox x:Name="LangComboBox" materialDesign:HintAssist.Hint="{x:Static lang:Resources.Language}" 
+                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Center" FontSize="16" FontFamily="Calibri" Grid.Row="1" Margin="100,10"/>
+        
+        <ComboBox x:Name="LogComboBox" materialDesign:HintAssist.Hint="{x:Static lang:Resources.LogExtension}"
+                  Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" FontFamily="Calibri" Margin="100,10"
+                  Grid.Row="2" FontSize="16"/>
+        
+        <TextBox x:Name="KeyTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                 materialDesign:TextFieldAssist.HasClearButton="True" 
+                 materialDesign:HintAssist.Hint="{x:Static lang:Resources.Key}" 
+                 HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                 Grid.Row="3" Margin="100,10" FontSize="16"/>
+
+        <TextBox x:Name="ExtensionsTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                 materialDesign:TextFieldAssist.HasClearButton="True" 
+                 materialDesign:HintAssist.Hint="{x:Static lang:Resources.Extensions}" FontSize="16"
+                 HorizontalAlignment="Stretch" Margin="100,10" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Center"/>
+
+        <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" 
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" 
+                Grid.Row="5" Height="32" MinWidth="69"/>
     </Grid>
 </Page>
