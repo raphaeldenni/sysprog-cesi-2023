@@ -101,13 +101,16 @@ public class LogModel
                     NewLineOnAttributes = true,
                     CloseOutput = true,
                     // If the file is empty, add the xml declaration
-                    OmitXmlDeclaration = streamLogFile.BaseStream.Length == 0 
+                    OmitXmlDeclaration = streamLogFile.BaseStream.Length != 0 
                 };
 
                 var xmlDoc = XmlWriter.Create(streamLogFile, xmlSettings);
 
                 var xmlSerializer = new XmlSerializer(typeof(LogData));
                 xmlSerializer.Serialize(xmlDoc, newLogEntry);
+                
+                // Add a new line after each log entry
+                streamLogFile.WriteLine("\n");
                 
                 xmlDoc.Flush();
                 xmlDoc.Close();
