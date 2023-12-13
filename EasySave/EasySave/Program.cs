@@ -10,10 +10,7 @@ namespace EasySave
             {
                 List<string> listArgs = new List<string>(args);
 
-                for (int i = 0; i < listArgs.Count; i++)
-                {
-                    listArgs[i] = char.ToUpper(listArgs[i][0]) + listArgs[i].Substring(1).ToLower();
-                }
+                listArgs[0] = char.ToUpper(listArgs[0][0]) + listArgs[0].Substring(1).ToLower();
 
                 dynamic viewModel = null;
                 string viewModelName = listArgs[0] + "ViewModel";

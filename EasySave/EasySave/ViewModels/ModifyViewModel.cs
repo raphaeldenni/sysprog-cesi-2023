@@ -47,7 +47,15 @@ namespace EasySave.ViewModels
 
             try
             {
-                string[] result = TaskModel.UpdateTask(false, args[0], null, null, null, args[2]);
+                string[] result = TaskModel.UpdateTask(
+                    false, 
+                    args[0], 
+                    null, 
+                    null, 
+                    null, 
+                    args[2]
+                    );
+                
                 ModifyView.SuccessfulModify(result);
             }
             catch (TaskNameNotFoundException)
@@ -68,7 +76,15 @@ namespace EasySave.ViewModels
 
             try
             {
-                string[] result = TaskModel.UpdateTask(false, args[0], args[2], null, null, null);
+                string[] result = TaskModel.UpdateTask(
+                    false, 
+                    args[0], 
+                    args[2], 
+                    null, 
+                    null, 
+                    null
+                    );
+                
                 ModifyView.SuccessfulModify(result);
             }
             catch (TaskNameNotFoundException)
@@ -89,7 +105,15 @@ namespace EasySave.ViewModels
 
             try
             {
-                string[] result = TaskModel.UpdateTask(false, args[0], null, args[2], null, null);
+                string[] result = TaskModel.UpdateTask(
+                    false, 
+                    args[0], 
+                    null, 
+                    args[2], 
+                    null, 
+                    null
+                    );
+                
                 ModifyView.SuccessfulModify(result);
             }
             catch (SourcePathNotFoundException)
@@ -108,7 +132,15 @@ namespace EasySave.ViewModels
             {
                 try
                 {
-                    string[] result = TaskModel.UpdateTask(false, args[0], null, null, backupType, null);
+                    string[] result = TaskModel.UpdateTask(
+                        false, 
+                        args[0], 
+                        null, 
+                        null, 
+                        backupType, 
+                        null
+                        );
+                    
                     ModifyView.SuccessfulModify(result);
                 }
                 catch (TaskNameNotFoundException)

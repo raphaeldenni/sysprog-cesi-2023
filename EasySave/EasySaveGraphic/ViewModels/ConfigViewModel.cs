@@ -27,9 +27,9 @@ namespace EasySaveGraphic.ViewModels
             LogTypeComboItem = Enum.GetNames(typeof(LogType));
         }
 
-        public void UpdateConfigFile(LogType? logExtension, LangType? lang)
+        public void UpdateConfigFile(LogType? logExtension, LangType? lang, string? key, string[] extensions)
         {
-            ConfigModel.UpdateConfigFile(logExtension, lang);
+            ConfigModel.UpdateConfigFile(logExtension, lang, key, extensions);
         }
     }
 }

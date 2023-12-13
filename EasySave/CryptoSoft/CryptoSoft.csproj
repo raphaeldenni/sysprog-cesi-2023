@@ -6,15 +6,4 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Folder Include="ViewModels\" />
-      <Folder Include="Views\" />
-	  <Folder Include="Types\" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\CryptoSoft\CryptoSoft.csproj" />
-    </ItemGroup>
-    
 </Project>
