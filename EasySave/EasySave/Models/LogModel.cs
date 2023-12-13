@@ -18,8 +18,9 @@ public class LogData
 
 public class LogModel
 {
-    private const string LogFileNameFormat = "{0}-{1:dd-MM-yyyy}";
+    private const string EasySaveFolderName = "EasySave";
     private const string LogFolderName = "Logs";
+    private const string LogFileNameFormat = "{0}-{1:dd-MM-yyyy}";
     
     /// <summary>
     /// Create a log entry in a log file depending on the log type (json or xml)
@@ -42,12 +43,12 @@ public class LogModel
     {
         // Set EasySave data path
         var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var easySaveFolderPath = Path.Combine(appDataPath, "EasySave");
+        var easySaveFolderPath = Path.Combine(appDataPath, EasySaveFolderName);
         
         // Set log file properties
         var logFileExtension = "." + logType.ToString().ToLower();
         var logFileName = string.Format(LogFileNameFormat, "log", DateTime.Now) + logFileExtension;
-            
+        
         var logDirectoryPath = Path.Combine(easySaveFolderPath, LogFolderName);
         var logFilePath = Path.Combine(logDirectoryPath, logFileName);
         
