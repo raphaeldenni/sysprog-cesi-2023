@@ -47,7 +47,7 @@ internal class ConfigViewModel
         }
     }
 
-    public void UpdateLogextension(string logExtension)
+    public void UpdateLogExtension(string logExtension)
     { 
         if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
         {
