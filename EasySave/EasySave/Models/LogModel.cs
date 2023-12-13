@@ -97,7 +97,6 @@ public class LogModel
                 {
                     Indent = true,
                     NewLineOnAttributes = true,
-                    ConformanceLevel = ConformanceLevel.Fragment,
                     CloseOutput = true
                 };
 
