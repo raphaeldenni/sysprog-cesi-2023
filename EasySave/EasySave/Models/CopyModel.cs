@@ -29,13 +29,14 @@ public class CopyModel
     private Dictionary<string, List<string>> DirectoryStructure { get; }
 
     // Constructors
-    
+
     /// <summary>
     /// CopyModel constructor
     /// </summary>
     /// <param name="sourcePath"></param>
     /// <param name="destPath"></param>
     /// <param name="type"></param>
+    /// <param name="key"></param>
     /// <param name="extensionsToEncrypt"></param>
     public CopyModel(string sourcePath, string destPath, BackupType type, string key, string[] extensionsToEncrypt)
     {
