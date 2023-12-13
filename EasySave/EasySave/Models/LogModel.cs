@@ -67,12 +67,12 @@ public class LogModel
         };
             
         // Write log entry to log file
-        using var streamLogFile = new StreamWriter(logFilePath, append: true);
-            
         switch (logType) 
         {
             case LogType.Json:
             {
+                using var streamLogFile = new StreamWriter(logFilePath, append: true);
+                
                 var jsonSettings = new JsonSerializerOptions
                 {
                     WriteIndented = true
@@ -85,7 +85,6 @@ public class LogModel
                 
                 streamLogFile.WriteLine(jsonData);
                 
-                streamLogFile.Flush();
                 streamLogFile.Close();
                     
                 break;
@@ -93,27 +92,24 @@ public class LogModel
 
             case LogType.Xml:
             {
-                var xmlSettings = new XmlWriterSettings
+                if (!File.Exists(logFilePath))
+                    File.WriteAllText(logFilePath, "<Logs></Logs>");
+                
+                var xmlDoc = new XmlDocument();
+                xmlDoc.Load(logFilePath);
+                
+                var logEntryNode = xmlDoc.CreateElement("Log");
+                
+                var logEntryProperties = newLogEntry.GetType().GetProperties();
+                foreach (var logEntryProperty in logEntryProperties)
                 {
-                    Indent = true,
-                    IndentChars = "\t",
-                    NewLineChars = "\n",
-                    NewLineOnAttributes = true,
-                    CloseOutput = true,
-                    // If the file is empty, add the xml declaration
-                    OmitXmlDeclaration = streamLogFile.BaseStream.Length != 0 
-                };
-
-                var xmlDoc = XmlWriter.Create(streamLogFile, xmlSettings);
-
-                var xmlSerializer = new XmlSerializer(typeof(LogData));
-                xmlSerializer.Serialize(xmlDoc, newLogEntry);
+                    var logEntryPropertyNode = xmlDoc.CreateElement(logEntryProperty.Name);
+                    logEntryPropertyNode.InnerText = logEntryProperty.GetValue(newLogEntry)!.ToString()!;
+                    logEntryNode.AppendChild(logEntryPropertyNode);
+                }
                 
-                // Add a new line after each log entry
-                streamLogFile.WriteLine("\n");
-                
-                xmlDoc.Flush();
-                xmlDoc.Close();
+                xmlDoc.DocumentElement?.AppendChild(logEntryNode);
+                xmlDoc.Save(logFilePath);
                     
                 break;   
             }
