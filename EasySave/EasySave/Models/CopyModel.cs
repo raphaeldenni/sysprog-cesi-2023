@@ -67,6 +67,7 @@ public class CopyModel
         }
         
         CryptoSoftProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        CryptoSoftProcess.StartInfo.CreateNoWindow = true;
         
         DirectoryStructure = new Dictionary<string, List<string>>();
         
