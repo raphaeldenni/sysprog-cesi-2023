@@ -26,10 +26,6 @@ public class CopyModel
     private string[] ExtensionsToEncrypt { get; }
     private string TempDestDirectory { get; }
     
-    //// CryptoSoft constants
-    private const string TempDirectoryWindows = @".\CryptoSoftTemp";
-    private const string TempDirectoryLinux = "./CryptoSoftTemp";
-    
     //// Others
     private Dictionary<string, List<string>> DirectoryStructure { get; }
 
@@ -60,18 +56,16 @@ public class CopyModel
         // Here we set the path to the executable depending on the OS.
         CryptoSoftProcess = new Process();
         
-        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var easySaveFolderPath = Path.Combine(appDataPath, EasySaveFolderName);
+        var tempPath = Path.GetTempPath();
+        TempDestDirectory = Path.Combine(tempPath, EasySaveFolderName);
         
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             CryptoSoftProcess.StartInfo.FileName = @".\CryptoSoft.exe";
-            TempDestDirectory = Path.Combine(easySaveFolderPath, TempDirectoryWindows);
         }
         else
         {
             CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
-            TempDestDirectory = Path.Combine(easySaveFolderPath, TempDirectoryLinux);
         }
         
         CryptoSoftProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
