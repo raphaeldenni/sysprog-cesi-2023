@@ -36,15 +36,22 @@ namespace EasySaveGraphic.Views
 
         public void BindBox ()
         {
-            ExtensionsTextBox.Text = ConfigViewModel.ConfigModel.Config.ExtensionsToEncrypt != null ? string.Join(",", ConfigViewModel.ConfigModel.Config.ExtensionsToEncrypt) : "";
+            try
+            {
+                ExtensionsTextBox.Text = ConfigViewModel.ConfigModel.Config.ExtensionsToEncrypt != null ? string.Join(",", ConfigViewModel.ConfigModel.Config.ExtensionsToEncrypt) : "";
 
-            KeyTextBox.Text = ConfigViewModel.ConfigModel.Config.Key;
+                KeyTextBox.Text = ConfigViewModel.ConfigModel.Config.Key;
 
-            LangComboBox.SelectedItem = ConfigViewModel.ConfigModel.Config.Language.ToString();
-            LangComboBox.ItemsSource = ConfigViewModel.LangTypeComboItem;
+                LangComboBox.SelectedItem = ConfigViewModel.ConfigModel.Config.Language.ToString();
+                LangComboBox.ItemsSource = ConfigViewModel.LangTypeComboItem;
 
-            LogComboBox.SelectedItem = ConfigViewModel.ConfigModel.Config.LogExtension.ToString();
-            LogComboBox.ItemsSource = ConfigViewModel.LogTypeComboItem;
+                LogComboBox.SelectedItem = ConfigViewModel.ConfigModel.Config.LogExtension.ToString();
+                LogComboBox.ItemsSource = ConfigViewModel.LogTypeComboItem;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void apply_Click(object sender, RoutedEventArgs e)
@@ -53,10 +60,11 @@ namespace EasySaveGraphic.Views
             {
                 string[] extensions = ExtensionsTextBox.Text.Split(',');
                 ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text), KeyTextBox.Text, extensions);
+                MessageBox.Show(Lang.Resources.Message_SuccessConfig, Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

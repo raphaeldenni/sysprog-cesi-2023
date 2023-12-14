@@ -132,6 +132,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Erreur.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extensions de fichiers à chiffrer.
         /// </summary>
         internal static string Extensions {
@@ -164,6 +173,87 @@ namespace EasySaveGraphic.Lang {
         internal static string LogExtension {
             get {
                 return ResourceManager.GetString("LogExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail n&apos;a pas été supprimé..
+        /// </summary>
+        internal static string Message_ErrorDelete {
+            get {
+                return ResourceManager.GetString("Message_ErrorDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Une erreur s&apos;est produite :.
+        /// </summary>
+        internal static string Message_ErrorGeneral {
+            get {
+                return ResourceManager.GetString("Message_ErrorGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le dossier &apos;logs&apos; n&apos;existe pas..
+        /// </summary>
+        internal static string Message_ErrorLog {
+            get {
+                return ResourceManager.GetString("Message_ErrorLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous pouvez modifier seulement un travail..
+        /// </summary>
+        internal static string Message_ErrorOnlyOneTasks {
+            get {
+                return ResourceManager.GetString("Message_ErrorOnlyOneTasks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous devez sélectionner un travail..
+        /// </summary>
+        internal static string Message_ErrorSelectATask {
+            get {
+                return ResourceManager.GetString("Message_ErrorSelectATask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to La configuration a été mise à jour, merci de redémarrer l&apos;application..
+        /// </summary>
+        internal static string Message_SuccessConfig {
+            get {
+                return ResourceManager.GetString("Message_SuccessConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été créé..
+        /// </summary>
+        internal static string Message_SuccessCreate {
+            get {
+                return ResourceManager.GetString("Message_SuccessCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été supprimé..
+        /// </summary>
+        internal static string Message_SuccessDelete {
+            get {
+                return ResourceManager.GetString("Message_SuccessDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été modifié..
+        /// </summary>
+        internal static string Message_SuccessEdit {
+            get {
+                return ResourceManager.GetString("Message_SuccessEdit", resourceCulture);
             }
         }
         
@@ -236,6 +326,15 @@ namespace EasySaveGraphic.Lang {
         internal static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Succès.
+        /// </summary>
+        internal static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
             }
         }
         

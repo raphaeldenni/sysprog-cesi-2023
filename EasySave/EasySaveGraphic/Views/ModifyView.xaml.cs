@@ -48,45 +48,73 @@ namespace EasySaveGraphic.Views
 
         public void BindModification(TaskEntity task)
         {
-            NameTextBox.Text = task.Name;
-            SourceTextBox.Text = task.SourcePath;
-            DestTextBox.Text = task.DestPath;
-            TypeComboBox.SelectedItem = task.Type;
+            try
+            {
+                NameTextBox.Text = task.Name;
+                SourceTextBox.Text = task.SourcePath;
+                DestTextBox.Text = task.DestPath;
+                TypeComboBox.SelectedItem = task.Type;
+            } catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void BindComboBox()
         {
-            TypeComboBox.SelectedItem = BackupType.Complete;
-            TypeComboBox.ItemsSource = Enum.GetValues(typeof(BackupType));
+            try {
+                TypeComboBox.SelectedItem = BackupType.Complete;
+                TypeComboBox.ItemsSource = Enum.GetValues(typeof(BackupType));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_GoBack_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-
-            // Vérifier si le NavigationService existe et si la navigation arrière est possible
-            if (navigationService != null && navigationService.CanGoBack)
+            try
             {
-                // Effectuer la navigation arrière
-                navigationService.GoBack();
+                NavigationService navigationService = NavigationService.GetNavigationService(this);
+
+                if (navigationService != null && navigationService.CanGoBack)
+                {
+                    navigationService.GoBack();
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void Button_Source_Click (object sender, RoutedEventArgs e)
         {
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            if (dialog.ShowDialog().GetValueOrDefault())
+            try
             {
-                SourceTextBox.Text = dialog.SelectedPath;
+                var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+                if (dialog.ShowDialog().GetValueOrDefault())
+                {
+                    SourceTextBox.Text = dialog.SelectedPath;
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void Button_Dest_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            if (dialog.ShowDialog().GetValueOrDefault())
+            try
             {
-                DestTextBox.Text = dialog.SelectedPath;
+                var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
+                if (dialog.ShowDialog().GetValueOrDefault())
+                {
+                    DestTextBox.Text = dialog.SelectedPath;
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -97,15 +125,17 @@ namespace EasySaveGraphic.Views
                 if (IsModification)
                 {
                     ModifyViewModel.UpdateTask(CurrentTaskName, !IsModification, NameTextBox.Text, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                    Button_GoBack_Click(sender, e);
+                    MessageBox.Show(Lang.Resources.Message_SuccessEdit, Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
                 } else
                 {
                     ModifyViewModel.UpdateTask(NameTextBox.Text, !IsModification, null, SourceTextBox.Text, DestTextBox.Text, (BackupType?)Enum.Parse(typeof(BackupType), TypeComboBox.Text));
+                    Button_GoBack_Click(sender, e);
+                    MessageBox.Show(Lang.Resources.Message_SuccessCreate, Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                Button_GoBack_Click(sender, e);
-
             } catch (Exception ex)
             {
-                Exception test = ex;
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
