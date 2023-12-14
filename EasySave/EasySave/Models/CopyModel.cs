@@ -53,23 +53,20 @@ public class CopyModel
         ExtensionsToEncrypt = extensionsToEncrypt;
         
         // CryptoSoft process is used to encrypt the files.
-        // Here we set the path to the executable depending on the OS.
         CryptoSoftProcess = new Process();
         
-        var tempPath = Path.GetTempPath();
-        TempDestDirectory = Path.Combine(tempPath, EasySaveFolderName);
+        // Here we set the path to the executable depending on the OS.
+        CryptoSoftProcess.StartInfo.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
+            ? @".\CryptoSoft.exe"
+            : "./CryptoSoft";
         
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            CryptoSoftProcess.StartInfo.FileName = @".\CryptoSoft.exe";
-        }
-        else
-        {
-            CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
-        }
-        
+        // Hide the console
         CryptoSoftProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
         CryptoSoftProcess.StartInfo.CreateNoWindow = true;
+        
+        // Define the temp directory
+        var tempPath = Path.GetTempPath();
+        TempDestDirectory = Path.Combine(tempPath, EasySaveFolderName);
         
         DirectoryStructure = new Dictionary<string, List<string>>();
         
