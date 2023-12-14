@@ -97,10 +97,10 @@
         <value>Erreur</value>
     </data>
     <data name="Message_SuccessDelete" xml:space="preserve">
-        <value>Le job a été supprimé.</value>
+        <value>Le travail a été supprimé.</value>
     </data>
     <data name="Message_ErrorDelete" xml:space="preserve">
-        <value>La tâche n'a pas été supprimé.</value>
+        <value>Le travail n'a pas été supprimé.</value>
     </data>
     <data name="Success" xml:space="preserve">
         <value>Succès</value>
@@ -110,5 +110,14 @@
     </data>
     <data name="Message_ErrorSelectATask" xml:space="preserve">
         <value>Vous devez sélectionner un travail.</value>
+    </data>
+    <data name="Message_SuccessConfig" xml:space="preserve">
+        <value>La configuration a été mise à jour, merci de redémarrer l'application.</value>
+    </data>
+    <data name="Message_SuccessEdit" xml:space="preserve">
+        <value>Le travail a été modifié.</value>
+    </data>
+    <data name="Message_SuccessCreate" xml:space="preserve">
+        <value>Le travail a été créé.</value>
     </data>
 </root>

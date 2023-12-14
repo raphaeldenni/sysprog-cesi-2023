@@ -37,7 +37,7 @@
         <value>State</value>
     </data>
     <data name="Task" xml:space="preserve">
-        <value>Task</value>
+        <value>Job</value>
     </data>
     <data name="Source" xml:space="preserve">
         <value>Source</value>
@@ -91,16 +91,16 @@
         <value>Error</value>
     </data>
     <data name="Message_ErrorLog" xml:space="preserve">
-        <value>The job has not been deleted.</value>
+        <value>The 'logs' folder does not exist.</value>
     </data>
     <data name="Message_ErrorGeneral" xml:space="preserve">
         <value>An error has occurred:</value>
     </data>
     <data name="Message_SuccessDelete" xml:space="preserve">
-        <value>Le travail a été supprimé.</value>
+        <value>The job has been deleted.</value>
     </data>
     <data name="Message_ErrorDelete" xml:space="preserve">
-        <value>La tâche n'a pas été supprimé.</value>
+        <value>The job has not been deleted.</value>
     </data>
     <data name="Success" xml:space="preserve">
         <value>Success</value>
@@ -110,5 +110,14 @@
     </data>
     <data name="Message_ErrorSelectATask" xml:space="preserve">
         <value>You must select a job.</value>
+    </data>
+    <data name="Message_SuccessConfig" xml:space="preserve">
+        <value>The configuration has been updated, please restart the application.</value>
+    </data>
+    <data name="Message_SuccessEdit" xml:space="preserve">
+        <value>The job has been modified.</value>
+    </data>
+    <data name="Message_SuccessCreate" xml:space="preserve">
+        <value>The job has been created.</value>
     </data>
 </root>

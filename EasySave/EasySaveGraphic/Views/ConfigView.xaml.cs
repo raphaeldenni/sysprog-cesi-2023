@@ -60,6 +60,7 @@ namespace EasySaveGraphic.Views
             {
                 string[] extensions = ExtensionsTextBox.Text.Split(',');
                 ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text), KeyTextBox.Text, extensions);
+                MessageBox.Show(Lang.Resources.Message_SuccessConfig, Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

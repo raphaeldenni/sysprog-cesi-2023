@@ -177,7 +177,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La tâche n&apos;a pas été supprimé..
+        ///   Looks up a localized string similar to The job has not been deleted..
         /// </summary>
         public static string Message_ErrorDelete {
             get {
@@ -195,7 +195,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The job has not been deleted..
+        ///   Looks up a localized string similar to The &apos;logs&apos; folder does not exist..
         /// </summary>
         public static string Message_ErrorLog {
             get {
@@ -222,11 +222,38 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Le travail a été supprimé..
+        ///   Looks up a localized string similar to The configuration has been updated, please restart the application..
+        /// </summary>
+        public static string Message_SuccessConfig {
+            get {
+                return ResourceManager.GetString("Message_SuccessConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job has been created..
+        /// </summary>
+        public static string Message_SuccessCreate {
+            get {
+                return ResourceManager.GetString("Message_SuccessCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job has been deleted..
         /// </summary>
         public static string Message_SuccessDelete {
             get {
                 return ResourceManager.GetString("Message_SuccessDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The job has been modified..
+        /// </summary>
+        public static string Message_SuccessEdit {
+            get {
+                return ResourceManager.GetString("Message_SuccessEdit", resourceCulture);
             }
         }
         
@@ -312,7 +339,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Task.
+        ///   Looks up a localized string similar to Job.
         /// </summary>
         public static string Task {
             get {

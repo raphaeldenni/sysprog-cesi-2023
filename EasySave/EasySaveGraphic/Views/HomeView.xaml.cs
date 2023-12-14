@@ -61,9 +61,17 @@ namespace EasySaveGraphic.Views
 
         private List<TaskEntity> GetCheckedTasks()
         {
-            List<TaskEntity> listTasks = taskListView.Items.OfType<TaskEntity>().Where(item => (bool)item.IsChecked).ToList();
+            try
+            {
+                List<TaskEntity> listTasks = taskListView.Items.OfType<TaskEntity>().Where(item => (bool)item.IsChecked).ToList();
 
-            return listTasks;
+                return listTasks;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                return new List<TaskEntity>();
+            }
         }
 
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
@@ -72,7 +80,7 @@ namespace EasySaveGraphic.Views
             if (result)
             {
                 UpdateTasksList(null);
-                MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorDelete, EasySaveGraphic.Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_SuccessDelete, EasySaveGraphic.Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
@@ -148,49 +156,78 @@ namespace EasySaveGraphic.Views
 
         private void UpdateTasksList(string? search)
         {
-            Tasks = HomeViewModel.GetAllTasks(search);
-            taskListView.ItemsSource = Tasks;
+            try
+            {
+                Tasks = HomeViewModel.GetAllTasks(search);
+                taskListView.ItemsSource = Tasks;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void UpdateTasksListWhenStart(TaskEntity task, int taskIndex)
         {
-            Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
-            taskListView.Items.Refresh();
+            try
+            {
+                Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
+                taskListView.Items.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_Close_DialogHostSelection_Click(object sender, RoutedEventArgs e)
         {
-            DialogHost.CloseDialogCommand.Execute(null, null);
+            try
+            {
+                DialogHost.CloseDialogCommand.Execute(null, null);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_Ok_DialogHostSelection_Click(object sender, RoutedEventArgs e)
         {
-            var id1Bool = int.TryParse(TextBoxID1.Text, out int id1);
-            var id2Bool = int.TryParse(TextBoxID2.Text, out int id2);
-
-            if(!id1Bool || !id2Bool)
+            try
             {
-                foreach (var task in Tasks)
+                var id1Bool = int.TryParse(TextBoxID1.Text, out int id1);
+                var id2Bool = int.TryParse(TextBoxID2.Text, out int id2);
+
+                if (!id1Bool || !id2Bool)
                 {
-                    task.IsChecked = false;
+                    foreach (var task in Tasks)
+                    {
+                        task.IsChecked = false;
+                    }
+
+                    taskListView.ItemsSource = null;
+                    taskListView.ItemsSource = Tasks;
                 }
 
-                taskListView.ItemsSource = null;
-                taskListView.ItemsSource = Tasks;
-            }
-
-            if (id1 >= 1 && id2 <= Tasks.Count())
-            {
-                for (int currentId = id1; currentId <= id2; currentId++)
+                if (id1 >= 1 && id2 <= Tasks.Count())
                 {
-                    Tasks[currentId - 1].IsChecked = true;
+                    for (int currentId = id1; currentId <= id2; currentId++)
+                    {
+                        Tasks[currentId - 1].IsChecked = true;
+                    }
+
+                    taskListView.ItemsSource = null;
+                    taskListView.ItemsSource = Tasks;
                 }
 
-                taskListView.ItemsSource = null;
-                taskListView.ItemsSource = Tasks;
+                DialogHost.CloseDialogCommand.Execute(null, null);
             }
-
-            DialogHost.CloseDialogCommand.Execute(null, null);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Button_Section_Click(object sender, RoutedEventArgs e)

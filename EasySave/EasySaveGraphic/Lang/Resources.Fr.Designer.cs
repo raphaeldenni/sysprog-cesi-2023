@@ -177,7 +177,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to La tâche n&apos;a pas été supprimé..
+        ///   Looks up a localized string similar to Le travail n&apos;a pas été supprimé..
         /// </summary>
         internal static string Message_ErrorDelete {
             get {
@@ -222,11 +222,38 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Le job a été supprimé..
+        ///   Looks up a localized string similar to La configuration a été mise à jour, merci de redémarrer l&apos;application..
+        /// </summary>
+        internal static string Message_SuccessConfig {
+            get {
+                return ResourceManager.GetString("Message_SuccessConfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été créé..
+        /// </summary>
+        internal static string Message_SuccessCreate {
+            get {
+                return ResourceManager.GetString("Message_SuccessCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été supprimé..
         /// </summary>
         internal static string Message_SuccessDelete {
             get {
                 return ResourceManager.GetString("Message_SuccessDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Le travail a été modifié..
+        /// </summary>
+        internal static string Message_SuccessEdit {
+            get {
+                return ResourceManager.GetString("Message_SuccessEdit", resourceCulture);
             }
         }
         
