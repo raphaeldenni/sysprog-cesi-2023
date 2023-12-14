@@ -4,7 +4,7 @@ using EasySave.Views;
 
 namespace EasySave.ViewModels;
 
-public class ConfigViewModel
+internal class ConfigViewModel
 {
     public ConfigView ConfigView { get; set; }
 
@@ -47,11 +47,11 @@ public class ConfigViewModel
         }
     }
 
-    public void UpdateLogextension(string logExtension)
+    public void UpdateLogExtension(string logExtension)
     { 
         if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
         {
-            ConfigModel.UpdateConfigFile(logExtensionOut, null);
+            ConfigModel.UpdateConfigFile(logExtensionOut, null, null, null);
             ConfigView.SuccessfulLogExtension(logExtensionOut);
         }
         else 
@@ -67,7 +67,7 @@ public class ConfigViewModel
     {
         if (Enum.TryParse<LangType>(lang, out LangType langOut))
         {
-            ConfigModel.UpdateConfigFile(null, langOut);
+            ConfigModel.UpdateConfigFile(null, langOut, null, null);
             ConfigView.SuccessfulLang(langOut);
         }
         else
@@ -76,6 +76,21 @@ public class ConfigViewModel
             ConfigView.ErrorLang(validLangTypes);
         }
 
+        ConfigView.DisplayMessage();
+    }
+
+    public void UpdateKey(string key)
+    {
+        ConfigModel.UpdateConfigFile(null, null, key, null);
+        ConfigView.SuccessfulKey();
+        ConfigView.DisplayMessage();
+    }
+
+    public void UpdateExtensionsToEncrypt(string extensionsToEncrypt)
+    {
+        string[] extensions = extensionsToEncrypt.Split(',');
+        ConfigModel.UpdateConfigFile(null, null, null, extensions);
+        ConfigView.SuccessfulExtensionsToEncrypt();
         ConfigView.DisplayMessage();
     }
 }

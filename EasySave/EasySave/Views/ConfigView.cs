@@ -3,7 +3,7 @@
 namespace EasySave.Views;
 
 
-public class ConfigView : IView
+internal class ConfigView : IView
 {
     // Properties from IView
     public string? Message { get; set; }
@@ -43,6 +43,32 @@ public class ConfigView : IView
                 break;
             case LangType.Fr:
                 Message = $"Erreur : Mauvaise extension, utiliser ({validLogTypes}) !";
+                break;
+        }
+    }
+
+    public void SuccessfulKey()
+    {
+        switch (Lang)
+        {
+            case LangType.En:
+                Message = $"Successful: The key has been updated";
+                break;
+            case LangType.Fr:
+                Message = $"Réussie : La clef a ete mise a jour";
+                break;
+        }
+    }
+
+    public void SuccessfulExtensionsToEncrypt()
+    {
+        switch (Lang)
+        {
+            case LangType.En:
+                Message = $"Successful: The list of extensions to encrypt has been updated";
+                break;
+            case LangType.Fr:
+                Message = $"Réussie : La liste d'extensions a chiffre a ete mise a jour";
                 break;
         }
     }

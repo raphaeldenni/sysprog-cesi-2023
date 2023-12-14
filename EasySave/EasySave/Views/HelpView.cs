@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace EasySave.Views
 {
-    public class HelpView : IView
+    internal class HelpView : IView
     {
         // Propriétés de l'interface IView
         public string? Message { get; set; }
@@ -79,10 +79,10 @@ namespace EasySave.Views
             switch (Lang)
             {
                 case LangType.En:
-                    Message = $"easysave modify <taskName> [name|source|dest|type] <string> : Modifying a task";
+                    Message = $"easysave modify <taskName> [Name|Source|Dest|Type] <string> : Modifying a task";
                     break;
                 case LangType.Fr:
-                    Message = $"easysave modify <taskName> [name|source|dest|type] <string> : Modification d'une tâche";
+                    Message = $"easysave modify <taskName> [Name|Source|Dest|Type] <string> : Modification d'une tâche";
                     break;
             }
         }
@@ -92,10 +92,10 @@ namespace EasySave.Views
             switch (Lang)
             {
                 case LangType.En:
-                    Message = $"easysave config [lang|logExtension] <string> : Configuring EasySave";
+                    Message = $"easysave config [Lang|LogExtension|Key|ExtensionsToEncrypt] <string> : Configuring EasySave";
                     break;
                 case LangType.Fr:
-                    Message = $"easysave config [lang|logExtension] <string> : Configuration d'EasySave";
+                    Message = $"easysave config [Lang|LogExtension|Key|ExtensionsToEncrypt] <string> : Configuration d'EasySave";
                     break;
             }
         }

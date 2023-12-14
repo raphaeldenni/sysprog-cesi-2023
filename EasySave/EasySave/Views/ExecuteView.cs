@@ -2,7 +2,7 @@
 
 namespace EasySave.Views;
 
-public class ExecuteView : IView
+internal class ExecuteView : IView
 {
     // Properties from IView
     public string? Message { get; set; }

@@ -1,191 +1,121 @@
-using EasySave.Types;
 using System.Text.Json;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace EasySave.Models
+using EasySave.Types;
+
+namespace EasySave.Models;
+
+public class LogData
 {
-    public class LogData
+    public DateTime? Timestamp { get; set; }
+    public string? TaskName { get; set; }
+    public string? FileSourcePath { get; set; }
+    public string? FileDestPath { get; set; }
+    public int? FileSize { get; set; }
+    public float? FileTransferTime { get; set; }
+}
+
+public class LogModel
+{
+    private const string EasySaveFolderName = "EasySave";
+    private const string LogFolderName = "Logs";
+    private const string LogFileNameFormat = "{0}-{1:dd-MM-yyyy}";
+    
+    /// <summary>
+    /// Create a log entry in a log file depending on the log type (json or xml)
+    /// </summary>
+    /// <param name="logType"></param>
+    /// <param name="taskName"></param>
+    /// <param name="fileSourcePath"></param>
+    /// <param name="fileDestPath"></param>
+    /// <param name="fileSize"></param>
+    /// <param name="fileTransferTime"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public void CreateLog(
+        LogType logType, 
+        string taskName, 
+        string fileSourcePath, 
+        string fileDestPath, 
+        int fileSize, 
+        float fileTransferTime
+        )
     {
-        public DateTime Timestamp { get; set; }
-        public string TaskName { get; set; }
-        public string FileSourcePath { get; set; }
-        public string FileDestPath { get; set; }
-        public int? FileSize { get; set; }
-        public float? FileTransferTime { get; set; }
-    }
-    public class LogModel
-    {
-        private const string LogFileNameFormat = "{0}-{1:dd-MM-yyyy}";
-        private const string LogFolderName = "Logs";
-
-        public string? TaskName { get; set; }
-        public string? FileSourcePath { get; set; }
-        public string? FileDestPath { get; set; }
-        public string LogFileName { get; set; }
-        public string LogFolderPath { get; set; }
-        public LogType LogType { get; set; }
-        public int? FileSize { get; set; }
-        public float? FileTransferTime { get; set; }
-
-        public LogModel(LogType logType)
+        // Set EasySave data path
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var easySaveFolderPath = Path.Combine(appDataPath, EasySaveFolderName);
+        
+        // Set log file properties
+        var logFileExtension = "." + logType.ToString().ToLower();
+        var logFileName = string.Format(LogFileNameFormat, "log", DateTime.Now) + logFileExtension;
+        
+        var logDirectoryPath = Path.Combine(easySaveFolderPath, LogFolderName);
+        var logFilePath = Path.Combine(logDirectoryPath, logFileName);
+        
+        if (!Directory.Exists(logDirectoryPath))
+            Directory.CreateDirectory(logDirectoryPath);
+        
+        // Create log entry
+        var newLogEntry = new LogData
         {
-
-            LogFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LogFolderName);
-            LogType = logType;
-            LogFileName = "log" + GetLogFileName() + "." + LogType.ToString().ToLower() ;
-
-            CheckLogFile();
-        }
-
-        public void CheckLogFile()
+            Timestamp = DateTime.Now,
+            TaskName = taskName,
+            FileSourcePath = fileSourcePath,
+            FileDestPath = fileDestPath,
+            FileSize = fileSize,
+            FileTransferTime = fileTransferTime
+        };
+            
+        // Write log entry to log file
+        switch (logType) 
         {
-            if (!Directory.Exists(LogFolderPath))
+            case LogType.Json:
             {
-                Directory.CreateDirectory(LogFolderPath);
-            }
-
-            LogFileName = Path.Combine(LogFolderPath, LogFileName);
-
-            if (!LogFileExists(LogFileName))
-            {
-                CreateLogFile();
-            }
-
-        }
-
-        private string GetLogFileName()
-        {
-            return string.Format(LogFileNameFormat, TaskName, DateTime.Now);
-        }
-
-        private void CreateLogFile()
-        {
-            try
-            {
-
-                using (StreamWriter writer = File.CreateText(LogFileName))
+                using var streamLogFile = new StreamWriter(logFilePath, append: true);
+                
+                var jsonSettings = new JsonSerializerOptions
                 {
-                    var logData = new LogData
-                    {
-                        TaskName = TaskName,
-                        FileSourcePath = FileSourcePath,
-                        FileDestPath = FileDestPath,
-                        FileSize = FileSize,
-                        FileTransferTime = FileTransferTime
-                    };
-
-                    if (LogType == LogType.Json)
-                    {
-                        string jsonData = JsonSerializer.Serialize(logData, new JsonSerializerOptions { WriteIndented = true });
-                        writer.WriteLine(jsonData);
-                    }
-                    else if (LogType == LogType.Xml)
-                    {
-                        var xmlSerializer = new XmlSerializer(typeof(LogData));
-                        xmlSerializer.Serialize(writer, logData);
-                    }
-
-                }
+                    WriteIndented = true
+                };
+                
+                var jsonData = JsonSerializer.Serialize(
+                    newLogEntry, 
+                    jsonSettings
+                );
+                
+                streamLogFile.WriteLine(jsonData);
+                
+                streamLogFile.Close();
+                    
+                break;
             }
-            catch (Exception ex)
+
+            case LogType.Xml:
             {
-                return;
-            }
-        }
-
-        public void CreateLog(string taskName, string fileSourcePath, string fileDestPath, int fileSize, float fileTransferTime)
-        {
-
-            try
-            {
-                TaskName = taskName;
-                FileSourcePath = fileSourcePath;
-                FileDestPath = fileDestPath;
-                FileSize = fileSize;
-                FileTransferTime = fileTransferTime;
-
-                if (LogFileExists(LogFileName))
+                if (!File.Exists(logFilePath))
+                    File.WriteAllText(logFilePath, "<Logs></Logs>");
+                
+                var xmlDoc = new XmlDocument();
+                xmlDoc.Load(logFilePath);
+                
+                var logEntryNode = xmlDoc.CreateElement("Log");
+                
+                var logEntryProperties = newLogEntry.GetType().GetProperties();
+                foreach (var logEntryProperty in logEntryProperties)
                 {
-                    var logEntry = new LogData
-                    {
-                        Timestamp = DateTime.Now,
-                        TaskName = TaskName,
-                        FileSourcePath = FileSourcePath,
-                        FileDestPath = FileDestPath,
-                        FileSize = FileSize,
-                        FileTransferTime = FileTransferTime
-                    };
-
-                    if (LogType == LogType.Json)
-                    {
-                        using (StreamWriter writer = File.AppendText(LogFileName))
-                        {
-                            string jsonData = JsonSerializer.Serialize(logEntry, new JsonSerializerOptions { WriteIndented = true });
-                            writer.WriteLine(jsonData);
-                        }
-                    }
-                    else if (LogType == LogType.Xml)
-                    {
-                        // Load existing XML document
-                        XmlDocument xmlDoc = new XmlDocument();
-                        xmlDoc.Load(LogFileName);
-
-                        // Create a new log entry node
-                        XmlNode logEntryNode = xmlDoc.CreateElement("LogEntry");
-
-                        // Add timestamp node
-                        XmlNode timestampNode = xmlDoc.CreateElement("Timestamp");
-                        timestampNode.InnerText = logEntry.Timestamp.ToString();
-                        logEntryNode.AppendChild(timestampNode);
-
-                        // Add task name node
-                        XmlNode taskNameNode = xmlDoc.CreateElement("TaskName");
-                        taskNameNode.InnerText = logEntry.TaskName;
-                        logEntryNode.AppendChild(taskNameNode);
-
-                        // Add file source path node
-                        XmlNode fileSourcePathNode = xmlDoc.CreateElement("FileSourcePath");
-                        fileSourcePathNode.InnerText = logEntry.FileSourcePath;
-                        logEntryNode.AppendChild(fileSourcePathNode);
-
-                        // Add file dest path node
-                        XmlNode fileDestPathNode = xmlDoc.CreateElement("FileDestPath");
-                        fileDestPathNode.InnerText = logEntry.FileDestPath;
-                        logEntryNode.AppendChild(fileDestPathNode);
-
-                        // Add file size node
-                        XmlNode fileSizeNode = xmlDoc.CreateElement("FileSize");
-                        fileSizeNode.InnerText = logEntry.FileSize.ToString();
-                        logEntryNode.AppendChild(fileSizeNode);
-
-                        // Add file transfer time node
-                        XmlNode fileTransferTimeNode = xmlDoc.CreateElement("FileTransferTime");
-                        fileTransferTimeNode.InnerText = logEntry.FileTransferTime.ToString();
-                        logEntryNode.AppendChild(fileTransferTimeNode);
-
-                        // Append the new log entry node to the root
-                        xmlDoc.DocumentElement.AppendChild(logEntryNode);
-
-                        // Save the modified XML document
-                        xmlDoc.Save(LogFileName);
-                    }
+                    var logEntryPropertyNode = xmlDoc.CreateElement(logEntryProperty.Name);
+                    logEntryPropertyNode.InnerText = logEntryProperty.GetValue(newLogEntry)!.ToString()!;
+                    logEntryNode.AppendChild(logEntryPropertyNode);
                 }
-                else
-                {
-                    return;
-                }
+                
+                xmlDoc.DocumentElement?.AppendChild(logEntryNode);
+                xmlDoc.Save(logFilePath);
+                    
+                break;   
             }
-            catch (Exception ex)
-            {
-                return;
-            }
+            
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-
-        private bool LogFileExists(string logFileName)
-        {
-            return File.Exists(logFileName);
-        }
-
     }
 }

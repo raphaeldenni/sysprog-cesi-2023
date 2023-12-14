@@ -4,7 +4,7 @@ using EasySave.Views;
 
 namespace EasySave.ViewModels
 {
-    public class ListViewModel
+    internal class ListViewModel
     {
         public ListView ListView { get; set; }
         public TaskModel TaskModel { get; set; }

@@ -2,7 +2,7 @@
 
 namespace EasySave.Views;
 
-public class ModifyView : IView
+internal class ModifyView : IView
 {
     // Properties from IView
     public string? Message { get; set; }

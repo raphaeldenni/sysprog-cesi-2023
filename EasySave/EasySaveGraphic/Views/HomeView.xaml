@@ -1,0 +1,100 @@
+﻿<Page xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="EasySaveGraphic.Views.HomeView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EasySaveGraphic.Views"
+      xmlns:lang="clr-namespace:EasySaveGraphic.Lang"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HomeView">
+    
+    
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52*"/>
+            <RowDefinition Height="39*"/>
+            <RowDefinition Height="134*"/>
+        </Grid.RowDefinitions>
+
+        <materialDesign:DialogHost x:Name="SelectionDialogHost" Placement="Mouse" OverlayBackground="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="10" Width="150">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <Button Style="{StaticResource MaterialDesignFlatDarkButton}" Width="40" Height="30" Click="Button_Close_DialogHostSelection_Click">
+                            <StackPanel Margin="-5">
+                                <materialDesign:PackIcon Kind="CloseCircleOutline" />
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Text="{x:Static lang:Resources.SelectionID}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBox x:Name="TextBoxID1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="ID" Width="50" Margin="0,0,5,10"/>
+                        <TextBlock Text="{x:Static lang:Resources.To}" VerticalAlignment="Center" FontSize="16" />
+                        <TextBox x:Name="TextBoxID2" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="ID" Width="50" Margin="5,0,0,10"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="OK" Height="30" HorizontalAlignment="Stretch" Click="Button_Ok_DialogHostSelection_Click" Margin="5,0,0,0" />
+
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
+        <Label Content="EasySave" HorizontalAlignment="Left" Margin="25,0,0,0" VerticalAlignment="Center" FontSize="48" FontWeight="Bold"/>
+        <Label Name="DigitalClockHour" HorizontalAlignment="Right" Margin="0,-25,25,0" VerticalAlignment="Center" FontSize="48" FontWeight="Bold"/>
+        <Label Name="DigitalClockDay" HorizontalAlignment="Right" Margin="0,50,25,0" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+        <ProgressBar Grid.Row="0" VerticalAlignment="Bottom"/>
+        <TextBox Name="SearchTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:TextFieldAssist.HasClearButton="True" materialDesign:HintAssist.Hint="{x:Static lang:Resources.Search}" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Width="175" Margin="25,0,0,0" TextChanged="SearchTextBox_TextChanged"/>
+        <Button Content="..." VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Row="1" Height="25" Margin="225,0,0,0" FontSize="8" Click="Button_Section_Click"/>
+        <Button Content="{x:Static lang:Resources.Delete}" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" MinWidth="80" Margin="0,0,25,0" Click="Button_Delete_Click"/>
+        <Button Content="{x:Static lang:Resources.Modify}" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" MinWidth="80" Margin="0,0,125,0" Click="Button_Modify_Click"/>
+        <Button Content="{x:Static lang:Resources.Create}" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" MinWidth="80" Margin="0,0,225,0" Click="Button_Create_Click"/>
+        <Button Content="{x:Static lang:Resources.Start}" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Row="1" MinWidth="80" Margin="0,0,325,0" Click="Button_Start_Click"/>
+        <ListView x:Name="taskListView" Grid.Row="2" ItemsSource="{Binding Tasks}" Cursor="">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsChecked}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{x:Static lang:Resources.State}" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="1" CornerRadius="5" Padding="5">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="Red" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding State}" Value="Active">
+                                                    <Setter Property="Background" Value="Green" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <TextBlock Foreground="White" Text="{Binding State}" />
+                                </Border>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{x:Static lang:Resources.Task}" DisplayMemberBinding="{Binding Name}" Width="100"/>
+                    <GridViewColumn Header="{x:Static lang:Resources.Source}" DisplayMemberBinding="{Binding SourcePath}" Width="200"/>
+                    <GridViewColumn Header="{x:Static lang:Resources.Destination}" DisplayMemberBinding="{Binding DestPath}" Width="200"/>
+                    <GridViewColumn Header="{x:Static lang:Resources.Type}" DisplayMemberBinding="{Binding Type}" Width="150"/>
+                    <GridViewColumn Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar x:Name="DeterminateCircularProgress" IsIndeterminate="False" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="{Binding Loading}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

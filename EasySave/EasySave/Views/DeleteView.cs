@@ -3,7 +3,7 @@
 namespace EasySave.Views;
 
 
-public class DeleteView : IView
+internal class DeleteView : IView
 {
     // Properties from IView
     public string? Message { get; set; }
