@@ -18,6 +18,7 @@ public class CopyModel
     public int LeftFilesNumber { get; private set; }
     public long LeftFilesSize { get; private set; }
     // END OF CHANGE
+    private const string EasySaveFolderName = "EasySave";
     
     //// CryptoSoft properties
     private Process CryptoSoftProcess { get; }
@@ -52,22 +53,20 @@ public class CopyModel
         ExtensionsToEncrypt = extensionsToEncrypt;
         
         // CryptoSoft process is used to encrypt the files.
-        // Here we set the path to the executable depending on the OS.
         CryptoSoftProcess = new Process();
         
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            CryptoSoftProcess.StartInfo.FileName = @".\CryptoSoft.exe";
-            TempDestDirectory = @".\temp\"; 
-        }
-        else
-        {
-            CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
-            TempDestDirectory = "./temp/";
-        }
+        // Here we set the path to the executable depending on the OS.
+        CryptoSoftProcess.StartInfo.FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
+            ? @".\CryptoSoft.exe"
+            : "./CryptoSoft";
         
+        // Hide the console
         CryptoSoftProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
         CryptoSoftProcess.StartInfo.CreateNoWindow = true;
+        
+        // Define the temp directory
+        var tempPath = Path.GetTempPath();
+        TempDestDirectory = Path.Combine(tempPath, EasySaveFolderName);
         
         DirectoryStructure = new Dictionary<string, List<string>>();
         
