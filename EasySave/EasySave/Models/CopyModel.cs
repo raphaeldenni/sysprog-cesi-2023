@@ -29,13 +29,14 @@ public class CopyModel
     private Dictionary<string, List<string>> DirectoryStructure { get; }
 
     // Constructors
-    
+
     /// <summary>
     /// CopyModel constructor
     /// </summary>
     /// <param name="sourcePath"></param>
     /// <param name="destPath"></param>
     /// <param name="type"></param>
+    /// <param name="key"></param>
     /// <param name="extensionsToEncrypt"></param>
     public CopyModel(string sourcePath, string destPath, BackupType type, string key, string[] extensionsToEncrypt)
     {
@@ -57,13 +58,15 @@ public class CopyModel
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             CryptoSoftProcess.StartInfo.FileName = @".\CryptoSoft.exe";
-            TempDestDirectory = @".\temp\";
+            TempDestDirectory = @".\temp\"; 
         }
         else
         {
             CryptoSoftProcess.StartInfo.FileName = "./CryptoSoft";
-            TempDestDirectory = @"./temp/";
+            TempDestDirectory = "./temp/";
         }
+        
+        CryptoSoftProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
         
         DirectoryStructure = new Dictionary<string, List<string>>();
         
@@ -159,7 +162,7 @@ public class CopyModel
 
                     var tempDestFilePath = Path.Combine(TempDestDirectory, file);
 
-                    CryptoSoftProcess.StartInfo.Arguments = $"{sourceFilePath} {tempDestFilePath} {Key}";
+                    CryptoSoftProcess.StartInfo.Arguments = $"\"{sourceFilePath}\" \"{tempDestFilePath}\" \"{Key}\"";
 
                     CryptoSoftProcess.Start();
                     CryptoSoftProcess.WaitForExit();

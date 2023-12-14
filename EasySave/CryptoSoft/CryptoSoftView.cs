@@ -19,7 +19,7 @@ public class CryptoSoftView
         {
             {"ConfigFileIsInvalid", "Error: Config file is invalid (empty or non-existent)"},
             { "FileIsInvalid", "Error: File located at '{0}' is invalid (empty or non-existent)" },
-            { "KeyIsInvalid", "Error: Key is empty or too long" },
+            { "KeyIsInvalid", "Error: Key is empty or too short" },
             { "FileEncrypted", "Success: File located at '{0}' has been encrypted" }
         };
     }

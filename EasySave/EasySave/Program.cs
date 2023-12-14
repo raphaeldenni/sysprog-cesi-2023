@@ -6,32 +6,28 @@ namespace EasySave
     {
         private static void Main(string[] args)
         {
-            try 
+            try
             {
-                List<string> listArgs = new List<string>(args);
-
-                listArgs[0] = char.ToUpper(listArgs[0][0]) + listArgs[0].Substring(1).ToLower();
-
-                dynamic viewModel = null;
-                string viewModelName = listArgs[0] + "ViewModel";
-                Type viewModelType = Type.GetType("EasySave.ViewModels." + viewModelName);
-
-                if (viewModelType == null)
-                {
-                    viewModel = new HelpViewModel();
-                    return;
-                }
-
-                var parameters = new object[1];
-                listArgs.RemoveAt(0);
-                parameters[0] = listArgs.ToArray();
-
-                viewModel = Activator.CreateInstance(viewModelType, parameters);
-                viewModel = null;
+                var argsList = new List<string>(args);
+                
+                // Capitalize the first letter of the first argument to match the view model name.
+                argsList[0] = char.ToUpper(argsList[0][0]) + argsList[0].Substring(1).ToLower();
+                
+                // Construct the view model type name from the first argument.
+                var viewModelName = argsList[0] + "ViewModel";
+                var viewModelType = Type.GetType("EasySave.ViewModels." + viewModelName) ?? throw new Exception();
+                
+                // Create parameters for the view model constructor.
+                var viewModelParameters = new object[1];
+                argsList.RemoveAt(0);
+                viewModelParameters[0] = argsList.ToArray();
+                
+                // Launch the view model.
+                _ = Activator.CreateInstance(viewModelType, viewModelParameters);
             } 
-            catch (Exception ex)
+            catch (Exception)
             {
-                dynamic viewModel = new HelpViewModel();
+                _ = new HelpViewModel();
             }
         }
     }
