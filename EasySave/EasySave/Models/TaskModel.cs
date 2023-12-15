@@ -1,31 +1,130 @@
 using EasySave.Types;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace EasySave.Models;
 
-public class TaskEntity
+public class TaskEntity : INotifyPropertyChanged
 {
+    // Events
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
     // Properties
 
     //// Task
-    public bool? IsChecked { get; set; }
-    public int? Loading { get; set; }
-    public int? Id { get; set; }
-    public string? Name { get; set; }
-    public string? SourcePath { get; set; }
-    public string? DestPath { get; set; }
-    public BackupType? Type { get; set; }
-    public string? Timestamp { get; set; }
+    private bool? _isChecked;
+    public bool? IsChecked
+    {
+        get => _isChecked;
+        set { if (_isChecked != value) { _isChecked = value; OnPropertyChanged(); } }
+    }
+
+    private float? _loading;
+    public float? Loading
+    {
+        get => _loading;
+        set { if (_loading != value) { _loading = value; OnPropertyChanged(); } }
+    }
+
+    private int? _id;
+    public int? Id
+    {
+        get => _id;
+        set { if (_id != value) { _id = value; OnPropertyChanged(); } }
+    }
+
+    private string? _name;
+    public string? Name
+    {
+        get => _name;
+        set { if (_name != value) { _name = value; OnPropertyChanged(); } }
+    }
+
+    private string? _sourcePath;
+    public string? SourcePath
+    {
+        get => _sourcePath;
+        set { if (_sourcePath != value) { _sourcePath = value; OnPropertyChanged(); } }
+    }
+
+    private string? _destPath;
+    public string? DestPath
+    {
+        get => _destPath;
+        set { if (_destPath != value) { _destPath = value; OnPropertyChanged(); } }
+    }
+
+    private BackupType? _type;
+    public BackupType? Type
+    {
+        get => _type;
+        set { if (_type != value) { _type = value; OnPropertyChanged(); } }
+    }
+
+    private string? _timestamp;
+    public string? Timestamp
+    {
+        get => _timestamp;
+        set { if (_timestamp != value) { _timestamp = value; OnPropertyChanged(); } }
+    }
 
     //// State
-    public StateType? State { get; set; }
-    public int? FilesNumber { get; set; }
-    public float? FilesSize { get; set; }
-    public int? LeftFilesNumber { get; set; }
-    public float? LeftFilesSize { get; set; }
-    public string? FileSourcePath { get; set; }
-    public string? FileDestPath { get; set; }
+    private StateType? _state;
+    public StateType? State
+    {
+        get => _state;
+        set { if (_state != value) { _state = value; OnPropertyChanged(); } }
+    }
+
+    private int? _filesNumber;
+    public int? FilesNumber
+    {
+        get => _filesNumber;
+        set { if (_filesNumber != value) { _filesNumber = value; OnPropertyChanged(); } }
+    }
+
+    private float? _filesSize;
+    public float? FilesSize
+    {
+        get => _filesSize;
+        set { if (_filesSize != value) { _filesSize = value; OnPropertyChanged(); } }
+    }
+
+    private int? _leftFilesNumber;
+    public int? LeftFilesNumber
+    {
+        get => _leftFilesNumber;
+        set { if (_leftFilesNumber != value) { _leftFilesNumber = value; OnPropertyChanged(); } }
+    }
+
+    private float? _leftFilesSize;
+    public float? LeftFilesSize
+    {
+        get => _leftFilesSize;
+        set { if (_leftFilesSize != value) { _leftFilesSize = value; OnPropertyChanged(); } }
+    }
+
+    private string? _fileSourcePath;
+    public string? FileSourcePath
+    {
+        get => _fileSourcePath;
+        set { if (_fileSourcePath != value) { _fileSourcePath = value; OnPropertyChanged(); } }
+    }
+
+    private string? _fileDestPath;
+    public string? FileDestPath
+    {
+        get => _fileDestPath;
+        set { if (_fileDestPath != value) { _fileDestPath = value; OnPropertyChanged(); } }
+    }
 }
+
 
 public class TaskModel : TaskEntity
 {
@@ -192,8 +291,15 @@ public class TaskModel : TaskEntity
     {
         Name = taskName;
         State = taskState;
-        FilesNumber = taskFilesNumber;
-        FilesSize = taskFilesSize;
+        if (FilesNumber != null)
+        {
+            FilesNumber = taskFilesNumber;
+        }
+
+        if (FilesSize != null) {
+            FilesSize = taskFilesSize;
+        }
+
         LeftFilesNumber = taskLeftFilesNumber;
         LeftFilesSize = taskLeftFilesSize;
         FileSourcePath = taskFileSourcePath;
