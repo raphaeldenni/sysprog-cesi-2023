@@ -146,8 +146,9 @@ namespace EasySaveGraphic.ViewModels
                 }
 
                 float percentage = (float)((task.FilesSize - task.LeftFilesSize) / task.FilesSize * 100);
+                decimal decimalPercentage = Math.Round((decimal)percentage, 2);
 
-                task.Loading = percentage;
+                task.Loading = decimalPercentage;
 
                 if (task.Loading == 100)
                 {

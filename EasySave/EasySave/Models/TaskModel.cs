@@ -25,8 +25,8 @@ public class TaskEntity : INotifyPropertyChanged
         set { if (_isChecked != value) { _isChecked = value; OnPropertyChanged(); } }
     }
 
-    private float? _loading;
-    public float? Loading
+    private decimal? _loading;
+    public decimal? Loading
     {
         get => _loading;
         set { if (_loading != value) { _loading = value; OnPropertyChanged(); } }
