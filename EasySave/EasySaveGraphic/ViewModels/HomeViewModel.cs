@@ -4,6 +4,7 @@ using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,6 +21,8 @@ namespace EasySaveGraphic.ViewModels
         public TaskModel TaskModel { get; set; }
         public LogModel LogModel { get; set; }
         public List<TaskEntity> Tasks { get; set; }
+        public bool IsJobApplicationDetected { get; set; }
+        public bool ProcessWasDetected { get; set; }
 
         private Dictionary<string, ManualResetEvent> TaskPauseEvents = new Dictionary<string, ManualResetEvent>();
 
@@ -33,6 +36,60 @@ namespace EasySaveGraphic.ViewModels
             ConfigModel = new ConfigModel();
             TaskModel = new TaskModel();
             Tasks = GetAllTasks(null);
+            Task.Run(() => JobApplicationDetected());
+        }
+
+        public void JobApplicationDetected()
+        {
+            while (true)
+            {
+                string[] processNames = null;
+                processNames = ConfigModel.Config.JobApplications;
+
+                if (processNames != null)
+                {
+                    bool anyApplicationDetected = false; 
+
+                    foreach (var processName in processNames)
+                    {
+                        Process[] processes = Process.GetProcessesByName(processName);
+
+                        if (processes.Length > 0)
+                        {
+                            anyApplicationDetected = true;
+                            ProcessWasDetected = true;
+                        }
+                    }
+
+                    IsJobApplicationDetected = anyApplicationDetected;
+
+                    if (IsJobApplicationDetected)
+                    {
+                        PauseAllTasks();
+                    }
+                    else if (ProcessWasDetected)
+                    {
+                        ProcessWasDetected = false;
+                        ResumeAllTasks();
+                    }
+                }
+            }
+        }
+
+        public void PauseAllTasks()
+        {
+           foreach (var task in Tasks)
+           {
+               PauseTask(task);
+           }
+        }
+
+        public void ResumeAllTasks()
+        {
+            foreach (var task in Tasks)
+            {
+                ResumeTask(task);
+            }
         }
 
         public void PauseTask(TaskEntity task)
@@ -58,7 +115,7 @@ namespace EasySaveGraphic.ViewModels
 
         public void ResumeTask(TaskEntity task)
         {
-            if (TaskPauseEvents.ContainsKey(task.Name))
+            if (TaskPauseEvents.ContainsKey(task.Name) && !IsJobApplicationDetected)
             {
                 TaskPauseEvents[task.Name].Set();
                 lock (TaskLock)
