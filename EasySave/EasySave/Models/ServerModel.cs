@@ -85,7 +85,7 @@ public class ServerModel
     /// Listen to the network and print received messages and send a response.
     /// </summary>
     /// <param name="clientSocket"></param>
-    private static void NetworkListener(Socket clientSocket)
+    public static void NetworkListener(Socket clientSocket)
     {
         var stringData = string.Empty;
         
@@ -109,7 +109,7 @@ public class ServerModel
     /// Terminate the connection between the server and the client.
     /// </summary>
     /// <param name="serverSocket"></param>
-    private static void TerminateConnection(Socket serverSocket)
+    public static void TerminateConnection(Socket serverSocket)
     {
         serverSocket.Shutdown(SocketShutdown.Both);
         serverSocket.Close();
