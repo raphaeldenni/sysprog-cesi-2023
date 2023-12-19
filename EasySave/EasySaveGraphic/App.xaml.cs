@@ -1,34 +1,55 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using System;
+using System.Threading;
 using System.Windows;
 using EasySave.Models;
 
 namespace EasySaveGraphic
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        // Define the name for the Mutex
+        private const string MutexName = "Global\\EasySaveApplicationMutex";
+        private static Mutex mutex;
+
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-
-            // Load the language setting from the config.json file
+            // Load language settings from the config.json file
             string language = LoadLang();
 
-            // Set the CultureInfo of the current thread to the loaded language
+            // Set the UI culture based on the loaded language
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(language);
 
-            // Set the Culture property of the Resources class
+            // Set the culture of the application's resources
             EasySaveGraphic.Lang.Resources.Culture = System.Threading.Thread.CurrentThread.CurrentUICulture;
+
+            // Use a Mutex to ensure mono-instance (after loading the language)
+            mutex = new Mutex(true, MutexName, out bool createdNew);
+
+            if (!createdNew)
+            {
+                // Another instance of the application is already running
+                MessageBox.Show("Another instance of the application is already running.", "EasySave", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                Shutdown();
+                return;
+            }
+
+            base.OnStartup(e);
         }
 
+        // Load language settings from the configuration model
         private string LoadLang()
         {
             var model = new ConfigModel();
             return model.Config.Language.ToString();
         }
-    }
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            // Release the Mutex resource upon application closure
+            mutex.ReleaseMutex();
+            mutex.Dispose();
+
+            base.OnExit(e);
+        }
+    }
 }
