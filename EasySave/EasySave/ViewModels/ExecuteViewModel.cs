@@ -108,23 +108,21 @@ namespace EasySave.ViewModels
             }
             else
             {
-                // Get task info
-                var taskType = task.Type;
+                //Get task info
+               var taskType = task.Type;
                 StateType taskState = StateType.Active;
 
-                // Set copy model
-                CopyModel = new CopyModel(
-                    task.SourcePath, 
-                    task.DestPath, 
-                    (BackupType)taskType, 
-                    ConfigModel.Config.Key,
-                    ConfigModel.Config.ExtensionsToEncrypt
-                    );
-                
-                var filesCount = CopyModel.LeftFilesNumber;
-                var filesSize = CopyModel.LeftFilesSize;
+                //Set copy model
+               CopyModel = new CopyModel(
+                   task,
+                   ConfigModel.Config.Key,
+                   ConfigModel.Config.ExtensionsToEncrypt
+                   );
 
-                // Update task state
+                var filesCount = CopyModel.Task.LeftFilesNumber;
+                var filesSize = CopyModel.Task.LeftFilesSize;
+
+                //Update task state
                 TaskModel.UpdateTaskState(
                     task.Name,
                     taskState,
@@ -141,12 +139,12 @@ namespace EasySave.ViewModels
 
                 CopyModel.FileCopied += LogFileCopied;
 
-                // Start copy
+                //Start copy
                 CopyModel.CopyFiles();
 
                 taskState = StateType.Inactive;
 
-                // Update task state
+                //Update task state
                 TaskModel.UpdateTaskState(
                     task.Name,
                     taskState,
@@ -163,7 +161,7 @@ namespace EasySave.ViewModels
             }
         }
 
-        private void LogFileCopied(string[] data)
+        private void LogFileCopied(TaskEntity task, string[] data)
         {
             int value2;
             float value3;
@@ -175,8 +173,8 @@ namespace EasySave.ViewModels
                     (StateType)TaskModel.State,
                     TaskModel.LeftFilesNumber,
                     TaskModel.LeftFilesSize,
-                    CopyModel.LeftFilesNumber,
-                    CopyModel.LeftFilesSize,
+                    CopyModel.Task.LeftFilesNumber,
+                    CopyModel.Task.LeftFilesSize,
                     TaskModel.SourcePath,
                     TaskModel.DestPath
                 );

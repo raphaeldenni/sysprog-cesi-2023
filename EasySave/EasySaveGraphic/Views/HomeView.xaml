@@ -86,10 +86,17 @@
                     <GridViewColumn Header="{x:Static lang:Resources.Source}" DisplayMemberBinding="{Binding SourcePath}" Width="200"/>
                     <GridViewColumn Header="{x:Static lang:Resources.Destination}" DisplayMemberBinding="{Binding DestPath}" Width="200"/>
                     <GridViewColumn Header="{x:Static lang:Resources.Type}" DisplayMemberBinding="{Binding Type}" Width="150"/>
-                    <GridViewColumn Width="50">
+                    <GridViewColumn Width="100">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ProgressBar x:Name="DeterminateCircularProgress" IsIndeterminate="False" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="{Binding Loading}" />
+                                <DockPanel HorizontalAlignment="Stretch">
+                                    <materialDesign:Card Padding="4" UniformCornerRadius="14">
+                                        <Grid>
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Loading, StringFormat={}{0}%}" Foreground="#b9a5de"/>
+                                        </Grid>
+                                    </materialDesign:Card>
+                                    <ProgressBar x:Name="DeterminateCircularProgress" IsIndeterminate="False" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="{Binding Loading}" DockPanel.Dock="Right" Margin="5,0,0,0"/>
+                                </DockPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

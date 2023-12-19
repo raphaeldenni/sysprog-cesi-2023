@@ -1,6 +1,7 @@
 ﻿using EasySave.Models;
 using EasySave.Types;
 using EasySaveGraphic.ViewModels;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,9 @@ using System.Windows.Threading;
 
 namespace EasySaveGraphic.Views
 {
-    public partial class HomeView : Page
+    public partial class HomeView : Page, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler? PropertyChanged;
         internal HomeViewModel HomeViewModel { get; set; }
         public List<TaskEntity> Tasks { get; set; }
         public LangType Lang { get; set; }
@@ -34,14 +36,10 @@ namespace EasySaveGraphic.Views
             StartClock();
 
             HomeViewModel = new HomeViewModel();
-            Tasks = HomeViewModel.GetAllTasks(null);
+            Tasks = new List<TaskEntity>(HomeViewModel.GetAllTasks(null));
             Lang = HomeViewModel.ConfigModel.Config.Language;
-            HomeViewModel.NotifyTaskUpdated += (updatedTask, taskIndex) =>
-            {
-                UpdateTasksListWhenStart(updatedTask, taskIndex);
-            };
-
             DataContext = this;
+
             InitializeComponent();
         }
 
@@ -64,7 +62,10 @@ namespace EasySaveGraphic.Views
             try
             {
                 List<TaskEntity> listTasks = taskListView.Items.OfType<TaskEntity>().Where(item => (bool)item.IsChecked).ToList();
-
+                foreach (var task in listTasks)
+                {
+                    task.IsChecked = false;
+                }
                 return listTasks;
             }
             catch (Exception ex)
@@ -79,7 +80,8 @@ namespace EasySaveGraphic.Views
             bool result = HomeViewModel.DeleteSelectedTasks(GetCheckedTasks());
             if (result)
             {
-                UpdateTasksList(null);
+                Tasks = new List<TaskEntity>(HomeViewModel.GetAllTasks(null));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tasks)));
                 MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_SuccessDelete, EasySaveGraphic.Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -149,37 +151,6 @@ namespace EasySaveGraphic.Views
             }
         }
 
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateTasksList(SearchTextBox.Text);
-        }
-
-        private void UpdateTasksList(string? search)
-        {
-            try
-            {
-                Tasks = HomeViewModel.GetAllTasks(search);
-                taskListView.ItemsSource = Tasks;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void UpdateTasksListWhenStart(TaskEntity task, int taskIndex)
-        {
-            try
-            {
-                Tasks[taskIndex] = HomeViewModel.GetAllTasks(task.Name).FirstOrDefault() ?? throw new Exception();
-                taskListView.Items.Refresh();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         private void Button_Close_DialogHostSelection_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -236,6 +207,19 @@ namespace EasySaveGraphic.Views
             TextBoxID2.Text = null;
 
             SelectionDialogHost.IsOpen = true;
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                Tasks = new List<TaskEntity>(HomeViewModel.GetAllTasks(SearchTextBox.Text));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tasks)));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

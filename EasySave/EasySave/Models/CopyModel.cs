@@ -6,20 +6,12 @@ namespace EasySave.Models;
 
 public class CopyModel
 {
-    public event Action<string[]>? FileCopied;
+    public event Action<TaskEntity, string[]>? FileCopied;
 
     // Properties
-    
-    //// Task properties
-    private string SourcePath { get; }
-    private string DestPath { get; }
-    private BackupType Type { get; }
-    // CHANGE CODE TO MAKE THE FOLLOWING PROPERTIES PRIVATE
-    public int LeftFilesNumber { get; private set; }
-    public long LeftFilesSize { get; private set; }
-    // END OF CHANGE
     private const string EasySaveFolderName = "EasySave";
-    
+    public TaskEntity Task { get; set; }
+
     //// CryptoSoft properties
     private Process CryptoSoftProcess { get; }
     private string Key { get; }
@@ -39,15 +31,12 @@ public class CopyModel
     /// <param name="type"></param>
     /// <param name="key"></param>
     /// <param name="extensionsToEncrypt"></param>
-    public CopyModel(string sourcePath, string destPath, BackupType type, string key, string[] extensionsToEncrypt)
+    public CopyModel(TaskEntity task, string key, string[] extensionsToEncrypt)
     {
         // Task properties
-        SourcePath = sourcePath;
-        DestPath = destPath;
-        Type = type;
-        LeftFilesNumber = 0;
-        LeftFilesSize = 0;
-        
+        Task = task;
+        Task.FilesNumber = 0;
+        Task.FilesSize = 0;
         // CryptoSoft properties
         Key = key;
         ExtensionsToEncrypt = extensionsToEncrypt;
@@ -71,6 +60,9 @@ public class CopyModel
         DirectoryStructure = new Dictionary<string, List<string>>();
         
         CheckFiles();
+
+        Task.LeftFilesNumber = Task.FilesNumber;
+        Task.LeftFilesSize = Task.FilesSize;
     }
 
     // Methods
@@ -81,10 +73,10 @@ public class CopyModel
     /// <exception cref="DirectoryNotFoundException"></exception>
     private void CheckFiles()
     {
-        if (!Directory.Exists(SourcePath) || !Directory.Exists(DestPath))
+        if (!Directory.Exists(Task.SourcePath) || !Directory.Exists(Task.DestPath))
             throw new DirectoryNotFoundException();
 
-        BuildDirectoryStructure(SourcePath, SourcePath);
+        BuildDirectoryStructure(Task.SourcePath, Task.SourcePath);
     }
     
     /// <summary>
@@ -96,7 +88,7 @@ public class CopyModel
     private bool IsFileModified(string filePath, string relativePath)
     {
         var fileName = Path.GetFileName(filePath);
-        var destFilePath = Path.Combine(DestPath, relativePath, fileName);
+        var destFilePath = Path.Combine(Task.DestPath, relativePath, fileName);
 
         return !File.Exists(destFilePath) || File.GetLastWriteTime(filePath) > File.GetLastWriteTime(destFilePath);
     }
@@ -117,13 +109,13 @@ public class CopyModel
         // In differential save, keep in memory the last used file
         foreach (var file in Directory.GetFiles(currentDirectory))
         {
-            if (Type != BackupType.Complete && !IsFileModified(file, relativePath)) continue;
+            if (Task.Type != BackupType.Complete && !IsFileModified(file, relativePath)) continue;
 
             var fileName = Path.GetFileName(file);
             DirectoryStructure[relativePath].Add(fileName);
             
-            LeftFilesNumber++;
-            LeftFilesSize += new FileInfo(file).Length;
+            Task.FilesNumber++;
+            Task.FilesSize += new FileInfo(file).Length;
         }
 
         foreach (var subdirectory in Directory.GetDirectories(currentDirectory))
@@ -139,8 +131,8 @@ public class CopyModel
     {
         foreach (var directory in DirectoryStructure)
         {
-            var sourceDirectory = Path.Combine(SourcePath, directory.Key);
-            var destDirectory = Path.Combine(DestPath, directory.Key);
+            var sourceDirectory = Path.Combine(Task.SourcePath, directory.Key);
+            var destDirectory = Path.Combine(Task.DestPath, directory.Key);
             
             if (!Directory.Exists(destDirectory))
                 Directory.CreateDirectory(destDirectory);
@@ -180,8 +172,8 @@ public class CopyModel
                 var copyTime = stopwatch.ElapsedMilliseconds;
                                 
                 // Update the left files number and size
-                LeftFilesNumber--;
-                LeftFilesSize -= new FileInfo(sourceFilePath).Length;
+                Task.LeftFilesNumber--;
+                Task.LeftFilesSize -= new FileInfo(sourceFilePath).Length;
                 
                 // Invoke file info data to write it in the log file
                 string[] fileInfo =
@@ -192,7 +184,7 @@ public class CopyModel
                     copyTime.ToString()
                 };
                 
-                FileCopied?.Invoke(fileInfo);
+                FileCopied?.Invoke(Task, fileInfo);
             }
         }
     }
