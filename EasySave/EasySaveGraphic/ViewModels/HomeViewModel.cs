@@ -1,5 +1,6 @@
 ﻿using EasySave.Models;
 using EasySave.Types;
+using Microsoft.Xaml.Behaviors.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,12 +17,14 @@ namespace EasySaveGraphic.ViewModels
     {
         public event Action<TaskEntity, int> NotifyTaskUpdated;
         public ConfigModel ConfigModel { get; set; }
-        public CopyModel CopyModel { get; set; }
         public TaskModel TaskModel { get; set; }
-        public TaskEntity TaskEntity { get; set; }
         public LogModel LogModel { get; set; }
         public List<TaskEntity> Tasks { get; set; }
 
+        private Dictionary<string, ManualResetEvent> TaskPauseEvents = new Dictionary<string, ManualResetEvent>();
+
+        List<Thread> Threads = new List<Thread>();
+        
         static object TaskLock = new object();
         static object LogLock = new object();
 
@@ -30,6 +33,79 @@ namespace EasySaveGraphic.ViewModels
             ConfigModel = new ConfigModel();
             TaskModel = new TaskModel();
             Tasks = GetAllTasks(null);
+        }
+
+        public void PauseTask(TaskEntity task)
+        {
+            if (TaskPauseEvents.ContainsKey(task.Name))
+            {
+                TaskPauseEvents[task.Name].Reset();
+                lock (TaskLock)
+                {
+                    TaskModel.UpdateTaskState(
+                    task.Name,
+                    StateType.Pause,
+                    task.FilesNumber,
+                    task.FilesSize,
+                    task.LeftFilesNumber,
+                    task.LeftFilesSize,
+                    task.SourcePath,
+                    task.DestPath
+                    );
+                }
+            }
+        }
+
+        public void ResumeTask(TaskEntity task)
+        {
+            if (TaskPauseEvents.ContainsKey(task.Name))
+            {
+                TaskPauseEvents[task.Name].Set();
+                lock (TaskLock)
+                {
+                    TaskModel.UpdateTaskState(
+                    task.Name,
+                    StateType.Active,
+                    task.FilesNumber,
+                    task.FilesSize,
+                    task.LeftFilesNumber,
+                    task.LeftFilesSize,
+                    task.SourcePath,
+                    task.DestPath
+                    );
+                }
+            }
+        }
+
+        public void StopTask(TaskEntity task)
+        {
+            if (TaskPauseEvents.ContainsKey(task.Name))
+            {
+                TaskPauseEvents[task.Name].Reset();
+                lock (TaskLock)
+                {
+                    task.Loading = 0;
+                    task.LeftFilesNumber = 0;
+                    task.LeftFilesSize = 0;
+
+                    TaskModel.UpdateTaskState(
+                        task.Name,
+                        StateType.Inactive,
+                        task.FilesNumber,
+                        task.FilesSize,
+                        task.LeftFilesNumber,
+                        task.LeftFilesSize,
+                        task.SourcePath,
+                        task.DestPath
+                     );
+                }
+
+
+                var thread = Threads.Where(thread => thread.Name != task.Name).FirstOrDefault();
+                thread?.Abort();
+                //TaskPauseEvents.Remove(task.Name);
+
+            }
         }
 
         public List<TaskEntity> GetAllTasks(string? search)
@@ -71,6 +147,8 @@ namespace EasySaveGraphic.ViewModels
 
         public void ExecuteOneTask(TaskEntity task)
         {
+            TaskPauseEvents[task.Name].WaitOne();
+
             // Get task info
             var taskType = task.Type;
             StateType taskState = StateType.Active;
@@ -109,7 +187,8 @@ namespace EasySaveGraphic.ViewModels
             task.LeftFilesNumber = 0;
             task.LeftFilesSize = 0;
 
-            lock (TaskLock) {
+            lock (TaskLock)
+            {
                 // Update task state
                 TaskModel.UpdateTaskState(
                     task.Name,
@@ -126,6 +205,7 @@ namespace EasySaveGraphic.ViewModels
 
         private void LogFileCopied(TaskEntity task, string[] data)
         {
+            TaskPauseEvents[task.Name].WaitOne();
             int fileSize;
             float fileTransferTime;
 
@@ -176,8 +256,13 @@ namespace EasySaveGraphic.ViewModels
             foreach (TaskEntity task in tasks)
             {
                 Thread thread = new Thread(() => ExecuteOneTask(task));
-                thread.Start();
+                if (!TaskPauseEvents.ContainsKey(task.Name))
+                {
+                    TaskPauseEvents[task.Name] = new ManualResetEvent(true);
+                }
                 thread.Name = task.Name;
+                Threads.Add(thread);
+                thread.Start();
             }
         }
     }
