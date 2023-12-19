@@ -75,6 +75,48 @@ namespace EasySaveGraphic.Views
             }
         }
 
+        private void Button_Pause_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Obtenez la tâche à partir du paramètre
+                TaskEntity selectedTask = (TaskEntity)((Button)sender).CommandParameter;
+
+                // Utilisez la tâche comme vous le souhaitez
+                HomeViewModel.PauseTask(selectedTask);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Button_Resume_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TaskEntity selectedTask = (TaskEntity)((Button)sender).CommandParameter;
+                HomeViewModel.ResumeTask(selectedTask);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Button_Stop_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TaskEntity selectedTask = (TaskEntity)((Button)sender).CommandParameter;
+                HomeViewModel.StopTask(selectedTask);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{EasySaveGraphic.Lang.Resources.Message_ErrorGeneral} {ex.Message}", EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
         {
             bool result = HomeViewModel.DeleteSelectedTasks(GetCheckedTasks());
