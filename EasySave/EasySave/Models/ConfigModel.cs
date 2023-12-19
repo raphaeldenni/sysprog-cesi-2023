@@ -9,6 +9,7 @@ public class ConfigEntity
     public LogType LogExtension { get; set; }
     public string? Key { get; set; }
     public string[]? ExtensionsToEncrypt { get; set; }
+    public string[]? JobApplications { get; set; }
 }
 
 public class ConfigModel
@@ -51,7 +52,8 @@ public class ConfigModel
             LogExtension = LogType.Json,
             Language = LangType.En,
             Key = "",
-            ExtensionsToEncrypt = new[] { "" }
+            ExtensionsToEncrypt = new[] { "" },
+            JobApplications = new[] { "" }
         };
 
         var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);
@@ -74,7 +76,7 @@ public class ConfigModel
     /// <param name="lang"></param>
     /// <param name="key"></param>
     /// <param name="extensions"></param>
-    public void UpdateConfigFile(LogType? logExtension, LangType? lang, string? key, string[]? extensions)
+    public void UpdateConfigFile(LogType? logExtension, LangType? lang, string? key, string[]? extensions, string[]? jobsApplications)
     {
         if (logExtension != null)
         {
@@ -94,6 +96,11 @@ public class ConfigModel
         if (extensions != null)
         {
             Config!.ExtensionsToEncrypt = extensions;
+        }
+
+        if (jobsApplications != null)
+        {
+            Config!.JobApplications = jobsApplications;
         }
 
         var updatedConfigJson = JsonSerializer.Serialize(Config);

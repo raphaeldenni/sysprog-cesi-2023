@@ -18,6 +18,7 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Label Content="{x:Static lang:Resources.Settings}" HorizontalAlignment="Left" Margin="25,0,0,0" 
@@ -46,8 +47,13 @@
                  materialDesign:HintAssist.Hint="{x:Static lang:Resources.Extensions}" FontSize="16"
                  HorizontalAlignment="Stretch" Margin="100,10" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
+        <TextBox x:Name="JobApplicationTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 materialDesign:TextFieldAssist.HasClearButton="True" 
+                 materialDesign:HintAssist.Hint="{x:Static lang:Resources.JobApplication}" FontSize="16"
+                 HorizontalAlignment="Stretch" Margin="100,10" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Cursor=""/>
+
         <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" 
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="apply_Click" 
-                Grid.Row="5" Height="32" MinWidth="69"/>
+                Grid.Row="6" Height="32" MinWidth="69"/>
     </Grid>
 </Page>

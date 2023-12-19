@@ -149,15 +149,16 @@ namespace EasySaveGraphic.Views
         {
             try
             {
+                var checkTasks = GetCheckedTasks();
                 NavigationService navigationService = NavigationService.GetNavigationService(this);
 
-                if (GetCheckedTasks().Count != 1)
+                if (checkTasks.Count != 1)
                 {
                     MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorOnlyOneTasks, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
-                if (GetCheckedTasks().FirstOrDefault() == null)
+                if (checkTasks.FirstOrDefault() == null)
                 {
                     MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorSelectATask, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
@@ -165,7 +166,7 @@ namespace EasySaveGraphic.Views
 
                 if (navigationService != null)
                 {
-                    ModifyView modifyView = new ModifyView(GetCheckedTasks().FirstOrDefault());
+                    ModifyView modifyView = new ModifyView(checkTasks.FirstOrDefault());
                     navigationService.Navigate(modifyView);
                 }
             }

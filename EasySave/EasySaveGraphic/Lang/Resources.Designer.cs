@@ -150,6 +150,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Job application.
+        /// </summary>
+        public static string JobApplication {
+            get {
+                return ResourceManager.GetString("JobApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Key.
         /// </summary>
         public static string Key {
