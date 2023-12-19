@@ -8,6 +8,8 @@ namespace EasySaveNet;
 
 internal static class Program
 {
+    private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    
     /// <summary>
     /// Main entry point of the program.
     /// </summary>
@@ -21,7 +23,7 @@ internal static class Program
             Console.WriteLine("Error: Wrong arguments");
             Console.WriteLine("Usage: EasySaveNet <server IP address> <server port>");
             
-            Environment.Exit(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 160 : 126);
+            Environment.Exit(IsWindows ? 160 : 126);
         }
         
         // Parse command line arguments to get server IP address and port
@@ -38,7 +40,7 @@ internal static class Program
         catch (SocketException e)
         {
             Console.WriteLine("Error: {0}", e.Message);
-            Environment.Exit(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 59 : 1);
+            Environment.Exit(IsWindows ? 59 : 1);
         }
     }
     
