@@ -177,6 +177,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Another instance of the application is already running..
+        /// </summary>
+        public static string Message_ApplicationAlreadyRunning {
+            get {
+                return ResourceManager.GetString("Message_ApplicationAlreadyRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The job has not been deleted..
         /// </summary>
         public static string Message_ErrorDelete {
@@ -276,6 +285,24 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string Pause {
+            get {
+                return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resume.
+        /// </summary>
+        public static string Resume {
+            get {
+                return ResourceManager.GetString("Resume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string Search {
@@ -326,6 +353,15 @@ namespace EasySaveGraphic.Lang {
         public static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
         

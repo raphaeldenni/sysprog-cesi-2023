@@ -28,7 +28,7 @@ namespace EasySaveGraphic
             if (!createdNew)
             {
                 // Another instance of the application is already running
-                MessageBox.Show("Another instance of the application is already running.", "EasySave", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(Lang.Resources.Message_ApplicationAlreadyRunning, "EasySave", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 Shutdown();
                 return;
             }
@@ -36,7 +36,6 @@ namespace EasySaveGraphic
             base.OnStartup(e);
         }
 
-        // Load language settings from the configuration model
         private string LoadLang()
         {
             var model = new ConfigModel();
@@ -48,7 +47,7 @@ namespace EasySaveGraphic
             // Release the Mutex resource upon application closure
             mutex.ReleaseMutex();
             mutex.Dispose();
-
+            Environment.Exit(0);
             base.OnExit(e);
         }
     }

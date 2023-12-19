@@ -107,7 +107,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Content="Pause" Click="Button_Pause_Click" CommandParameter="{Binding}" >
+                                    <Button Content="{x:Static lang:Resources.Pause}" Click="Button_Pause_Click" CommandParameter="{Binding}" >
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                                 <Style.Triggers>
@@ -124,7 +124,7 @@
                                             </Style>
                                         </Button.Style>
                                     </Button>
-                                    <Button Content="Resume" Click="Button_Resume_Click" CommandParameter="{Binding}" >
+                                    <Button Content="{x:Static lang:Resources.Resume}" Click="Button_Resume_Click" CommandParameter="{Binding}" >
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                                 <Style.Triggers>
@@ -141,7 +141,7 @@
                                             </Style>
                                         </Button.Style>
                                     </Button>
-                                    <Button Content="Stop" Click="Button_Stop_Click" CommandParameter="{Binding}" >
+                                    <Button Content="{x:Static lang:Resources.Stop}" Click="Button_Stop_Click" CommandParameter="{Binding}" >
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                                 <Style.Triggers>

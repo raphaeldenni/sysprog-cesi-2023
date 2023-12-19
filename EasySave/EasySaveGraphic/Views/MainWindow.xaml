@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EasySaveGraphic.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="" SnapsToDevicePixels="True" Height="600" Width="1080" MinHeight="600" MinWidth="1080">
+        Title="" SnapsToDevicePixels="True" Height="600" Width="1280" MinHeight="600" MinWidth="1280">
     
     <Grid>
         <Grid.ColumnDefinitions>

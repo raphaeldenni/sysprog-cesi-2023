@@ -120,4 +120,16 @@
     <data name="Message_SuccessCreate" xml:space="preserve">
         <value>Le travail a été créé.</value>
     </data>
+    <data name="Message_ApplicationAlreadyRunning" xml:space="preserve">
+        <value>Une autre instance de l'application est déjà en cours d'exécution.</value>
+    </data>
+    <data name="Pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
+    <data name="Resume" xml:space="preserve">
+        <value>Reprendre</value>
+    </data>
+    <data name="Stop" xml:space="preserve">
+        <value>Stop</value>
+    </data>
 </root>
