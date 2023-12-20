@@ -10,12 +10,14 @@ public class ServerModel
     private const string ServerIpAddress = "0.0.0.0";
     private const string ServerPort = "9000";
     
+    public static string? StringData { get; set; }
+    
     /// <summary>
     /// ServerModel constructor.
     /// </summary>
     public ServerModel()
-    {
-        Console.InputEncoding = Console.OutputEncoding = Encoding.UTF8;
+    { 
+        StringData = string.Empty;
         
         var serverIpAddress = IPAddress.Parse(ServerIpAddress);
         var serverPort = int.Parse(ServerPort);
@@ -48,7 +50,7 @@ public class ServerModel
         
         newServerSocket.Bind(localEndPoint);
         
-        Console.WriteLine("Waiting for connection...");
+        // Listen to incoming connections
         newServerSocket.Listen(10);
 
         return newServerSocket;
@@ -64,18 +66,9 @@ public class ServerModel
         try
         {
             var newClientSocket = serverSocket.Accept();
-            var clientEndPoint = (IPEndPoint)newClientSocket.RemoteEndPoint!;
-        
-            Console.WriteLine(
-                "Connection established with IP: {0} on port: {1}", 
-                clientEndPoint.Address,
-                clientEndPoint.Port
-            );
-        
             return newClientSocket;
-        } catch (SocketException e)
+        } catch (SocketException)
         {
-            Console.WriteLine("Connection failed : {0}", e.Message);
             Environment.Exit(1);
             return null;
         }
@@ -85,7 +78,7 @@ public class ServerModel
     /// Listen to the network and print received messages and send a response.
     /// </summary>
     /// <param name="clientSocket"></param>
-    public static void NetworkListener(Socket clientSocket)
+    private static void NetworkListener(Socket clientSocket)
     {
         var stringData = string.Empty;
         
@@ -95,10 +88,10 @@ public class ServerModel
         
             var dataSize = clientSocket.Receive(data);
             stringData = Encoding.UTF8.GetString(data, 0, dataSize);
-        
-            Console.WriteLine("Data received: {0}", stringData);
 
-            var response = "Text received";
+            StringData = stringData;
+
+            const string response = "Command received";
             var byteResponse = Encoding.UTF8.GetBytes(response);
 
             clientSocket.Send(byteResponse);
@@ -109,11 +102,9 @@ public class ServerModel
     /// Terminate the connection between the server and the client.
     /// </summary>
     /// <param name="serverSocket"></param>
-    public static void TerminateConnection(Socket serverSocket)
+    private static void TerminateConnection(Socket serverSocket)
     {
         serverSocket.Shutdown(SocketShutdown.Both);
         serverSocket.Close();
-        
-        Console.WriteLine("Connection terminated.");
     }
 }
