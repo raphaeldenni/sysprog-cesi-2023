@@ -55,6 +55,13 @@ namespace EasySaveGraphic.Views
             Lang = HomeViewModel.ConfigModel.Config.Language;
             DataContext = this;
 
+            foreach (var task in Tasks)
+            {
+                task.Loading = 0;
+                task.LeftNumberPriorityFiles = 0;
+                task.State = StateType.Inactive ;
+            }
+
             InitializeComponent();
         }
 
@@ -104,6 +111,7 @@ namespace EasySaveGraphic.Views
                 TaskEntity selectedTask = (TaskEntity)((Button)sender).CommandParameter;
 
                 // Utilisez la tâche comme vous le souhaitez
+                HomeViewModel.IsManualPause = true;
                 HomeViewModel.PauseTask(selectedTask);
             }
             catch (Exception ex)

@@ -10,6 +10,7 @@ public class ConfigEntity
     public string? Key { get; set; }
     public string[]? ExtensionsToEncrypt { get; set; }
     public string[]? JobApplications { get; set; }
+    public string[]? PriorityFilesExtensions { get; set; }
 }
 
 public class ConfigModel
@@ -53,7 +54,8 @@ public class ConfigModel
             Language = LangType.En,
             Key = "",
             ExtensionsToEncrypt = new[] { "" },
-            JobApplications = new[] { "" }
+            JobApplications = new[] { "" },
+            PriorityFilesExtensions = new[] { "" }
         };
 
         var defaultConfigJson = JsonSerializer.Serialize(defaultConfig);

@@ -17,7 +17,9 @@ public class CopyModel
     private string Key { get; }
     private string[] ExtensionsToEncrypt { get; }
     private string TempDestDirectory { get; }
-    
+    public List<string> PriorityFiles { get; set; } = new List<string>();
+    public List<string> PriorityFilesExtensions { get; set; }
+
     //// Others
     private Dictionary<string, List<string>> DirectoryStructure { get; }
 
@@ -31,8 +33,10 @@ public class CopyModel
     /// <param name="type"></param>
     /// <param name="key"></param>
     /// <param name="extensionsToEncrypt"></param>
-    public CopyModel(TaskEntity task, string key, string[] extensionsToEncrypt)
+    public CopyModel(TaskEntity task, string key, string[] extensionsToEncrypt, string[] priorityFilesExtensions)
     {
+        PriorityFilesExtensions = new List<string>(priorityFilesExtensions);
+
         // Task properties
         Task = task;
         Task.FilesNumber = 0;
@@ -112,8 +116,17 @@ public class CopyModel
             if (Task.Type != BackupType.Complete && !IsFileModified(file, relativePath)) continue;
 
             var fileName = Path.GetFileName(file);
-            DirectoryStructure[relativePath].Add(fileName);
-            
+
+            if (PriorityFilesExtensions.Contains(Path.GetExtension(file)))
+            {
+                PriorityFiles.Add(Path.Combine(relativePath, fileName));
+                Task.LeftNumberPriorityFiles++;
+            }
+            else
+            {
+                DirectoryStructure[relativePath].Add(fileName);
+            }
+
             Task.FilesNumber++;
             Task.FilesSize += new FileInfo(file).Length;
         }
@@ -124,68 +137,99 @@ public class CopyModel
         }
     }
     
-    /// <summary>
-    /// Copy the files from the source path to the destination path and encrypt them
-    /// </summary>
-    public void CopyFiles()
+    public void CreateDirectoryStructure()
+    {
+        foreach (var directory in DirectoryStructure)
+        {
+            var destDirectory = Path.Combine(Task.DestPath, directory.Key);
+            
+            if (!Directory.Exists(destDirectory))
+                Directory.CreateDirectory(destDirectory);
+        }
+    }
+
+    public void CopyPriorityFiles()
+    {
+        foreach (var priorityFile in PriorityFiles)
+        {
+            var sourceFilePath = Path.Combine(Task.SourcePath, priorityFile);
+            var destFilePath = Path.Combine(Task.DestPath, priorityFile);
+
+            Copy(sourceFilePath, destFilePath, priorityFile);
+            Task.LeftNumberPriorityFiles--;
+        }
+    }
+
+    public void CopyNonPriorityFiles() 
     {
         foreach (var directory in DirectoryStructure)
         {
             var sourceDirectory = Path.Combine(Task.SourcePath, directory.Key);
             var destDirectory = Path.Combine(Task.DestPath, directory.Key);
-            
-            if (!Directory.Exists(destDirectory))
-                Directory.CreateDirectory(destDirectory);
 
             foreach (var file in directory.Value)
             {
                 var sourceFilePath = Path.Combine(sourceDirectory, file);
                 var destFilePath = Path.Combine(destDirectory, file);
-                
-                // Use a stop watch to get the time it takes to copy a file
-                var stopwatch = new Stopwatch();
-                
-                stopwatch.Start();
-                
-                // If the file extension is in the list of extensions to encrypt, encrypt it
-                if (ExtensionsToEncrypt.Contains(Path.GetExtension(file)))
-                {
-                    Directory.CreateDirectory(TempDestDirectory);
 
-                    var tempDestFilePath = Path.Combine(TempDestDirectory, file);
-
-                    CryptoSoftProcess.StartInfo.Arguments = $"\"{sourceFilePath}\" \"{tempDestFilePath}\" \"{Key}\"";
-
-                    CryptoSoftProcess.Start();
-                    CryptoSoftProcess.WaitForExit();
-                    
-                    File.Move(tempDestFilePath, destFilePath, true);
-                    Directory.Delete(TempDestDirectory, true);
-                }
-                else
-                {
-                    File.Copy(sourceFilePath, destFilePath, true);
-                }
-                
-                stopwatch.Stop();
-                
-                var copyTime = stopwatch.ElapsedMilliseconds;
-                                
-                // Update the left files number and size
+                Copy(sourceFilePath, destFilePath, file);
                 Task.LeftFilesNumber--;
-                Task.LeftFilesSize -= new FileInfo(sourceFilePath).Length;
-                
-                // Invoke file info data to write it in the log file
-                string[] fileInfo =
-                {
-                    sourceFilePath, 
-                    destFilePath, 
-                    new FileInfo(sourceFilePath).Length.ToString(), 
-                    copyTime.ToString()
-                };
-                
-                FileCopied?.Invoke(Task, fileInfo);
             }
         }
+    }
+
+    public void Copy(string sourceFilePath, string destFilePath, string file)
+    {
+        // Use a stop watch to get the time it takes to copy a file
+        var stopwatch = new Stopwatch();
+
+        stopwatch.Start();
+
+        // If the file extension is in the list of extensions to encrypt, encrypt it
+        if (ExtensionsToEncrypt.Contains(Path.GetExtension(file)))
+        {
+            Directory.CreateDirectory(TempDestDirectory);
+
+            var tempDestFilePath = Path.Combine(TempDestDirectory, Path.GetFileName(file));
+
+            CryptoSoftProcess.StartInfo.Arguments = $"\"{sourceFilePath}\" \"{tempDestFilePath}\" \"{Key}\"";
+
+            CryptoSoftProcess.Start();
+            CryptoSoftProcess.WaitForExit();
+
+            File.Move(tempDestFilePath, destFilePath, true);
+            Directory.Delete(TempDestDirectory, true);
+        }
+        else
+        {
+            File.Copy(sourceFilePath, destFilePath, true);
+        }
+
+        stopwatch.Stop();
+
+        var copyTime = stopwatch.ElapsedMilliseconds;
+
+        Task.LeftFilesSize -= new FileInfo(sourceFilePath).Length;
+
+        // Invoke file info data to write it in the log file
+        string[] fileInfo =
+        {
+                sourceFilePath,
+                destFilePath,
+                new FileInfo(sourceFilePath).Length.ToString(),
+                copyTime.ToString()
+            };
+
+        FileCopied?.Invoke(Task, fileInfo);
+    }
+
+    /// <summary>
+    /// Copy the files from the source path to the destination path and encrypt them
+    /// </summary>
+    public void CopyFiles()
+    {
+        CreateDirectoryStructure();
+        CopyPriorityFiles();
+        CopyNonPriorityFiles();
     }
 }

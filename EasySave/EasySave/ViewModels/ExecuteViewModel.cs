@@ -116,7 +116,8 @@ namespace EasySave.ViewModels
                CopyModel = new CopyModel(
                    task,
                    ConfigModel.Config.Key,
-                   ConfigModel.Config.ExtensionsToEncrypt
+                   ConfigModel.Config.ExtensionsToEncrypt,
+                   ConfigModel.Config.PriorityFilesExtensions
                    );
 
                 var filesCount = CopyModel.Task.LeftFilesNumber;

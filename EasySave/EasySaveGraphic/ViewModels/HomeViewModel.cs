@@ -23,11 +23,13 @@ namespace EasySaveGraphic.ViewModels
         public List<TaskEntity> Tasks { get; set; }
         public bool IsJobApplicationDetected { get; set; }
         public bool ProcessWasDetected { get; set; }
+        private bool IsPriorityFilesRunning { get; set; } = false;
+        public bool IsManualPause { get; set; } = false;
 
         private Dictionary<string, ManualResetEvent> TaskPauseEvents = new Dictionary<string, ManualResetEvent>();
 
-        List<Thread> Threads = new List<Thread>();
-        
+        public List<Thread> Threads = new List<Thread>();
+
         static object TaskLock = new object();
         static object LogLock = new object();
 
@@ -36,15 +38,47 @@ namespace EasySaveGraphic.ViewModels
             ConfigModel = new ConfigModel();
             TaskModel = new TaskModel();
             Tasks = GetAllTasks(null);
+
             Task.Run(() => JobApplicationDetected());
+        }
+
+        public void PriorityFiles()
+        {
+            while (true)
+            {
+
+                foreach (var task in Tasks)
+                {
+                    var test = Tasks.Any(t => t != task && t.LeftNumberPriorityFiles > 0);
+
+                    if (task.State == StateType.Active && task.LeftNumberPriorityFiles == 0 && test)
+                    {
+                        PauseTask(task);
+                    }
+
+                    if (task.LeftNumberPriorityFiles != 0 && !IsManualPause)
+                    {
+                        ResumeTask(task);
+                    }
+
+                    if (!Tasks.Any(t => t.LeftNumberPriorityFiles > 0) && !IsManualPause)
+                    {
+                        if(task.State == StateType.Active || task.State == StateType.Pause)
+                        {
+                            ResumeTask(task);
+                        }
+                    }
+                }
+
+
+            }
         }
 
         public void JobApplicationDetected()
         {
             while (true)
             {
-                string[] processNames = null;
-                processNames = ConfigModel.Config.JobApplications;
+                var processNames = ConfigModel.Config.JobApplications;
 
                 if (processNames != null)
                 {
@@ -96,18 +130,24 @@ namespace EasySaveGraphic.ViewModels
         {
             if (TaskPauseEvents.ContainsKey(task.Name))
             {
+                if (!TaskPauseEvents[task.Name].WaitOne(0))
+                {
+                    return;
+                }
+
                 TaskPauseEvents[task.Name].Reset();
+
                 lock (TaskLock)
                 {
                     TaskModel.UpdateTaskState(
-                    task.Name,
-                    StateType.Pause,
-                    task.FilesNumber,
-                    task.FilesSize,
-                    task.LeftFilesNumber,
-                    task.LeftFilesSize,
-                    task.SourcePath,
-                    task.DestPath
+                        task.Name,
+                        StateType.Pause,
+                        task.FilesNumber,
+                        task.FilesSize,
+                        task.LeftFilesNumber,
+                        task.LeftFilesSize,
+                        task.SourcePath,
+                        task.DestPath
                     );
                 }
             }
@@ -117,18 +157,24 @@ namespace EasySaveGraphic.ViewModels
         {
             if (TaskPauseEvents.ContainsKey(task.Name) && !IsJobApplicationDetected)
             {
+                if (TaskPauseEvents[task.Name].WaitOne(0))
+                {
+                    return;
+                }
+
                 TaskPauseEvents[task.Name].Set();
+
                 lock (TaskLock)
                 {
                     TaskModel.UpdateTaskState(
-                    task.Name,
-                    StateType.Active,
-                    task.FilesNumber,
-                    task.FilesSize,
-                    task.LeftFilesNumber,
-                    task.LeftFilesSize,
-                    task.SourcePath,
-                    task.DestPath
+                        task.Name,
+                        StateType.Active,
+                        task.FilesNumber,
+                        task.FilesSize,
+                        task.LeftFilesNumber,
+                        task.LeftFilesSize,
+                        task.SourcePath,
+                        task.DestPath
                     );
                 }
             }
@@ -219,10 +265,12 @@ namespace EasySaveGraphic.ViewModels
             var copyModel = new CopyModel(
                 task,
                 ConfigModel.Config.Key,
-                ConfigModel.Config.ExtensionsToEncrypt
+                ConfigModel.Config.ExtensionsToEncrypt,
+                ConfigModel.Config.PriorityFilesExtensions
                 );
 
             task = copyModel.Task;
+            Tasks.Where(t => t.Name == task.Name).FirstOrDefault().LeftNumberPriorityFiles = task.LeftNumberPriorityFiles;
 
             lock (TaskLock)
             {
@@ -270,6 +318,8 @@ namespace EasySaveGraphic.ViewModels
             TaskPauseEvents[task.Name].WaitOne();
             int fileSize;
             float fileTransferTime;
+
+            Tasks.Where(t => t.Name == task.Name).FirstOrDefault().LeftNumberPriorityFiles = task.LeftNumberPriorityFiles;
 
             if (int.TryParse(data[2], out fileSize) && float.TryParse(data[3], out fileTransferTime))
             {
@@ -325,6 +375,12 @@ namespace EasySaveGraphic.ViewModels
                 thread.Name = task.Name;
                 Threads.Add(thread);
                 thread.Start();
+            }
+
+            if (!IsPriorityFilesRunning)
+            {
+                Task.Run(() => PriorityFiles());
+                IsPriorityFilesRunning = true;
             }
         }
     }
