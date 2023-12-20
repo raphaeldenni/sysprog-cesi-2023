@@ -15,8 +15,8 @@ public class ServerViewModel
     {
         ServerModel = new ServerModel();
         
-        // Bind the HandleStringDataChanged method to the OnStringDataChanged event
-        ServerModel.OnStringDataChanged += HandleStringDataChanged;
+        // Bind the HandleStringDataChange method to the OnStringDataChanged event
+        ServerModel.OnStringDataChanged += HandleStringDataChange;
         
         StartListening();
     }
@@ -42,8 +42,75 @@ public class ServerViewModel
     /// Handle the string data received from the client and use it.
     /// </summary>
     /// <param name="stringData"></param>
-    private void HandleStringDataChanged(string? stringData)
+    private void HandleStringDataChange(string? stringData)
     {
-         ServerModel.DataSender(ClientSocket, "Message received");
+        if (stringData == null)
+        {
+            ServerModel.DataSender(
+                ClientSocket, 
+                "Please type \"help\" to display the available commands."
+                );
+            
+            return;
+        }
+        
+        var args = stringData.Split(' ');
+        
+        switch (args[0])
+        {
+            case "help":
+                ServerModel.DataSender(
+                    ClientSocket, 
+                    "Available commands: help, list, pause, resume, stop"
+                    );
+                break;
+                
+            case "list":
+                ListTasks();
+                break;
+            
+            case "pause":
+                break;
+            
+            case "resume":
+                break;
+            
+            case "stop":
+                break;
+            
+            case "exit":
+                break;
+            
+            default:
+                ServerModel.DataSender(
+                    ClientSocket, 
+                    $"Unknown command \"{args[0]}\", type \"help\" to display the available commands."
+                    );
+                break;
+        }
+    }
+    
+    /// <summary>
+    /// List the tasks.
+    /// </summary>
+    private void ListTasks()
+    {
+        var taskModel = new TaskModel();
+        taskModel.PullStateFile();
+        
+        var tasks = taskModel.TasksList;
+
+        if (tasks == null)
+        {
+            ServerModel.DataSender(ClientSocket, "No tasks.");
+            return;
+        }
+        
+        foreach (var task in tasks)
+        {
+            ServerModel.DataSender(ClientSocket, task.Name!);
+        }
+        
+        taskModel = null;
     }
 }

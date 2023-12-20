@@ -94,7 +94,7 @@ public class ServerModel
         {
             var data = new byte[1024];
             
-            while (clientSocket is { Connected: true } && stringData != "exit()")
+            while (clientSocket is { Connected: true } && stringData != "exit")
             {
                 var dataSize = clientSocket.Receive(data);
                 stringData = Encoding.UTF8.GetString(data, 0, dataSize);
@@ -119,7 +119,7 @@ public class ServerModel
     {
         if (clientSocket == null) return;
         
-        var data = Encoding.UTF8.GetBytes(stringData);
+        var data = Encoding.UTF8.GetBytes(stringData + "\n");
         clientSocket.Send(data);
     }
 }

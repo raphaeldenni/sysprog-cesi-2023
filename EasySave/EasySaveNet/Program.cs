@@ -64,14 +64,15 @@ internal static class Program
             serverPort
         );
         
-        Console.WriteLine("Waiting for connection...");
+        Console.WriteLine("\nWaiting for connection...");
         newServerSocket.Connect(remoteEndPoint);
             
         Console.WriteLine(
             "Connection established with IP: {0}", 
-            serverIpAddress,
-            serverPort
+            serverIpAddress
             );
+        
+        Console.WriteLine("Type \"exit\" to terminate the connection\n");
 
         return newServerSocket;
     }
@@ -84,14 +85,17 @@ internal static class Program
     {
         var input = string.Empty;
         
-        while (input != "exit()")
+        while (input != "exit")
         {
             /* Wait for user input and send it to the server */
             
-            Console.Write("Enter a command: ");
+            Console.Write("Input: ");
             
             input = Console.ReadLine() ?? string.Empty;
             var byteInput = Encoding.UTF8.GetBytes(input);
+            
+            // If the user input is empty, skip the rest of the loop
+            if (string.IsNullOrEmpty(input)) continue;
         
             serverSocket.Send(byteInput);
             
