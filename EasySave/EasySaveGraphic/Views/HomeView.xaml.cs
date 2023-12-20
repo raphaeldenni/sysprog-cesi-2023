@@ -31,7 +31,22 @@ namespace EasySaveGraphic.Views
         public List<TaskEntity> Tasks { get; set; }
         public LangType Lang { get; set; }
 
-        public HomeView()
+        private static HomeView _instance;
+
+        public static HomeView Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new HomeView();
+                }
+                return _instance;
+            }
+        }
+
+
+        private HomeView()
         {
             StartClock();
 
@@ -55,6 +70,12 @@ namespace EasySaveGraphic.Views
         {
             DigitalClockHour.Content = DateTime.Now.ToString(@"HH\:mm\:ss");
             DigitalClockDay.Content = DateTime.Now.ToString(@"dd\/MM\/yyyy");
+        }
+
+        public void BindNewTasks()
+        {
+            Tasks = new List<TaskEntity>(HomeViewModel.GetAllTasks(null));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tasks)));
         }
 
         private List<TaskEntity> GetCheckedTasks()

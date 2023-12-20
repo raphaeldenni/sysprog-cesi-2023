@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using EasySaveGraphic.Views;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,18 +26,11 @@ namespace EasySaveGraphic
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            NavigateToHomeView();
-        }
+            HomeView homeView = HomeView.Instance;
 
-        private void NavigateToHomeView()
-        {
-            try {
-                Uri homeViewUri = new Uri("Views/HomeView.xaml", UriKind.Relative);
-                navframe.Navigate(homeViewUri);
-            }
-            catch (Exception ex)
+            if (navframe != null)
             {
-                MessageBox.Show($"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                navframe.NavigationService.Navigate(homeView);
             }
         }
 
@@ -45,34 +39,23 @@ namespace EasySaveGraphic
             Application.Current.Shutdown();
         }
 
-        private void ChangePage(Uri pageUri)
-        {
-            if (navframe != null)
-            {
-                navframe.Navigate(pageUri);
-            }
-        }
-
         private void btnConfig_Click(object sender, RoutedEventArgs e)
         {
-            try {
-                ChangePage(new Uri("Views/ConfigView.xaml", UriKind.Relative));
-            }
-            catch (Exception ex)
+            ConfigView configView = ConfigView.Instance;
+
+            if (navframe != null)
             {
-                MessageBox.Show($"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                navframe.NavigationService.Navigate(configView);
             }
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            try
+            HomeView homeView = HomeView.Instance;
+
+            if (navframe != null)
             {
-                ChangePage(new Uri("Views/HomeView.xaml", UriKind.Relative));
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                navframe.NavigationService.Navigate(homeView);
             }
         }
 

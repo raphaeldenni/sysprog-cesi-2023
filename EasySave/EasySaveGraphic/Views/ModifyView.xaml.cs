@@ -76,6 +76,9 @@ namespace EasySaveGraphic.Views
         {
             try
             {
+                HomeView homeView = HomeView.Instance;
+                homeView.BindNewTasks();
+
                 NavigationService navigationService = NavigationService.GetNavigationService(this);
 
                 if (navigationService != null && navigationService.CanGoBack)
