@@ -10,8 +10,22 @@ public class ServerModel
     private const string ServerIpAddress = "0.0.0.0";
     private const string ServerPort = "9000";
     
-    public static string? StringData { get; set; }
+    public Socket ServerSocket { get; set; }
     
+    private static string? _stringData;
+
+    public static string? StringData
+    {
+        get => _stringData;
+        set
+        {
+            _stringData = value;
+            OnStringDataChanged?.Invoke(_stringData);
+        }
+    }
+    
+    public static event Action<string?>? OnStringDataChanged;
+
     /// <summary>
     /// ServerModel constructor.
     /// </summary>
@@ -22,11 +36,7 @@ public class ServerModel
         var serverIpAddress = IPAddress.Parse(ServerIpAddress);
         var serverPort = int.Parse(ServerPort);
 
-        var serverSocket = EstablishConnection(serverIpAddress, serverPort);
-        var clientSocket = AcceptConnection(serverSocket);
-
-        NetworkListener(clientSocket);
-        TerminateConnection(serverSocket);
+        ServerSocket = EstablishServer(serverIpAddress, serverPort);
     }
     
     /// <summary>
@@ -35,7 +45,7 @@ public class ServerModel
     /// <param name="serverIpAddress"></param>
     /// <param name="serverPort"></param>
     /// <returns>Socket</returns>
-    private static Socket EstablishConnection(IPAddress serverIpAddress, int serverPort)
+    private static Socket EstablishServer(IPAddress serverIpAddress, int serverPort)
     {
         var newServerSocket = new Socket(
             AddressFamily.InterNetwork, 
@@ -50,9 +60,6 @@ public class ServerModel
         
         newServerSocket.Bind(localEndPoint);
         
-        // Listen to incoming connections
-        newServerSocket.Listen(10);
-
         return newServerSocket;
     }
     
@@ -61,7 +68,7 @@ public class ServerModel
     /// </summary>
     /// <param name="serverSocket"></param>
     /// <returns>Socket</returns>
-    private static Socket AcceptConnection(Socket serverSocket)
+    public static Socket? AcceptConnection(Socket serverSocket)
     {
         try
         {
@@ -69,7 +76,6 @@ public class ServerModel
             return newClientSocket;
         } catch (SocketException)
         {
-            Environment.Exit(1);
             return null;
         }
     }
@@ -78,11 +84,13 @@ public class ServerModel
     /// Listen to the network and print received messages and send a response.
     /// </summary>
     /// <param name="clientSocket"></param>
-    private static void NetworkListener(Socket clientSocket)
+    public static void ClientListener(Socket? clientSocket)
     {
+        if (clientSocket == null) return;
+        
         var stringData = string.Empty;
         
-        while (stringData != "exit()")
+        while (clientSocket is { Connected: true } && stringData != "exit()")
         {
             var data = new byte[1024];
         
@@ -96,15 +104,8 @@ public class ServerModel
 
             clientSocket.Send(byteResponse);
         }
-    }
-    
-    /// <summary>
-    /// Terminate the connection between the server and the client.
-    /// </summary>
-    /// <param name="serverSocket"></param>
-    private static void TerminateConnection(Socket serverSocket)
-    {
-        serverSocket.Shutdown(SocketShutdown.Both);
-        serverSocket.Close();
+        
+        clientSocket.Shutdown(SocketShutdown.Both);
+        clientSocket.Close();
     }
 }

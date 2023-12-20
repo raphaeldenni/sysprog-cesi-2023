@@ -9,6 +9,7 @@ namespace EasySaveNet;
 internal static class Program
 {
     private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    private const string ServerPort = "9000";
     
     /// <summary>
     /// Main entry point of the program.
@@ -18,7 +19,7 @@ internal static class Program
     {
         Console.InputEncoding = Console.OutputEncoding = Encoding.UTF8;
         
-        if (args.Length != 2)
+        if (args.Length != 1)
         {
             Console.WriteLine("Error: Wrong arguments");
             Console.WriteLine("Usage: EasySaveNet <server IP address> <server port>");
@@ -28,7 +29,7 @@ internal static class Program
         
         // Parse command line arguments to get server IP address and port
         var serverIpAddress = IPAddress.Parse(args[0]);
-        var serverPort = int.Parse(args[1]);
+        var serverPort = int.Parse(ServerPort);
 
         try
         {
