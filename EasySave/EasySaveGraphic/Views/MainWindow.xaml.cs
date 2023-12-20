@@ -18,7 +18,8 @@ namespace EasySaveGraphic
     /// </summary>
     public partial class MainWindow : Window
     {
-        private HomeView _homeViewInstance;
+        private HomeView HomeViewInstance;
+        private ConfigView ConfigViewInstance;
 
         public MainWindow()
         {
@@ -35,12 +36,29 @@ namespace EasySaveGraphic
         {
             try
             {
-                if (_homeViewInstance == null)
+                if (HomeViewInstance == null)
                 {
-                    _homeViewInstance = new HomeView();
+                    HomeViewInstance = new HomeView();
                 }
 
-                navframe.Navigate(_homeViewInstance);
+                navframe.Navigate(HomeViewInstance);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{Lang.Resources.Message_ErrorGeneral} {ex.Message}", Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void NavigateToConfigView()
+        {
+            try
+            {
+                if (ConfigViewInstance == null)
+                {
+                    ConfigViewInstance = new ConfigView();
+                }
+
+                navframe.Navigate(ConfigViewInstance);
             }
             catch (Exception ex)
             {
@@ -53,18 +71,10 @@ namespace EasySaveGraphic
             Application.Current.Shutdown();
         }
 
-        private void ChangePage(Uri pageUri)
-        {
-            if (navframe != null)
-            {
-                navframe.Navigate(pageUri);
-            }
-        }
-
         private void btnConfig_Click(object sender, RoutedEventArgs e)
         {
             try {
-                ChangePage(new Uri("Views/ConfigView.xaml", UriKind.Relative));
+                NavigateToConfigView();
             }
             catch (Exception ex)
             {
