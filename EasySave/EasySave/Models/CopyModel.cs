@@ -150,9 +150,10 @@ public class CopyModel
                 // If the file extension is in the list of extensions to encrypt, encrypt it
                 if (ExtensionsToEncrypt.Contains(Path.GetExtension(file)))
                 {
-                    Directory.CreateDirectory(TempDestDirectory);
+                    var pathCryptoSoft = Path.Combine(TempDestDirectory, Task.Name);
+                    Directory.CreateDirectory(pathCryptoSoft);
 
-                    var tempDestFilePath = Path.Combine(TempDestDirectory, file);
+                    var tempDestFilePath = Path.Combine(pathCryptoSoft, file);
 
                     CryptoSoftProcess.StartInfo.Arguments = $"\"{sourceFilePath}\" \"{tempDestFilePath}\" \"{Key}\"";
 
@@ -160,7 +161,6 @@ public class CopyModel
                     CryptoSoftProcess.WaitForExit();
                     
                     File.Move(tempDestFilePath, destFilePath, true);
-                    Directory.Delete(TempDestDirectory, true);
                 }
                 else
                 {
