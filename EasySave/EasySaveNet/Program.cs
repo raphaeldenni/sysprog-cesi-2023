@@ -68,7 +68,7 @@ internal static class Program
         newServerSocket.Connect(remoteEndPoint);
             
         Console.WriteLine(
-            "Connection established with IP: {0} on port: {1}", 
+            "Connection established with IP: {0}", 
             serverIpAddress,
             serverPort
             );

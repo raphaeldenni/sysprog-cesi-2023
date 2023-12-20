@@ -90,19 +90,25 @@ public class ServerModel
         
         var stringData = string.Empty;
         
-        while (clientSocket is { Connected: true } && stringData != "exit()")
+        try
         {
-            var data = new byte[1024];
+            while (clientSocket is { Connected: true } && stringData != "exit()")
+            {
+                var data = new byte[1024];
         
-            var dataSize = clientSocket.Receive(data);
-            stringData = Encoding.UTF8.GetString(data, 0, dataSize);
+                var dataSize = clientSocket.Receive(data);
+                stringData = Encoding.UTF8.GetString(data, 0, dataSize);
 
-            StringData = stringData;
+                StringData = stringData;
 
-            const string response = "Command received";
-            var byteResponse = Encoding.UTF8.GetBytes(response);
+                const string response = "Command received";
+                var byteResponse = Encoding.UTF8.GetBytes(response);
 
-            clientSocket.Send(byteResponse);
+                clientSocket.Send(byteResponse);
+            }
+        } catch (SocketException)
+        {
+            return;
         }
         
         clientSocket.Shutdown(SocketShutdown.Both);
