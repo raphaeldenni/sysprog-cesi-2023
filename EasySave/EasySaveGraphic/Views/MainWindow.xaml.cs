@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using EasySaveGraphic.Views;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,8 @@ namespace EasySaveGraphic
     /// </summary>
     public partial class MainWindow : Window
     {
+        private HomeView _homeViewInstance;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,9 +33,14 @@ namespace EasySaveGraphic
 
         private void NavigateToHomeView()
         {
-            try {
-                Uri homeViewUri = new Uri("Views/HomeView.xaml", UriKind.Relative);
-                navframe.Navigate(homeViewUri);
+            try
+            {
+                if (_homeViewInstance == null)
+                {
+                    _homeViewInstance = new HomeView();
+                }
+
+                navframe.Navigate(_homeViewInstance);
             }
             catch (Exception ex)
             {
@@ -68,7 +76,7 @@ namespace EasySaveGraphic
         {
             try
             {
-                ChangePage(new Uri("Views/HomeView.xaml", UriKind.Relative));
+                NavigateToHomeView();
             }
             catch (Exception ex)
             {

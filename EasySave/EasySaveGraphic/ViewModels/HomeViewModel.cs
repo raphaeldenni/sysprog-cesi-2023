@@ -96,6 +96,11 @@ namespace EasySaveGraphic.ViewModels
         {
             if (TaskPauseEvents.ContainsKey(task.Name))
             {
+                if (!TaskPauseEvents[task.Name].WaitOne(0))
+                {
+                    return;
+                }
+
                 TaskPauseEvents[task.Name].Reset();
                 lock (TaskLock)
                 {
@@ -117,6 +122,11 @@ namespace EasySaveGraphic.ViewModels
         {
             if (TaskPauseEvents.ContainsKey(task.Name) && !IsJobApplicationDetected)
             {
+                if (TaskPauseEvents[task.Name].WaitOne(0))
+                {
+                    return;
+                }
+
                 TaskPauseEvents[task.Name].Set();
                 lock (TaskLock)
                 {
