@@ -167,6 +167,11 @@ namespace EasySaveGraphic.ViewModels
 
         public List<TaskEntity> GetAllTasks(string? search)
         {
+            lock (TaskLock)
+            {
+                TaskModel.PullStateFile();
+            }
+
             List<TaskEntity>? tasks = TaskModel.TasksList;
 
             tasks = tasks.Where(task => task.Name != null).ToList();

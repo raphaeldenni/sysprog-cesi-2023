@@ -24,7 +24,21 @@ namespace EasySaveGraphic.Views
     {
         internal ConfigViewModel ConfigViewModel { get; set; }
 
-        public ConfigView()
+        private static ConfigView _instance;
+
+        public static ConfigView Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ConfigView();
+                }
+                return _instance;
+            }
+        }
+
+        private ConfigView()
         {
             InitializeComponent();
 
