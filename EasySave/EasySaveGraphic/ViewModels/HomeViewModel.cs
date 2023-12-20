@@ -36,6 +36,22 @@ namespace EasySaveGraphic.ViewModels
             ConfigModel = new ConfigModel();
             TaskModel = new TaskModel();
             Tasks = GetAllTasks(null);
+
+            foreach (var task in Tasks)
+            {
+                task.Loading = 0;
+                TaskModel.UpdateTaskState(
+                task.Name,
+                StateType.Inactive,
+                task.FilesNumber,
+                task.FilesSize,
+                0,
+                0,
+                task.SourcePath,
+                task.DestPath
+                );
+            }
+
             Task.Run(() => JobApplicationDetected());
         }
 
@@ -320,16 +336,19 @@ namespace EasySaveGraphic.ViewModels
 
         public void StartSelectedTasks(List<TaskEntity> tasks)
         {
-            foreach (TaskEntity task in tasks)
+            if (!IsJobApplicationDetected)
             {
-                Thread thread = new Thread(() => ExecuteOneTask(task));
-                if (!TaskPauseEvents.ContainsKey(task.Name))
+                foreach (TaskEntity task in tasks)
                 {
-                    TaskPauseEvents[task.Name] = new ManualResetEvent(true);
+                    Thread thread = new Thread(() => ExecuteOneTask(task));
+                    if (!TaskPauseEvents.ContainsKey(task.Name))
+                    {
+                        TaskPauseEvents[task.Name] = new ManualResetEvent(true);
+                    }
+                    thread.Name = task.Name;
+                    Threads.Add(thread);
+                    thread.Start();
                 }
-                thread.Name = task.Name;
-                Threads.Add(thread);
-                thread.Start();
             }
         }
     }

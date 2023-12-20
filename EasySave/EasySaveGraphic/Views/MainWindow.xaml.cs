@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.IO;
 
 namespace EasySaveGraphic
 {
@@ -88,14 +88,15 @@ namespace EasySaveGraphic
         {
             try
             {
-                string logsFolderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var easySaveFolderPath = Path.Combine(appDataPath, "EasySave", "Logs");
 
-                if (System.IO.Directory.Exists(logsFolderPath))
+                if (System.IO.Directory.Exists(easySaveFolderPath))
                 {
                     ProcessStartInfo psi = new ProcessStartInfo
                     {
                         FileName = "explorer.exe",
-                        Arguments = logsFolderPath,
+                        Arguments = easySaveFolderPath,
                         UseShellExecute = true,
                         WindowStyle = ProcessWindowStyle.Normal,
                     };
