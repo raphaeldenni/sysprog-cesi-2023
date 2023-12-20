@@ -1,3 +1,4 @@
+using System.Net.Sockets;
 using EasySave.Models;
 
 namespace EasySaveGraphic.ViewModels;
@@ -5,6 +6,7 @@ namespace EasySaveGraphic.ViewModels;
 public class ServerViewModel
 {
     private ServerModel ServerModel { get; } 
+    private Socket? ClientSocket { get; set; }
     
     /// <summary>
     /// ServerViewModel constructor
@@ -29,9 +31,9 @@ public class ServerViewModel
             while (true)
             {
                 ServerModel.ServerSocket.Listen(10);
-        
-                var clientSocket = ServerModel.AcceptConnection(ServerModel.ServerSocket);
-                ServerModel.ClientListener(clientSocket);
+                
+                ClientSocket = ServerModel.AcceptConnection(ServerModel.ServerSocket);
+                ServerModel.DataReceiver(ClientSocket);
             }
         });
     }
@@ -40,8 +42,8 @@ public class ServerViewModel
     /// Handle the string data received from the client and use it.
     /// </summary>
     /// <param name="stringData"></param>
-    private static void HandleStringDataChanged(string? stringData)
+    private void HandleStringDataChanged(string? stringData)
     {
-         Console.WriteLine(stringData);
+         ServerModel.DataSender(ClientSocket, "Message received");
     }
 }

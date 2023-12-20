@@ -84,7 +84,7 @@ public class ServerModel
     /// Listen to the network and print received messages and send a response.
     /// </summary>
     /// <param name="clientSocket"></param>
-    public static void ClientListener(Socket? clientSocket)
+    public static void DataReceiver(Socket? clientSocket)
     {
         if (clientSocket == null) return;
         
@@ -92,19 +92,14 @@ public class ServerModel
         
         try
         {
+            var data = new byte[1024];
+            
             while (clientSocket is { Connected: true } && stringData != "exit()")
             {
-                var data = new byte[1024];
-        
                 var dataSize = clientSocket.Receive(data);
                 stringData = Encoding.UTF8.GetString(data, 0, dataSize);
 
                 StringData = stringData;
-
-                const string response = "Command received";
-                var byteResponse = Encoding.UTF8.GetBytes(response);
-
-                clientSocket.Send(byteResponse);
             }
         } catch (SocketException)
         {
@@ -113,5 +108,18 @@ public class ServerModel
         
         clientSocket.Shutdown(SocketShutdown.Both);
         clientSocket.Close();
+    }
+    
+    /// <summary>
+    /// Send a message to the client.
+    /// </summary>
+    /// <param name="clientSocket"></param>
+    /// <param name="stringData"></param>
+    public static void DataSender(Socket? clientSocket, string stringData)
+    {
+        if (clientSocket == null) return;
+        
+        var data = Encoding.UTF8.GetBytes(stringData);
+        clientSocket.Send(data);
     }
 }
