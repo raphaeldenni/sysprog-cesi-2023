@@ -138,4 +138,10 @@
     <data name="ExtensionsPriority" xml:space="preserve">
         <value>Extensions prioritaires</value>
     </data>
+    <data name="Message_ErrorModifyTask" xml:space="preserve">
+        <value>Vous ne pouvez pas modifier un travail en cours.</value>
+    </data>
+    <data name="Message_ErrorDeleteTask" xml:space="preserve">
+        <value>Vous ne pouvez pas supprimer un travail en cours.</value>
+    </data>
 </root>
