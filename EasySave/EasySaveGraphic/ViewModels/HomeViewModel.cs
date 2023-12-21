@@ -23,6 +23,7 @@ namespace EasySaveGraphic.ViewModels
         public List<TaskEntity> Tasks { get; set; }
         public bool IsJobApplicationDetected { get; set; }
         public bool ProcessWasDetected { get; set; }
+        public bool IsManualPause { get; set; }
 
         private Dictionary<string, ManualResetEvent> TaskPauseEvents = new Dictionary<string, ManualResetEvent>();
 
@@ -37,6 +38,7 @@ namespace EasySaveGraphic.ViewModels
             TaskModel = new TaskModel();
             Tasks = GetAllTasks(null);
             Task.Run(() => JobApplicationDetected());
+            Task.Run(() => PriorityFiles());
         }
 
         public void JobApplicationDetected()
@@ -67,12 +69,44 @@ namespace EasySaveGraphic.ViewModels
                     {
                         PauseAllTasks();
                     }
-                    else if (ProcessWasDetected)
+                    else if (ProcessWasDetected && !IsManualPause)
                     {
                         ProcessWasDetected = false;
                         ResumeAllTasks();
                     }
                 }
+            }
+        }
+
+        public void PriorityFiles()
+        {
+            while (true)
+            {
+
+                foreach (var task in Tasks)
+                {
+                    var test = Tasks.Any(t => t != task && t.LeftNumberPriorityFiles > 0);
+
+                    if (task.State == StateType.Active && task.LeftNumberPriorityFiles == 0 && test)
+                    {
+                        PauseTask(task);
+                    }
+
+                    if (task.LeftNumberPriorityFiles != 0 && !IsManualPause)
+                    {
+                        ResumeTask(task);
+                    }
+
+                    if (!Tasks.Any(t => t.LeftNumberPriorityFiles > 0) && !IsManualPause)
+                    {
+                        if (task.State == StateType.Active || task.State == StateType.Pause)
+                        {
+                            ResumeTask(task);
+                        }
+                    }
+                }
+
+
             }
         }
 
@@ -96,6 +130,10 @@ namespace EasySaveGraphic.ViewModels
         {
             if (TaskPauseEvents.ContainsKey(task.Name))
             {
+                if (!TaskPauseEvents[task.Name].WaitOne(0))
+                {
+                    return;
+                }
                 TaskPauseEvents[task.Name].Reset();
                 lock (TaskLock)
                 {
@@ -117,6 +155,10 @@ namespace EasySaveGraphic.ViewModels
         {
             if (TaskPauseEvents.ContainsKey(task.Name) && !IsJobApplicationDetected)
             {
+                if (TaskPauseEvents[task.Name].WaitOne(0))
+                {
+                    return;
+                }
                 TaskPauseEvents[task.Name].Set();
                 lock (TaskLock)
                 {
@@ -214,7 +256,8 @@ namespace EasySaveGraphic.ViewModels
             var copyModel = new CopyModel(
                 task,
                 ConfigModel.Config.Key,
-                ConfigModel.Config.ExtensionsToEncrypt
+                ConfigModel.Config.ExtensionsToEncrypt,
+                ConfigModel.Config.PriorityFilesExtensions
                 );
 
             task = copyModel.Task;
