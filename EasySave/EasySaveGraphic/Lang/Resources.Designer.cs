@@ -213,6 +213,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t delete a running job..
+        /// </summary>
+        public static string Message_ErrorDeleteTask {
+            get {
+                return ResourceManager.GetString("Message_ErrorDeleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error has occurred:.
         /// </summary>
         public static string Message_ErrorGeneral {
@@ -227,6 +236,15 @@ namespace EasySaveGraphic.Lang {
         public static string Message_ErrorLog {
             get {
                 return ResourceManager.GetString("Message_ErrorLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t modify a running job..
+        /// </summary>
+        public static string Message_ErrorModifyTask {
+            get {
+                return ResourceManager.GetString("Message_ErrorModifyTask", resourceCulture);
             }
         }
         

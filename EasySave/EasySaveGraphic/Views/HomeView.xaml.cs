@@ -128,7 +128,17 @@ namespace EasySaveGraphic.Views
 
         private void Button_Delete_Click(object sender, RoutedEventArgs e)
         {
-            bool result = HomeViewModel.DeleteSelectedTasks(GetCheckedTasks());
+            var tasks = GetCheckedTasks();
+            foreach (var task in tasks)
+            {
+                if (task.State != StateType.Inactive)
+                {
+                    MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorDeleteTask, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
+            bool result = HomeViewModel.DeleteSelectedTasks(tasks);
             if (result)
             {
                 Tasks = new List<TaskEntity>(HomeViewModel.GetAllTasks(null));
@@ -170,6 +180,12 @@ namespace EasySaveGraphic.Views
                 if (checkTasks.FirstOrDefault() == null)
                 {
                     MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorSelectATask, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                if (checkTasks.FirstOrDefault().State != StateType.Inactive)
+                {
+                    MessageBox.Show(EasySaveGraphic.Lang.Resources.Message_ErrorModifyTask, EasySaveGraphic.Lang.Resources.Error, MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 

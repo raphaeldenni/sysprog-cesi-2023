@@ -138,4 +138,10 @@
     <data name="ExtensionsPriority" xml:space="preserve">
         <value>Priority extensions</value>
     </data>
+    <data name="Message_ErrorModifyTask" xml:space="preserve">
+        <value>You can't modify a running job.</value>
+    </data>
+    <data name="Message_ErrorDeleteTask" xml:space="preserve">
+        <value>You can't delete a running job.</value>
+    </data>
 </root>

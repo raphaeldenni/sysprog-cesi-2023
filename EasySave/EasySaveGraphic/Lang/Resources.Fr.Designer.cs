@@ -213,6 +213,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas supprimer un travail en cours..
+        /// </summary>
+        internal static string Message_ErrorDeleteTask {
+            get {
+                return ResourceManager.GetString("Message_ErrorDeleteTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Une erreur s&apos;est produite :.
         /// </summary>
         internal static string Message_ErrorGeneral {
@@ -227,6 +236,15 @@ namespace EasySaveGraphic.Lang {
         internal static string Message_ErrorLog {
             get {
                 return ResourceManager.GetString("Message_ErrorLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas modifier un travail en cours..
+        /// </summary>
+        internal static string Message_ErrorModifyTask {
+            get {
+                return ResourceManager.GetString("Message_ErrorModifyTask", resourceCulture);
             }
         }
         
