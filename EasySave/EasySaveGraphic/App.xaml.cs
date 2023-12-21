@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using EasySave.Models;
-using EasySaveGraphic.ViewModels;
 
 namespace EasySaveGraphic
 {
@@ -11,11 +10,7 @@ namespace EasySaveGraphic
         private static Mutex _mutex = null!;
 
         protected override void OnStartup(StartupEventArgs e)
-        {
-            // Activate the distant server in a thread
-            var distantServerThread = new Thread(() => _ = new ServerViewModel());
-            distantServerThread.Start();
-            
+        { 
             // Load language settings from the config.json file,
             // then set the UI culture and the culture of the application's resources with it 
             var language = LoadLang();

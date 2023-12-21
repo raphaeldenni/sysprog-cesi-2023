@@ -1,18 +1,33 @@
 using System.Net.Sockets;
 using EasySave.Models;
+using EasySaveGraphic.Views;
 
 namespace EasySaveGraphic.ViewModels;
 
 public class ServerViewModel
 {
-    private ServerModel ServerModel { get; } 
+    // Resources properties
+    private TaskModel TaskModel { get; }
+    private HomeView HomeView { get; }
+    private static List<TaskEntity>? TasksList { get; set; }
+    
+    // Server properties
+    private ServerModel ServerModel { get; }
     private Socket? ClientSocket { get; set; }
     
     /// <summary>
     /// ServerViewModel constructor
     /// </summary>
-    public ServerViewModel()
+    public ServerViewModel(HomeView homeView)
     {
+        // Resources initialization
+        HomeView = homeView;
+        
+        TaskModel = new TaskModel();
+        TaskModel.PullStateFile();
+        TasksList = TaskModel.TasksList;
+        
+        // Server initialization
         ServerModel = new ServerModel();
         
         // Bind the HandleStringDataChange method to the OnStringDataChanged event
@@ -26,6 +41,7 @@ public class ServerViewModel
     /// </summary>
     private async void StartListening()
     {
+        // Start listening for incoming connections in a task to avoid blocking the UI thread
         await Task.Run(() =>
         {
             while (true)
@@ -44,6 +60,7 @@ public class ServerViewModel
     /// <param name="stringData"></param>
     private void HandleStringDataChange(string? stringData)
     {
+        // If the string data is null, send a message to the client
         if (stringData == null)
         {
             ServerModel.DataSender(
@@ -56,10 +73,11 @@ public class ServerViewModel
         
         var args = stringData.Split(' ');
         
+        // If the array of strings is empty, send a message to the client. Else, use the first string as a command
+        // and the second string as a task name.
         switch (args[0])
         {
             case "help":
-            {
                 ServerModel.DataSender(
                     ClientSocket, 
                     "Available commands:\n" +
@@ -70,19 +88,15 @@ public class ServerViewModel
                     "exit: exit the server"
                 );
                 break;
-            }
                
             case "list":
                 ListTasks();
                 break;
             
             case "pause":
-                break;
-            
             case "resume":
-                break;
-            
             case "stop":
+                ActionOnTask(args[0], args[1]);
                 break;
             
             case "exit":
@@ -101,23 +115,59 @@ public class ServerViewModel
     /// List the tasks.
     /// </summary>
     private void ListTasks()
-    {
-        var taskModel = new TaskModel();
-        taskModel.PullStateFile();
-        
-        var tasks = taskModel.TasksList;
-
-        if (tasks == null)
+    { 
+        // If the tasks list is null, send a message to the client
+        if (TasksList == null)
         {
             ServerModel.DataSender(ClientSocket, "No tasks.");
             return;
         }
         
-        var tasksString = tasks.Aggregate(
+        // Else, send the tasks list to the client
+        var tasksString = TasksList.Aggregate(
             string.Empty, 
             (current, task) => current + $"Task {task.Id}: {task.Name} is {task.State}\n"
                 );
         
         ServerModel.DataSender(ClientSocket, tasksString);
+    }
+    
+    private void ActionOnTask(string action, string taskName)
+    {
+        var task = GetTaskByName(taskName);
+        
+        // If the task doesn't exist, send a message to the client
+        if (task == null)
+        {
+            ServerModel.DataSender(ClientSocket, $"Task {taskName} not found.");
+            return;
+        }
+        
+        switch (action)
+        {
+            case "pause":
+                HomeView.HomeViewModel.PauseTask(task);
+                break;
+            
+            case "resume":
+                HomeView.HomeViewModel.ResumeTask(task);
+                break;
+            
+            case "stop":
+                HomeView.HomeViewModel.StopTask(task);
+                break;
+        }
+        
+        ServerModel.DataSender(ClientSocket, $"On task {taskName}: {action}");
+    }
+    
+    /// <summary>
+    /// Get a task entity by its name.
+    /// </summary>
+    /// <param name="taskName"></param>
+    /// <returns>TaskEntity</returns>
+    private TaskEntity? GetTaskByName(string taskName)
+    {
+        return TasksList?.FirstOrDefault(task => task.Name == taskName);
     }
 }

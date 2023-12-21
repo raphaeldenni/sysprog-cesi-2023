@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EasySaveGraphic.ViewModels;
 
 namespace EasySaveGraphic
 {
@@ -26,6 +27,10 @@ namespace EasySaveGraphic
             ConfigView = new ConfigView();
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            
+            // Activate the distant server in a thread
+            var distantServerThread = new Thread(() => _ = new ServerViewModel(HomeView));
+            distantServerThread.Start();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
