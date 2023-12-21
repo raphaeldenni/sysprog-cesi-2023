@@ -73,10 +73,10 @@
         <value>Paramètres</value>
     </data>
     <data name="Creation" xml:space="preserve">
-        <value>Création</value>
+        <value>Création                        </value>
     </data>
     <data name="Edit" xml:space="preserve">
-        <value>Modification</value>
+        <value>Modification                   </value>
     </data>
     <data name="To" xml:space="preserve">
         <value>à</value>
@@ -143,5 +143,11 @@
     </data>
     <data name="Message_ErrorDeleteTask" xml:space="preserve">
         <value>Vous ne pouvez pas supprimer un travail en cours.</value>
+    </data>
+    <data name="Message_ErrorCreateTaskRunning" xml:space="preserve">
+        <value>Vous ne pouvez pas créer un travail quand un travail est entrain de se faire.</value>
+    </data>
+    <data name="Message_ErrorModifyTaskRunning" xml:space="preserve">
+        <value>Vous ne pouvez pas modifier un travail quand un travail est entrain de se faire.</value>
     </data>
 </root>

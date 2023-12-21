@@ -96,7 +96,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creation.
+        ///   Looks up a localized string similar to Creation                        .
         /// </summary>
         public static string Creation {
             get {
@@ -123,7 +123,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Edit                           .
         /// </summary>
         public static string Edit {
             get {
@@ -204,6 +204,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t create a job when a job is running..
+        /// </summary>
+        public static string Message_ErrorCreateTaskRunning {
+            get {
+                return ResourceManager.GetString("Message_ErrorCreateTaskRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The job has not been deleted..
         /// </summary>
         public static string Message_ErrorDelete {
@@ -245,6 +254,15 @@ namespace EasySaveGraphic.Lang {
         public static string Message_ErrorModifyTask {
             get {
                 return ResourceManager.GetString("Message_ErrorModifyTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t modify a job when a job is running..
+        /// </summary>
+        public static string Message_ErrorModifyTaskRunning {
+            get {
+                return ResourceManager.GetString("Message_ErrorModifyTaskRunning", resourceCulture);
             }
         }
         
