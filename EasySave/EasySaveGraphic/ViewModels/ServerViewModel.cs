@@ -59,12 +59,19 @@ public class ServerViewModel
         switch (args[0])
         {
             case "help":
+            {
                 ServerModel.DataSender(
                     ClientSocket, 
-                    "Available commands: help, list, pause, resume, stop"
-                    );
+                    "Available commands:\n" +
+                    "list: list the tasks\n" +
+                    "pause <task-name>: pause a task\n" +
+                    "resume <task-name>: resume a task\n" +
+                    "stop <task-name>: stop a task\n" +
+                    "exit: exit the server"
+                );
                 break;
-                
+            }
+               
             case "list":
                 ListTasks();
                 break;
