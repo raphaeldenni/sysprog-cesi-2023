@@ -106,11 +106,11 @@ public class ServerViewModel
             return;
         }
         
-        foreach (var task in tasks)
-        {
-            ServerModel.DataSender(ClientSocket, task.Name!);
-        }
+        var tasksString = tasks.Aggregate(
+            string.Empty, 
+            (current, task) => current + $"Task {task.Id}: {task.Name} is {task.State}\n"
+                );
         
-        taskModel = null;
+        ServerModel.DataSender(ClientSocket, tasksString);
     }
 }
