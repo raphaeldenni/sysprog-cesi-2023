@@ -96,7 +96,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Création.
+        ///   Looks up a localized string similar to Création                        .
         /// </summary>
         internal static string Creation {
             get {
@@ -123,7 +123,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modification.
+        ///   Looks up a localized string similar to Modification                   .
         /// </summary>
         internal static string Edit {
             get {
@@ -204,6 +204,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas créer un travail quand un travail est entrain de se faire..
+        /// </summary>
+        internal static string Message_ErrorCreateTaskRunning {
+            get {
+                return ResourceManager.GetString("Message_ErrorCreateTaskRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Le travail n&apos;a pas été supprimé..
         /// </summary>
         internal static string Message_ErrorDelete {
@@ -245,6 +254,15 @@ namespace EasySaveGraphic.Lang {
         internal static string Message_ErrorModifyTask {
             get {
                 return ResourceManager.GetString("Message_ErrorModifyTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas modifier un travail quand un travail est entrain de se faire..
+        /// </summary>
+        internal static string Message_ErrorModifyTaskRunning {
+            get {
+                return ResourceManager.GetString("Message_ErrorModifyTaskRunning", resourceCulture);
             }
         }
         

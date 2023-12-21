@@ -73,10 +73,10 @@
         <value>Settings</value>
     </data>
     <data name="Creation" xml:space="preserve">
-        <value>Creation</value>
+        <value>Creation                        </value>
     </data>
     <data name="Edit" xml:space="preserve">
-        <value>Edit</value>
+        <value>Edit                           </value>
     </data>
     <data name="To" xml:space="preserve">
         <value>to</value>
@@ -143,5 +143,11 @@
     </data>
     <data name="Message_ErrorDeleteTask" xml:space="preserve">
         <value>You can't delete a running job.</value>
+    </data>
+    <data name="Message_ErrorCreateTaskRunning" xml:space="preserve">
+        <value>You can't create a job when a job is running.</value>
+    </data>
+    <data name="Message_ErrorModifyTaskRunning" xml:space="preserve">
+        <value>You can't modify a job when a job is running.</value>
     </data>
 </root>

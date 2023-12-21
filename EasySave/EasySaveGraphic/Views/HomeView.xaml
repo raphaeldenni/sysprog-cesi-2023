@@ -18,11 +18,83 @@
             <RowDefinition Height="134*"/>
         </Grid.RowDefinitions>
 
+        <materialDesign:DialogHost x:Name="ModifyDialogHost" 
+                            Placement="Center" 
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            OverlayBackground="Transparent" 
+                            Grid.RowSpan="3"
+                                   CloseOnClickAway="True">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="135"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="TitleModifyDialogHost" Content="{x:Static lang:Resources.Creation}" HorizontalAlignment="Left" Margin="25,0,0,0" 
+            VerticalAlignment="Center" FontSize="48" FontWeight="Bold" Height="71"/>
+
+                    <TextBox Name="OldNameTextBox" 
+         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+         materialDesign:TextFieldAssist.HasClearButton="True" 
+         Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" 
+         TextWrapping="Wrap" Margin="100,0,100,0" FontSize="16"
+         materialDesign:HintAssist.Hint="{x:Static lang:Resources.Name}" 
+         Height="43"
+         IsReadOnly="True"
+         Visibility="Collapsed"/>
+
+                    <TextBox Name="NameTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:TextFieldAssist.HasClearButton="True" Grid.Row="1" 
+              Grid.ColumnSpan="2" VerticalAlignment="Center" 
+              TextWrapping="Wrap" Margin="100,0,100,0" FontSize="16"
+              materialDesign:HintAssist.Hint="{x:Static lang:Resources.Name}" Height="43"/>
+
+                    <ComboBox Name="TypeComboBox" Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+               materialDesign:HintAssist.Hint="{x:Static lang:Resources.Type}" Grid.Row="2" Grid.ColumnSpan="2" Margin="100,0,100,0" FontSize="16" Height="43"/>
+
+                    <TextBox Name="SourceTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              materialDesign:HintAssist.Hint="{x:Static lang:Resources.Source}"
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              Margin="100,0,100,0" FontSize="16" TextWrapping="Wrap" Grid.Row="3" VerticalAlignment="Center"
+              Grid.ColumnSpan="2" Height="43"/>
+
+                    <Button Content="..." HorizontalAlignment="Right" VerticalAlignment="Center" 
+             Click="Button_Source_Click" Grid.Column="1" Height="32" Width="42" Grid.Row="3" Margin="0,30,30,0"/>
+
+                    <TextBox Name="DestTextBox" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+              materialDesign:HintAssist.Hint="{x:Static lang:Resources.Destination}" 
+              materialDesign:TextFieldAssist.HasClearButton="True"
+              Margin="100,0,100,0" VerticalAlignment="Center" TextWrapping="Wrap" Grid.Row="4"
+              Grid.ColumnSpan="2" FontSize="16" Height="43"/>
+
+                    <Button Content="..." HorizontalAlignment="Right" VerticalAlignment="Center"
+             Click="Button_Dest_Click" Grid.Column="1" Grid.Row="4" Height="32" Width="42" Margin="0,30,30,0"/>
+
+
+                    <Button x:Name="cancel" Content="{x:Static lang:Resources.Cancel}" Margin="15" 
+             HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="Button_Close_DialogHost_Click" 
+             Grid.Row="5" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
+
+                    <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" 
+             HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Apply_Click" 
+             Grid.Row="5" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
+
+
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
         <materialDesign:DialogHost x:Name="SelectionDialogHost" Placement="Mouse" OverlayBackground="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel Margin="10" Width="150">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                        <Button Style="{StaticResource MaterialDesignFlatDarkButton}" Width="40" Height="30" Click="Button_Close_DialogHostSelection_Click">
+                        <Button Style="{StaticResource MaterialDesignFlatDarkButton}" Width="40" Height="30" Click="Button_Close_DialogHost_Click">
                             <StackPanel Margin="-5">
                                 <materialDesign:PackIcon Kind="CloseCircleOutline" />
                             </StackPanel>
