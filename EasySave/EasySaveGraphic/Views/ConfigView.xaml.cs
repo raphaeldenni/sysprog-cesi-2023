@@ -42,6 +42,8 @@ namespace EasySaveGraphic.Views
 
                 JobApplicationTextBox.Text = ConfigViewModel.ConfigModel.Config.JobApplications != null ? string.Join(",", ConfigViewModel.ConfigModel.Config.JobApplications) : "";
 
+                ExtensionsPriorityTextBox.Text = ConfigViewModel.ConfigModel.Config.PriorityFilesExtensions != null ? string.Join(",", ConfigViewModel.ConfigModel.Config.PriorityFilesExtensions) : "";
+
                 KeyTextBox.Text = ConfigViewModel.ConfigModel.Config.Key;
 
                 LangComboBox.SelectedItem = ConfigViewModel.ConfigModel.Config.Language.ToString();
@@ -62,7 +64,8 @@ namespace EasySaveGraphic.Views
             {
                 string[] extensions = ExtensionsTextBox.Text.Split(',');
                 string[] jobApplications = JobApplicationTextBox.Text.Split(',');
-                ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text), KeyTextBox.Text, extensions, jobApplications);
+                string[] extensionsPriority = ExtensionsPriorityTextBox.Text.Split(',');
+                ConfigViewModel.UpdateConfigFile((LogType?)Enum.Parse(typeof(LogType), LogComboBox.Text), (LangType?)Enum.Parse(typeof(LangType), LangComboBox.Text), KeyTextBox.Text, extensions, jobApplications, extensionsPriority);
                 MessageBox.Show(Lang.Resources.Message_SuccessConfig, Lang.Resources.Success, MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)

@@ -51,7 +51,7 @@ internal class ConfigViewModel
     { 
         if (Enum.TryParse<LogType>(logExtension, out LogType logExtensionOut))
         {
-            ConfigModel.UpdateConfigFile(logExtensionOut, null, null, null, null);
+            ConfigModel.UpdateConfigFile(logExtensionOut, null, null, null, null, null);
             ConfigView.SuccessfulLogExtension(logExtensionOut);
         }
         else 
@@ -67,7 +67,7 @@ internal class ConfigViewModel
     {
         if (Enum.TryParse<LangType>(lang, out LangType langOut))
         {
-            ConfigModel.UpdateConfigFile(null, langOut, null, null, null);
+            ConfigModel.UpdateConfigFile(null, langOut, null, null, null, null);
             ConfigView.SuccessfulLang(langOut);
         }
         else
@@ -81,7 +81,7 @@ internal class ConfigViewModel
 
     public void UpdateKey(string key)
     {
-        ConfigModel.UpdateConfigFile(null, null, key, null, null);
+        ConfigModel.UpdateConfigFile(null, null, key, null, null, null);
         ConfigView.SuccessfulKey();
         ConfigView.DisplayMessage();
     }
@@ -89,7 +89,7 @@ internal class ConfigViewModel
     public void UpdateExtensionsToEncrypt(string extensionsToEncrypt)
     {
         string[] extensions = extensionsToEncrypt.Split(',');
-        ConfigModel.UpdateConfigFile(null, null, null, extensions, null);
+        ConfigModel.UpdateConfigFile(null, null, null, extensions, null, null);
         ConfigView.SuccessfulExtensionsToEncrypt();
         ConfigView.DisplayMessage();
     }
