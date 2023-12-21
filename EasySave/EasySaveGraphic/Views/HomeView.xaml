@@ -33,6 +33,7 @@
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
@@ -79,11 +80,11 @@
 
                     <Button x:Name="cancel" Content="{x:Static lang:Resources.Cancel}" Margin="15" 
              HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="Button_Close_DialogHost_Click" 
-             Grid.Row="5" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
+             Grid.Row="6" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
 
                     <Button x:Name="apply" Content="{x:Static lang:Resources.Apply}" Margin="15" 
              HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="Button_Apply_Click" 
-             Grid.Row="5" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
+             Grid.Row="6" Height="32" MinWidth="69" Grid.ColumnSpan="2"/>
 
 
                 </Grid>
