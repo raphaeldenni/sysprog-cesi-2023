@@ -78,19 +78,11 @@ public class ServerViewModel
         switch (args[0])
         {
             case "help":
-                ServerModel.DataSender(
-                    ClientSocket, 
-                    "Available commands:\n" +
-                    "list: list the tasks\n" +
-                    "pause <task-name>: pause a task\n" +
-                    "resume <task-name>: resume a task\n" +
-                    "stop <task-name>: stop a task\n" +
-                    "exit: exit the server"
-                );
+                ListCommands();
                 break;
                
             case "list":
-                ListTasks();
+                ListAllTasks();
                 break;
             
             case "pause":
@@ -112,9 +104,34 @@ public class ServerViewModel
     }
     
     /// <summary>
+    /// List the available commands.
+    /// </summary>
+    private void ListCommands()
+    {
+        // List of available commands. Easy to add a new command.
+        var commandsList = new List<string>
+        {
+            "Available commands:",
+            "help: display the available commands",
+            "list: list all tasks",
+            "pause <task-name>: pause a task",
+            "resume <task-name>: resume a task",
+            "stop <task-name>: stop a task",
+            "exit: disconnect from the server"
+        };
+        
+        var helpMessage = commandsList.Aggregate(
+            string.Empty, 
+            (current, command) => current + $"{command}\n"
+            );
+        
+        ServerModel.DataSender(ClientSocket, helpMessage);
+    }
+    
+    /// <summary>
     /// List the tasks.
     /// </summary>
-    private void ListTasks()
+    private void ListAllTasks()
     { 
         // If the tasks list is null, send a message to the client
         if (TasksList == null)
