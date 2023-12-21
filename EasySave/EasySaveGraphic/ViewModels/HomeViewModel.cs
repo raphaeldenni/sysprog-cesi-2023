@@ -23,8 +23,8 @@ namespace EasySaveGraphic.ViewModels
         public List<TaskEntity> Tasks { get; set; }
         public bool IsJobApplicationDetected { get; set; }
         public bool ProcessWasDetected { get; set; }
-        public bool IsManualPause { get; set; }
 
+        public Dictionary<string, bool> IsManualPause { get; set; } = new Dictionary<string, bool>();
         private Dictionary<string, ManualResetEvent> TaskPauseEvents = new Dictionary<string, ManualResetEvent>();
 
         List<Thread> Threads = new List<Thread>();
@@ -37,6 +37,7 @@ namespace EasySaveGraphic.ViewModels
             ConfigModel = new ConfigModel();
             TaskModel = new TaskModel();
             Tasks = GetAllTasks(null);
+            IsManualPause = Tasks.ToDictionary(task => task.Name, task => false);
             Task.Run(() => JobApplicationDetected());
             Task.Run(() => PriorityFiles());
         }
@@ -69,7 +70,7 @@ namespace EasySaveGraphic.ViewModels
                     {
                         PauseAllTasks();
                     }
-                    else if (ProcessWasDetected && !IsManualPause)
+                    else if (ProcessWasDetected)
                     {
                         ProcessWasDetected = false;
                         ResumeAllTasks();
@@ -92,12 +93,12 @@ namespace EasySaveGraphic.ViewModels
                         PauseTask(task);
                     }
 
-                    if (task.LeftNumberPriorityFiles != 0 && !IsManualPause)
+                    if (task.LeftNumberPriorityFiles != 0 && !IsManualPause[task.Name])
                     {
                         ResumeTask(task);
                     }
 
-                    if (!Tasks.Any(t => t.LeftNumberPriorityFiles > 0) && !IsManualPause)
+                    if (!Tasks.Any(t => t.LeftNumberPriorityFiles > 0) && !IsManualPause[task.Name])
                     {
                         if (task.State == StateType.Active || task.State == StateType.Pause)
                         {
@@ -114,7 +115,10 @@ namespace EasySaveGraphic.ViewModels
         {
            foreach (var task in Tasks)
            {
-               PauseTask(task);
+                if (task.State == StateType.Active)
+                {
+                    PauseTask(task);
+                }
            }
         }
 
@@ -122,7 +126,10 @@ namespace EasySaveGraphic.ViewModels
         {
             foreach (var task in Tasks)
             {
-                ResumeTask(task);
+                if (task.State == StateType.Pause && !IsManualPause[task.Name])
+                {
+                    ResumeTask(task);
+                }
             }
         }
 
@@ -355,14 +362,17 @@ namespace EasySaveGraphic.ViewModels
         {
             foreach (TaskEntity task in tasks)
             {
-                Thread thread = new Thread(() => ExecuteOneTask(task));
-                if (!TaskPauseEvents.ContainsKey(task.Name))
+                if (task.State == StateType.Inactive)
                 {
-                    TaskPauseEvents[task.Name] = new ManualResetEvent(true);
+                    Thread thread = new Thread(() => ExecuteOneTask(task));
+                    if (!TaskPauseEvents.ContainsKey(task.Name))
+                    {
+                        TaskPauseEvents[task.Name] = new ManualResetEvent(true);
+                    }
+                    thread.Name = task.Name;
+                    Threads.Add(thread);
+                    thread.Start();
                 }
-                thread.Name = task.Name;
-                Threads.Add(thread);
-                thread.Start();
             }
         }
     }

@@ -37,6 +37,13 @@ namespace EasySaveGraphic.Views
 
             HomeViewModel = new HomeViewModel();
             Tasks = new List<TaskEntity>(HomeViewModel.GetAllTasks(null));
+
+            foreach (var task in Tasks)
+            {
+                task.Loading = 0;
+                task.State = StateType.Inactive;
+            }
+
             Lang = HomeViewModel.ConfigModel.Config.Language;
             DataContext = this;
 
@@ -83,7 +90,7 @@ namespace EasySaveGraphic.Views
                 TaskEntity selectedTask = (TaskEntity)((Button)sender).CommandParameter;
 
                 // Utilisez la tâche comme vous le souhaitez
-                HomeViewModel.IsManualPause = true;
+                HomeViewModel.IsManualPause[selectedTask.Name] = true;
                 HomeViewModel.PauseTask(selectedTask);
             }
             catch (Exception ex)
@@ -97,7 +104,7 @@ namespace EasySaveGraphic.Views
             try
             {
                 TaskEntity selectedTask = (TaskEntity)((Button)sender).CommandParameter;
-                HomeViewModel.IsManualPause = false;
+                HomeViewModel.IsManualPause[selectedTask.Name] = false;
                 HomeViewModel.ResumeTask(selectedTask);
             }
             catch (Exception ex)
