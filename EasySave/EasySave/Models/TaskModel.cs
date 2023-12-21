@@ -123,6 +123,13 @@ public class TaskEntity : INotifyPropertyChanged
         get => _fileDestPath;
         set { if (_fileDestPath != value) { _fileDestPath = value; OnPropertyChanged(); } }
     }
+
+    private int? _leftNumberPriorityFiles;
+    public int? LeftNumberPriorityFiles
+    {
+        get => _leftNumberPriorityFiles;
+        set { if (_leftNumberPriorityFiles != value) { _leftNumberPriorityFiles = value; OnPropertyChanged(); } }
+    }
 }
 
 
