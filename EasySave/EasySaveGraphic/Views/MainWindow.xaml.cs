@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using EasySaveGraphic.Views;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,8 +18,12 @@ namespace EasySaveGraphic
     /// </summary>
     public partial class MainWindow : Window
     {
+        public HomeView HomeView { get; set; }
+        public ConfigView ConfigView { get; set; }
         public MainWindow()
         {
+            HomeView = new HomeView();
+            ConfigView = new ConfigView();
             InitializeComponent();
             Loaded += MainWindow_Loaded;
         }
@@ -31,8 +36,7 @@ namespace EasySaveGraphic
         private void NavigateToHomeView()
         {
             try {
-                Uri homeViewUri = new Uri("Views/HomeView.xaml", UriKind.Relative);
-                navframe.Navigate(homeViewUri);
+                navframe.Navigate(HomeView);
             }
             catch (Exception ex)
             {
@@ -45,18 +49,10 @@ namespace EasySaveGraphic
             Application.Current.Shutdown();
         }
 
-        private void ChangePage(Uri pageUri)
-        {
-            if (navframe != null)
-            {
-                navframe.Navigate(pageUri);
-            }
-        }
-
         private void btnConfig_Click(object sender, RoutedEventArgs e)
         {
             try {
-                ChangePage(new Uri("Views/ConfigView.xaml", UriKind.Relative));
+                navframe.Navigate(ConfigView);
             }
             catch (Exception ex)
             {
@@ -68,7 +64,7 @@ namespace EasySaveGraphic
         {
             try
             {
-                ChangePage(new Uri("Views/HomeView.xaml", UriKind.Relative));
+                navframe.Navigate(HomeView);
             }
             catch (Exception ex)
             {
