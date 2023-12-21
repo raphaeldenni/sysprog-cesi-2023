@@ -135,4 +135,7 @@
     <data name="JobApplication" xml:space="preserve">
         <value>Job application</value>
     </data>
+    <data name="ExtensionsPriority" xml:space="preserve">
+        <value>Priority extensions</value>
+    </data>
 </root>

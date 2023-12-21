@@ -150,6 +150,15 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extensions prioritaires.
+        /// </summary>
+        internal static string ExtensionsPriority {
+            get {
+                return ResourceManager.GetString("ExtensionsPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Application métier.
         /// </summary>
         internal static string JobApplication {
