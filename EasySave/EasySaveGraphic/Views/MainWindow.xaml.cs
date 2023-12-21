@@ -76,7 +76,8 @@ namespace EasySaveGraphic
         {
             try
             {
-                string logsFolderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var logsFolderPath = System.IO.Path.Combine(appDataPath, "EasySave", "logs");
 
                 if (System.IO.Directory.Exists(logsFolderPath))
                 {
