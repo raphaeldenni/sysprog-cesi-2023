@@ -41,6 +41,7 @@ namespace EasySaveGraphic.Views
             foreach (var task in Tasks)
             {
                 task.Loading = 0;
+                task.LeftNumberPriorityFiles = 0;
                 task.State = StateType.Inactive;
             }
 

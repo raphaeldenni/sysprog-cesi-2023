@@ -86,9 +86,9 @@ namespace EasySaveGraphic.ViewModels
 
                 foreach (var task in Tasks)
                 {
-                    var test = Tasks.Any(t => t != task && t.LeftNumberPriorityFiles > 0);
+                    var tasks = Tasks.Any(t => t != task && t.LeftNumberPriorityFiles > 0) && task.State == StateType.Active;
 
-                    if (task.State == StateType.Active && task.LeftNumberPriorityFiles == 0 && test)
+                    if (task.State == StateType.Active && task.LeftNumberPriorityFiles == 0 && tasks)
                     {
                         PauseTask(task);
                     }
@@ -98,7 +98,7 @@ namespace EasySaveGraphic.ViewModels
                         ResumeTask(task);
                     }
 
-                    if (!Tasks.Any(t => t.LeftNumberPriorityFiles > 0) && !IsManualPause[task.Name])
+                    if (!Tasks.Any(t => t.LeftNumberPriorityFiles > 0 && t.State == StateType.Active) && !IsManualPause[task.Name])
                     {
                         if (task.State == StateType.Active || task.State == StateType.Pause)
                         {
