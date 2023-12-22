@@ -19,4 +19,5 @@ public enum StateType
 {
     Active,
     Inactive,
+    Pause,
 }

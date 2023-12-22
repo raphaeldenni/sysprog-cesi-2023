@@ -96,7 +96,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Création.
+        ///   Looks up a localized string similar to Création                        .
         /// </summary>
         internal static string Creation {
             get {
@@ -123,7 +123,7 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modification.
+        ///   Looks up a localized string similar to Modification                   .
         /// </summary>
         internal static string Edit {
             get {
@@ -146,6 +146,24 @@ namespace EasySaveGraphic.Lang {
         internal static string Extensions {
             get {
                 return ResourceManager.GetString("Extensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extensions prioritaires.
+        /// </summary>
+        internal static string ExtensionsPriority {
+            get {
+                return ResourceManager.GetString("ExtensionsPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Application métier.
+        /// </summary>
+        internal static string JobApplication {
+            get {
+                return ResourceManager.GetString("JobApplication", resourceCulture);
             }
         }
         
@@ -177,11 +195,38 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Une autre instance de l&apos;application est déjà en cours d&apos;exécution..
+        /// </summary>
+        internal static string Message_ApplicationAlreadyRunning {
+            get {
+                return ResourceManager.GetString("Message_ApplicationAlreadyRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas créer un travail quand un travail est entrain de se faire..
+        /// </summary>
+        internal static string Message_ErrorCreateTaskRunning {
+            get {
+                return ResourceManager.GetString("Message_ErrorCreateTaskRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Le travail n&apos;a pas été supprimé..
         /// </summary>
         internal static string Message_ErrorDelete {
             get {
                 return ResourceManager.GetString("Message_ErrorDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas supprimer un travail en cours..
+        /// </summary>
+        internal static string Message_ErrorDeleteTask {
+            get {
+                return ResourceManager.GetString("Message_ErrorDeleteTask", resourceCulture);
             }
         }
         
@@ -200,6 +245,24 @@ namespace EasySaveGraphic.Lang {
         internal static string Message_ErrorLog {
             get {
                 return ResourceManager.GetString("Message_ErrorLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas modifier un travail en cours..
+        /// </summary>
+        internal static string Message_ErrorModifyTask {
+            get {
+                return ResourceManager.GetString("Message_ErrorModifyTask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vous ne pouvez pas modifier un travail quand un travail est entrain de se faire..
+        /// </summary>
+        internal static string Message_ErrorModifyTaskRunning {
+            get {
+                return ResourceManager.GetString("Message_ErrorModifyTaskRunning", resourceCulture);
             }
         }
         
@@ -276,6 +339,24 @@ namespace EasySaveGraphic.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        internal static string Pause {
+            get {
+                return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reprendre.
+        /// </summary>
+        internal static string Resume {
+            get {
+                return ResourceManager.GetString("Resume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rechercher.
         /// </summary>
         internal static string Search {
@@ -326,6 +407,15 @@ namespace EasySaveGraphic.Lang {
         internal static string State {
             get {
                 return ResourceManager.GetString("State", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
         

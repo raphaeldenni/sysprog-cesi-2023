@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using EasySaveGraphic.Views;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EasySaveGraphic.ViewModels;
 
 namespace EasySaveGraphic
 {
@@ -17,10 +19,18 @@ namespace EasySaveGraphic
     /// </summary>
     public partial class MainWindow : Window
     {
+        public HomeView HomeView { get; set; }
+        public ConfigView ConfigView { get; set; }
         public MainWindow()
         {
+            HomeView = new HomeView();
+            ConfigView = new ConfigView();
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            
+            // Activate the distant server in a thread
+            var distantServerThread = new Thread(() => _ = new ServerViewModel(HomeView));
+            distantServerThread.Start();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -31,8 +41,7 @@ namespace EasySaveGraphic
         private void NavigateToHomeView()
         {
             try {
-                Uri homeViewUri = new Uri("Views/HomeView.xaml", UriKind.Relative);
-                navframe.Navigate(homeViewUri);
+                navframe.Navigate(HomeView);
             }
             catch (Exception ex)
             {
@@ -45,18 +54,10 @@ namespace EasySaveGraphic
             Application.Current.Shutdown();
         }
 
-        private void ChangePage(Uri pageUri)
-        {
-            if (navframe != null)
-            {
-                navframe.Navigate(pageUri);
-            }
-        }
-
         private void btnConfig_Click(object sender, RoutedEventArgs e)
         {
             try {
-                ChangePage(new Uri("Views/ConfigView.xaml", UriKind.Relative));
+                navframe.Navigate(ConfigView);
             }
             catch (Exception ex)
             {
@@ -68,7 +69,7 @@ namespace EasySaveGraphic
         {
             try
             {
-                ChangePage(new Uri("Views/HomeView.xaml", UriKind.Relative));
+                navframe.Navigate(HomeView);
             }
             catch (Exception ex)
             {
@@ -80,7 +81,8 @@ namespace EasySaveGraphic
         {
             try
             {
-                string logsFolderPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                var logsFolderPath = System.IO.Path.Combine(appDataPath, "EasySave", "logs");
 
                 if (System.IO.Directory.Exists(logsFolderPath))
                 {

@@ -73,10 +73,10 @@
         <value>Settings</value>
     </data>
     <data name="Creation" xml:space="preserve">
-        <value>Creation</value>
+        <value>Creation                        </value>
     </data>
     <data name="Edit" xml:space="preserve">
-        <value>Edit</value>
+        <value>Edit                           </value>
     </data>
     <data name="To" xml:space="preserve">
         <value>to</value>
@@ -119,5 +119,35 @@
     </data>
     <data name="Message_SuccessCreate" xml:space="preserve">
         <value>The job has been created.</value>
+    </data>
+    <data name="Message_ApplicationAlreadyRunning" xml:space="preserve">
+        <value>Another instance of the application is already running.</value>
+    </data>
+    <data name="Pause" xml:space="preserve">
+        <value>Pause</value>
+    </data>
+    <data name="Resume" xml:space="preserve">
+        <value>Resume</value>
+    </data>
+    <data name="Stop" xml:space="preserve">
+        <value>Stop</value>
+    </data>
+    <data name="JobApplication" xml:space="preserve">
+        <value>Job application</value>
+    </data>
+    <data name="ExtensionsPriority" xml:space="preserve">
+        <value>Priority extensions</value>
+    </data>
+    <data name="Message_ErrorModifyTask" xml:space="preserve">
+        <value>You can't modify a running job.</value>
+    </data>
+    <data name="Message_ErrorDeleteTask" xml:space="preserve">
+        <value>You can't delete a running job.</value>
+    </data>
+    <data name="Message_ErrorCreateTaskRunning" xml:space="preserve">
+        <value>You can't create a job when a job is running.</value>
+    </data>
+    <data name="Message_ErrorModifyTaskRunning" xml:space="preserve">
+        <value>You can't modify a job when a job is running.</value>
     </data>
 </root>
