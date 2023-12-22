@@ -38,7 +38,7 @@ namespace EasySaveGraphic.Views
             StartClock();
 
             HomeViewModel = new HomeViewModel();
-            Tasks = HomeViewModel.Tasks;
+            Tasks = HomeViewModel.GetAllTasks(null);
 
             foreach (var task in Tasks)
             {
@@ -410,7 +410,7 @@ namespace EasySaveGraphic.Views
                     Button_Close_DialogHost_Click(sender, e);
                 }
 
-                Tasks = HomeViewModel.Tasks;
+                Tasks = HomeViewModel.GetAllTasks(null);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tasks)));
             }
             catch (Exception ex)

@@ -16,7 +16,6 @@ namespace EasySaveGraphic.ViewModels
 {
     public class HomeViewModel
     {
-        public event Action<TaskEntity, int> NotifyTaskUpdated;
         public ConfigModel ConfigModel { get; set; }
         public TaskModel TaskModel { get; set; }
         public LogModel LogModel { get; set; }
@@ -26,7 +25,7 @@ namespace EasySaveGraphic.ViewModels
         public bool PriorityFilesRun { get; set; } = true;
 
         public Dictionary<int, bool> IsManualPause { get; set; } = new Dictionary<int, bool>();
-        private Dictionary<string, ManualResetEvent> TaskPauseEvents = new Dictionary<string, ManualResetEvent>();
+        private Dictionary<int, ManualResetEvent> TaskPauseEvents = new Dictionary<int, ManualResetEvent>();
 
         List<Thread> Threads = new List<Thread>();
 
@@ -154,13 +153,13 @@ namespace EasySaveGraphic.ViewModels
 
         public void PauseTask(TaskEntity task)
         {
-            if (TaskPauseEvents.ContainsKey(task.Name))
+            if (TaskPauseEvents.ContainsKey((int)task.Id))
             {
-                if (!TaskPauseEvents[task.Name].WaitOne(0))
+                if (!TaskPauseEvents[(int)task.Id].WaitOne(0))
                 {
                     return;
                 }
-                TaskPauseEvents[task.Name].Reset();
+                TaskPauseEvents[(int)task.Id].Reset();
                 lock (TaskLock)
                 {
                     TaskModel.UpdateTaskState(
@@ -179,13 +178,13 @@ namespace EasySaveGraphic.ViewModels
 
         public void ResumeTask(TaskEntity task)
         {
-            if (TaskPauseEvents.ContainsKey(task.Name) && !IsJobApplicationDetected)
+            if (TaskPauseEvents.ContainsKey((int)task.Id) && !IsJobApplicationDetected)
             {
-                if (TaskPauseEvents[task.Name].WaitOne(0))
+                if (TaskPauseEvents[(int)task.Id].WaitOne(0))
                 {
                     return;
                 }
-                TaskPauseEvents[task.Name].Set();
+                TaskPauseEvents[(int)task.Id].Set();
                 lock (TaskLock)
                 {
                     TaskModel.UpdateTaskState(
@@ -204,9 +203,9 @@ namespace EasySaveGraphic.ViewModels
 
         public void StopTask(TaskEntity task)
         {
-            if (TaskPauseEvents.ContainsKey(task.Name))
+            if (TaskPauseEvents.ContainsKey((int)task.Id))
             {
-                TaskPauseEvents[task.Name].Reset();
+                TaskPauseEvents[(int)task.Id].Reset();
                 lock (TaskLock)
                 {
                     task.Loading = 0;
@@ -248,6 +247,8 @@ namespace EasySaveGraphic.ViewModels
             {
                 task.IsChecked = false;
                 task.Loading = task.Loading ?? 0;
+                task.FileDestPath = task.SourcePath;
+                task.FileSourcePath = task.DestPath;
             }
 
             return tasks;
@@ -272,7 +273,7 @@ namespace EasySaveGraphic.ViewModels
 
         public void ExecuteOneTask(TaskEntity task)
         {
-            TaskPauseEvents[task.Name].WaitOne();
+            TaskPauseEvents[(int)task.Id].WaitOne();
 
             // Get task info
             var taskType = task.Type;
@@ -331,7 +332,7 @@ namespace EasySaveGraphic.ViewModels
 
         private void LogFileCopied(TaskEntity task, string[] data)
         {
-            TaskPauseEvents[task.Name].WaitOne();
+            TaskPauseEvents[(int)task.Id].WaitOne();
             int fileSize;
             float fileTransferTime;
 
@@ -384,9 +385,9 @@ namespace EasySaveGraphic.ViewModels
                 if (task.State == StateType.Inactive)
                 {
                     Thread thread = new Thread(() => ExecuteOneTask(task));
-                    if (!TaskPauseEvents.ContainsKey(task.Name))
+                    if (!TaskPauseEvents.ContainsKey((int)task.Id))
                     {
-                        TaskPauseEvents[task.Name] = new ManualResetEvent(true);
+                        TaskPauseEvents[(int)task.Id] = new ManualResetEvent(true);
                     }
                     thread.Name = task.Name;
                     Threads.Add(thread);

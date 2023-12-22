@@ -374,8 +374,8 @@ public class TaskModel : TaskEntity
         // Task properties
         task.Id = Id;
         task.Name = Name;
-        task.SourcePath = SourcePath ?? task.SourcePath;
-        task.DestPath = DestPath ?? task.DestPath;
+        task.SourcePath = task.SourcePath ?? SourcePath ;
+        task.DestPath = task.DestPath ?? DestPath;
         task.Type = Type ?? task.Type;
         task.Timestamp ??= DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         
